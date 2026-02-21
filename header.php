@@ -271,7 +271,7 @@ header('X-Frame-Options: SAMEORIGIN');
      
     <section id="main-container">
         <?php
-        if (iro_opt('cover_switch') && (!is_home() || !iro_opt('hide_splash_wallpaper_switch'))) {
+        if (iro_opt('cover_switch')) {
             $filter = iro_opt('random_graphs_filter');
             $cover_height = (iro_opt('cover_full_screen',true)&&is_home()) ? '' : 'headertop-bar';
         ?>
