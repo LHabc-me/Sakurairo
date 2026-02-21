@@ -713,6 +713,9 @@ add_action('init', function() {
 
 require get_template_directory() . '/inc/cache_settings.php';
 
+// 主题设置导入/导出工具页（后台 > 工具）
+require get_template_directory() . '/inc/admin-settings-transfer.php';
+
 /**
  * Customizer功能
  * 仅在Customizer预览框架中和Customizer编辑器载入时加载
