@@ -152,6 +152,55 @@ if ( ! function_exists( 'iro_customizer_sanitize_json_or_text' ) ) {
 	}
 }
 
+if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
+	function iro_customizer_legacy_description_from_key( $legacy_key ) {
+		$key = strtolower( (string) $legacy_key );
+
+		$description_map = [
+			'custom_style'            => '自定义 CSS 样式代码（输出到前台样式表）。',
+			'header_insert'           => '注入到站点 <head> 区域的 HTML/脚本代码。',
+			'footer_addition'         => '注入到页脚区域的附加 HTML/脚本代码。',
+			'meta_description'        => '站点 SEO 描述内容（用于页面描述元信息）。',
+			'google_analytics'        => 'Google Analytics 统计脚本或统计 ID。',
+			'statistics_api'          => '站点统计服务 API 地址或请求配置。',
+			'statistics_format'       => '站点统计数据展示格式模板。',
+			'channel_validate_value'  => '渠道校验值（用于请求来源校验）。',
+			'social_'                 => '社交账号链接或展示信息。',
+			'wechat_'                 => '微信相关账号信息或二维码地址。',
+			'qq_'                     => 'QQ 账号信息或头像来源配置。',
+			'captcha_'                => '验证码服务参数（开关、密钥或校验地址）。',
+			'turnstile_'              => 'Cloudflare Turnstile 验证配置。',
+			'vaptcha_'                => 'Vaptcha 验证服务配置。',
+			'aplayer_'                => 'APlayer 播放器与歌单来源配置。',
+		];
+
+		foreach ( $description_map as $marker => $description ) {
+			if ( false !== strpos( $key, $marker ) ) {
+				return sprintf( '配置键：%s。%s', $legacy_key, $description );
+			}
+		}
+
+		return sprintf( '配置键：%s。该项来自旧版配置迁移，请按该键历史用途填写。', $legacy_key );
+	}
+}
+
+add_action( 'customize_register', function( $wp_customize ) {
+	$nav_menus_panel = $wp_customize->get_panel( 'nav_menus' );
+	if ( $nav_menus_panel ) {
+		$nav_menus_panel->title = esc_html__( 'WP 核心设置', 'Shinonomeiro_C' );
+		$nav_menus_panel->description = esc_html__( '集中管理 WordPress 核心的菜单、主页显示与额外 CSS。', 'Shinonomeiro_C' );
+		$nav_menus_panel->priority = 5;
+	}
+
+	$core_section_ids = [ 'static_front_page', 'custom_css' ];
+	foreach ( $core_section_ids as $section_id ) {
+		$core_section = $wp_customize->get_section( $section_id );
+		if ( $core_section ) {
+			$core_section->panel = 'nav_menus';
+		}
+	}
+}, 1000 );
+
 // 分组和设置项部分
 // 分组：每个分组至少包含 id、title、description、所属面板 panel
 // 设置项（Field）数组：每个设置项至少包含 type、settings、label、所属区块 section
@@ -1749,7 +1798,7 @@ $sections = [
 				'settings' => 'hide_theme_info_switch',
 				'iro_key'  => 'hide_theme_info_switch',
 				'label'    => esc_html__( '隐藏主题信息', 'Shinonomeiro_C' ),
-				'description' => esc_html__( '隐藏页脚中的主题署名信息块（Theme Shinonomeiro）。', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '隐藏页脚中的主题署名信息块（Theme Shinonomeiro By LHabc）。', 'Shinonomeiro_C' ),
 				'default'  => false,
 			],
 		],
@@ -2338,7 +2387,7 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'settings'    => 'legacy_' . $legacy_key,
 				'iro_key'     => $legacy_key,
 				'label'       => iro_customizer_friendly_label_from_key( $legacy_key ),
-				'description' => sprintf( esc_html__( '配置键：%s。请按功能用途填写，修改后将立即影响对应前台或后台行为。', 'Shinonomeiro_C' ), $legacy_key ),
+				'description' => iro_customizer_legacy_description_from_key( $legacy_key ),
 				'default'     => $default_value,
 			];
 
