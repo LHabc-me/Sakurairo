@@ -78,6 +78,23 @@ $allowed_params = [
 
 $vision_resource_basepath = iro_opt('vision_resource_basepath', 'https://s.nmxc.ltd/sakurairo_vision/@3.0/');
 
+if ( ! function_exists( 'iro_customizer_sanitize_json_or_text' ) ) {
+	function iro_customizer_sanitize_json_or_text( $value ) {
+		if ( is_array( $value ) ) {
+			return $value;
+		}
+		$value = is_string( $value ) ? trim( $value ) : '';
+		if ( '' === $value ) {
+			return '';
+		}
+		$decoded = json_decode( $value, true );
+		if ( JSON_ERROR_NONE === json_last_error() ) {
+			return $decoded;
+		}
+		return $value;
+	}
+}
+
 // 分组和设置项部分
 // 分组：每个分组至少包含 id、title、description、所属面板 panel
 // 设置项（Field）数组：每个设置项至少包含 type、settings、label、所属区块 section
@@ -2159,6 +2176,54 @@ $sections = [
 	],
 ];
 
+$legacy_migrated_keys_file = __DIR__ . '/customizer-migrated-fields.php';
+if ( file_exists( $legacy_migrated_keys_file ) ) {
+	$legacy_migrated_keys = require $legacy_migrated_keys_file;
+	if ( is_array( $legacy_migrated_keys ) && ! empty( $legacy_migrated_keys ) ) {
+		$legacy_fields = [];
+		foreach ( $legacy_migrated_keys as $legacy_key ) {
+			$current_value = $GLOBALS['iro_options'][ $legacy_key ] ?? '';
+			$field_type = 'text';
+			if ( is_bool( $current_value ) ) {
+				$field_type = 'switch';
+			} elseif ( is_int( $current_value ) || is_float( $current_value ) ) {
+				$field_type = 'number';
+			} elseif ( is_array( $current_value ) ) {
+				$field_type = 'textarea';
+			}
+
+			$default_value = is_array( $current_value )
+				? wp_json_encode( $current_value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES )
+				: $current_value;
+
+			$field = [
+				'type'        => $field_type,
+				'settings'    => 'legacy_' . $legacy_key,
+				'iro_key'     => $legacy_key,
+				'label'       => ucwords( str_replace( '_', ' ', $legacy_key ) ),
+				'description' => sprintf( esc_html__( 'Migrated from legacy options key: %s', 'Shinonomeiro_C' ), $legacy_key ),
+				'default'     => $default_value,
+			];
+
+			if ( 'switch' === $field_type ) {
+				$field['choices'] = [ 'on' => esc_html__( 'On', 'Shinonomeiro_C' ), 'off' => esc_html__( 'Off', 'Shinonomeiro_C' ) ];
+			}
+			if ( 'textarea' === $field_type ) {
+				$field['sanitize_callback'] = 'iro_customizer_sanitize_json_or_text';
+			}
+			$legacy_fields[] = $field;
+		}
+
+		$sections[] = [
+			'id'          => 'iro_legacy_migrated_options',
+			'title'       => esc_html__( 'Legacy Migrated Options', 'Shinonomeiro_C' ),
+			'description' => esc_html__( 'Auto-generated controls for CSF fields migrated during Phase 2. Keep legacy menu disabled unless rollback is needed.', 'Shinonomeiro_C' ),
+			'panel'       => 'iro_global',
+			'fields'      => $legacy_fields,
+		];
+	}
+}
+
 // ====================Panel注册====================
 $panelAutoPriority = 10;
 foreach ( $panels as &$panel ) {
@@ -2344,6 +2409,10 @@ foreach ( $sections as $section ) {
 				$args['default'] = isset($args['iro_subkey']) 
 								? (is_array($iro_default) && isset($iro_default[$args['iro_subkey']]) ? $iro_default[$args['iro_subkey']] : $type_default) 
 								: ($iro_default !== null ? $iro_default : $type_default); //从iro_opt中获取默认值，或使用种类默认值
+
+				if ( is_array( $args['default'] ) && in_array( str_replace( ' ', '_', strtolower( $field['type'] ?? '' ) ), [ 'text', 'textarea', 'code', 'url' ], true ) ) {
+					$args['default'] = wp_json_encode( $args['default'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+				}
 				
 				// set_theme_mod($setting_id, $args['default']);
 			}
