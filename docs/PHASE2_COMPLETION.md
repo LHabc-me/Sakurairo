@@ -13,8 +13,9 @@
 - Legacy options menu gate:
   - `shinonomeiro_enable_legacy_options_menu`
   - `SHINONOMEIRO_ENABLE_LEGACY_OPTIONS_MENU`
-- Migrated fallback section gate:
+- Migrated fallback section gate (默认关闭，避免普通用户界面割裂):
   - `shinonomeiro_enable_migrated_legacy_section`
+  - `SHINONOMEIRO_ENABLE_LEGACY_BRIDGE`
 
 ## Validation commands
 
