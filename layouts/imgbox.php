@@ -349,18 +349,23 @@ $print_social_zone = function() use ($all_opt): void {
 
                         function colorSet() {
                             return document.body.classList.contains('dark')
-                                ? { title: '#f9f8f9', text: '#f9f8f9', source: 'rgba(249,248,249,.75)' }
-                                : { title: '#efb73e', text: '#f9f8f9', source: 'rgba(249,248,249,.75)' };
+                                ? { title: '#f9f8f9', text: '#f9f8f9', source: '#f9f8f9' }
+                                : { title: '#efb73e', text: '#f9f8f9', source: '#f9f8f9' };
                         }
 
-                        function render(content, author, dynasty) {
+                        function render(content, author, dynasty, poemTitle) {
                             if (!target) return;
                             const colors = colorSet();
-                            const source = [author, dynasty].filter(Boolean).join('·');
+                            const source = [dynasty, author].filter(Boolean).join('·');
+                            const titleLine = poemTitle ? '《' + poemTitle + '》' : '';
+                            target.style.textAlign = 'center';
+                            target.style.maxWidth = '70%';
                             target.innerHTML =
-                                '<span style="font-weight:600;font-size:14px;line-height:1.8;color:' + colors.title + ';">今日诗词：</span><br>' +
+                                '<span style="font-weight:600;font-size:14px;line-height:1.8;color:' + colors.title + ';">今日诗词</span><br>' +
                                 '<span style="font-size:13px;line-height:1.8;color:' + colors.text + ';">' + (content || fallbackText) + '</span><br>' +
-                                '<span style="font-size:12px;line-height:1.5;color:' + colors.source + ';">' + (source || '佚名·现代') + '</span>';
+                                '<span style="font-size:12px;line-height:1.6;color:' + colors.source + ';">' +
+                                (source || '现代·佚名') + (titleLine ? ' ' + titleLine : '') +
+                                '</span>';
                         }
 
                         function done(payload) {
@@ -368,9 +373,14 @@ $print_social_zone = function() use ($all_opt): void {
                             finished = true;
                             lastPayload = payload && payload.data ? payload : null;
                             if (lastPayload) {
-                                render(lastPayload.data.content, lastPayload.data.author, lastPayload.data.origin && lastPayload.data.origin.dynasty);
+                                render(
+                                    lastPayload.data.content,
+                                    lastPayload.data.author,
+                                    lastPayload.data.origin && lastPayload.data.origin.dynasty,
+                                    lastPayload.data.origin && lastPayload.data.origin.title
+                                );
                             } else {
-                                render(fallbackText, '佚名', '现代');
+                                render(fallbackText, '佚名', '现代', '');
                             }
                         }
 
@@ -410,9 +420,14 @@ $print_social_zone = function() use ($all_opt): void {
                         const observer = new MutationObserver(function () {
                             if (!target) return;
                             if (lastPayload && lastPayload.data) {
-                                render(lastPayload.data.content, lastPayload.data.author, lastPayload.data.origin && lastPayload.data.origin.dynasty);
+                                render(
+                                    lastPayload.data.content,
+                                    lastPayload.data.author,
+                                    lastPayload.data.origin && lastPayload.data.origin.dynasty,
+                                    lastPayload.data.origin && lastPayload.data.origin.title
+                                );
                             } else if (finished) {
-                                render(fallbackText, '佚名', '现代');
+                                render(fallbackText, '佚名', '现代', '');
                             }
                         });
                         observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
