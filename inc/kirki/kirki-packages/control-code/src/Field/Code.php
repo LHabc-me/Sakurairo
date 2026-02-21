@@ -74,6 +74,10 @@ class Code extends Field {
 	 * @return array
 	 */
 	public function filter_control_args( $args, $wp_customize ) {
+		if ( ! is_array( $args ) || ! isset( $args['settings'] ) ) {
+			return $args;
+		}
+
 		if ( $args['settings'] === $this->args['settings'] ) {
 			$args = parent::filter_control_args( $args, $wp_customize );
 
@@ -83,7 +87,7 @@ class Code extends Field {
 				'aria-describedby' => 'kirki-code editor-keyboard-trap-help-1 editor-keyboard-trap-help-2 editor-keyboard-trap-help-3 editor-keyboard-trap-help-4',
 			];
 			if ( ! isset( $args['choices']['language'] ) ) {
-				return;
+				return $args;
 			}
 
 			$language = $args['choices']['language'];
