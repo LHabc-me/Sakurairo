@@ -58,8 +58,7 @@ $reception_background = iro_opt('reception_background');
               </svg>
             </div>
           <?php endif; ?>
-        <a href="https://github.com/LHabc-me/Shinonomeiro" rel="noopener" target="_blank">Theme Shinonomeiro</a>
-        <a href="https://docs.fuukei.org/" rel="noopener" target="_blank">by Fuukei</a>
+        <a href="https://github.com/LHabc-me/Shinonomeiro" rel="noopener" target="_blank">Theme Shinonomeiro By LHabc</a>
       </div>
     </div><!-- .site-info -->
   </footer><!-- #colophon -->
