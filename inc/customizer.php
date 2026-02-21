@@ -237,6 +237,76 @@ if ( ! function_exists( 'iro_customizer_friendly_label_from_key' ) ) {
 	}
 }
 
+if ( ! function_exists( 'iro_customizer_localize_ui_text' ) ) {
+	function iro_customizer_localize_ui_text( $text ) {
+		$text = is_string( $text ) ? trim( $text ) : '';
+		if ( '' === $text ) {
+			return $text;
+		}
+		if ( ! preg_match( '/[A-Za-z]/', $text ) ) {
+			return $text;
+		}
+
+		$phrase_map = [
+			'Nav Menu Style' => '导航菜单样式',
+			'Cover Info Bar' => '首屏信息栏',
+			'Cover Signature Field Text' => '首屏签名文本',
+			'Cover Signature Field Text Font' => '首屏签名字体',
+			'Cover Signature Field Text Font Size' => '首屏签名字号',
+			'Dark Mode Theme Color' => '深色模式主题色',
+			'Dark Mode Image Brightness' => '深色模式图片亮度',
+			'Dark Mode Component Transparency' => '深色模式组件透明度',
+			'Theme Color' => '主题色',
+			'Matching Color' => '主题配色',
+			'Cover Full Screen' => '首屏全屏显示',
+			'Cover Animation Time' => '首屏动画时长',
+			'Cover Widget Transparency' => '首屏组件透明度',
+			'Avatar Radius' => '头像圆角',
+			'Background Image' => '背景图片',
+			'Google Analytics ID' => 'Google Analytics ID',
+			'ChatGPT' => 'ChatGPT',
+			'APlayer' => 'APlayer',
+			'Bilibili' => 'Bilibili',
+			'Steam' => 'Steam',
+			'Turnstile' => 'Cloudflare Turnstile',
+			'Logo' => 'Logo',
+			'URL' => '链接',
+		];
+		if ( isset( $phrase_map[ $text ] ) ) {
+			return $phrase_map[ $text ];
+		}
+
+		$word_map = [
+			'nav' => '导航', 'menu' => '菜单', 'style' => '样式', 'cover' => '首屏', 'info' => '信息', 'bar' => '栏',
+			'signature' => '签名', 'field' => '', 'text' => '文本', 'font' => '字体', 'size' => '字号', 'dark' => '深色',
+			'mode' => '模式', 'theme' => '主题', 'color' => '颜色', 'image' => '图片', 'brightness' => '亮度',
+			'component' => '组件', 'transparency' => '透明度', 'full' => '全屏', 'screen' => '显示', 'animation' => '动画',
+			'time' => '时长', 'widget' => '组件', 'radius' => '圆角', 'avatar' => '头像', 'background' => '背景',
+			'google' => 'Google', 'analytics' => 'Analytics', 'chatgpt' => 'ChatGPT', 'player' => '播放器',
+			'captcha' => '验证码', 'login' => '登录', 'comment' => '评论', 'switch' => '开关', 'enable' => '启用',
+			'auto' => '自动', 'load' => '加载', 'lazy' => '懒', 'search' => '搜索', 'default' => '默认',
+			'video' => '视频', 'loop' => '循环', 'live' => '直播', 'link' => '链接', 'title' => '标题',
+			'left' => '左侧', 'right' => '右侧', 'first' => '一级', 'second' => '二级', 'class' => '分类',
+			'admin' => '后台', 'logo' => 'Logo', 'api' => 'API', 'cdn' => 'CDN', 'json' => 'JSON', 'pjax' => 'PJAX',
+			'prism' => 'Prism', 'mathjax' => 'MathJax', 'fontawesome' => 'FontAwesome',
+		];
+		$parts = preg_split( '/[^A-Za-z0-9]+/', strtolower( $text ) );
+		$zh_parts = [];
+		foreach ( $parts as $part ) {
+			if ( '' === $part ) {
+				continue;
+			}
+			$zh_parts[] = $word_map[ $part ] ?? $part;
+		}
+		$localized = implode( '', array_filter( $zh_parts, static function( $v ) {
+			return '' !== trim( (string) $v );
+		} ) );
+		$localized = str_replace( '模式模式', '模式', $localized );
+		$localized = str_replace( '首屏首屏', '首屏', $localized );
+		return '' === $localized ? $text : $localized;
+	}
+}
+
 if ( ! function_exists( 'iro_customizer_sanitize_json_or_text' ) ) {
 	function iro_customizer_sanitize_json_or_text( $value ) {
 		if ( is_array( $value ) ) {
@@ -2925,6 +2995,16 @@ foreach ( $sections as $section ) {
 			}
 			if ( ! isset( $args['capability'] ) ) { // Kirki 4.0
 				$args['capability'] = 'edit_theme_options';
+			}
+
+			$locale = function_exists( 'get_locale' ) ? get_locale() : '';
+			if ( strpos( (string) $locale, 'zh_' ) === 0 ) {
+				if ( isset( $args['label'] ) ) {
+					$args['label'] = iro_customizer_localize_ui_text( (string) $args['label'] );
+				}
+				if ( isset( $args['description'] ) ) {
+					$args['description'] = iro_customizer_localize_ui_text( (string) $args['description'] );
+				}
 			}
 			if ( ! isset( $args['option_type'] ) ) {
 				$args['option_type'] = 'theme_mod';
