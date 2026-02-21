@@ -25,12 +25,36 @@ function check_php_version($preset_version)
 
 require get_template_directory() . '/opt/option-framework.php';
 
+if (!defined('IRO_OPTIONS_KEY')) {
+    define('IRO_OPTIONS_KEY', 'shinonomeiro_options');
+}
+if (!defined('IRO_LEGACY_OPTIONS_KEY')) {
+    define('IRO_LEGACY_OPTIONS_KEY', 'iro_options');
+}
+if (!defined('IRO_OPTIONS_THEME_MOD_KEY')) {
+    define('IRO_OPTIONS_THEME_MOD_KEY', 'shinonomeiro_options');
+}
+
+if (!function_exists('iro_get_options_store')) {
+    function iro_get_options_store() {
+        $options = get_option(IRO_OPTIONS_KEY);
+        if (!$options) {
+            $legacy = get_option(IRO_LEGACY_OPTIONS_KEY);
+            if ($legacy) {
+                $options = $legacy;
+                add_option(IRO_OPTIONS_KEY, $legacy);
+            }
+        }
+        return is_array($options) ? $options : array();
+    }
+}
+
 if (!function_exists('iro_opt')) {
-    $GLOBALS['iro_options'] = get_option('iro_options');
+    $GLOBALS['iro_options'] = iro_get_options_store();
     function iro_opt($option = '', $default = null)
     {
         if ( is_customize_preview() ) {
-            $theme_mod = get_theme_mod('iro_options',[]);
+            $theme_mod = get_theme_mod(IRO_OPTIONS_THEME_MOD_KEY,[]);
             if (isset( $theme_mod[$option])) {
                 return $theme_mod[$option]; //预览模式优先使用预览值
             } else {
@@ -44,13 +68,10 @@ if (!function_exists('iro_opt')) {
 if (!function_exists('iro_opt_update')) {
     function iro_opt_update($option = '', $value = null)
     {
-        $options = get_option('iro_options'); // 当数据库没有指定项时，WordPress会返回false
-        if ($options) {
-            $options[$option] = $value;
-        } else {
-            $options = array($option => $value);
-        }
-        update_option('iro_options', $options);
+        $options = iro_get_options_store();
+        $options[$option] = $value;
+        update_option(IRO_OPTIONS_KEY, $options);
+        $GLOBALS['iro_options'] = $options;
     }
 }
 
@@ -660,10 +681,10 @@ add_action( 'customize_register', function () {
 if ( is_customize_preview() ) {
     require_once get_template_directory() . '/inc/customizer.php';
 }
-function update_customize_to_iro_options() { //从key映射表中重组并保存设置项至iro_options中
-    $theme_mod_options = get_theme_mod( 'iro_options', [] );
+function update_customize_to_iro_options() { //从key映射表中重组并保存设置项至主题 options 中
+    $theme_mod_options = get_theme_mod( IRO_OPTIONS_THEME_MOD_KEY, [] );
     $mapping = get_theme_mod( 'iro_options_map', [] );
-	$iro_options = get_option('iro_options');
+	$iro_options = iro_get_options_store();
     
     foreach ( $mapping as $setting_id => $map ) {
         $preview_value = get_theme_mod( $setting_id, null );
@@ -683,7 +704,8 @@ function update_customize_to_iro_options() { //从key映射表中重组并保存
         }
     }
 	$theme_mod_options = array_merge($iro_options,$theme_mod_options);
-    update_option( 'iro_options', $theme_mod_options );
+    update_option( IRO_OPTIONS_KEY, $theme_mod_options );
+    $GLOBALS['iro_options'] = $theme_mod_options;
 }
 add_action( 'customize_save_after', 'update_customize_to_iro_options' );
 
