@@ -2302,6 +2302,22 @@ foreach ( $sections as $section ) {
 				}
 			}
 
+			// switch 控件文案兜底，避免在部分环境下退化为不可用的 On/Off 文本
+			if ( strtolower($field['type'] ?? '') === 'switch' && ! isset( $args['choices'] ) ) {
+				$locale = function_exists( 'get_locale' ) ? get_locale() : '';
+				if ( strpos( $locale, 'zh_' ) === 0 ) {
+					$args['choices'] = [
+						'on'  => '开',
+						'off' => '关',
+					];
+				} else {
+					$args['choices'] = [
+						'on'  => 'On',
+						'off' => 'Off',
+					];
+				}
+			}
+
 			if ( isset( $args['iro_key'] ) ) {
 				$setting_id    = $args['settings'];
 				$iro_key       = $args['iro_key'];
