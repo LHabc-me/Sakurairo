@@ -20,9 +20,15 @@ array(
   "EDIT" => __("Action Edit (only displays while user has sufficient permissions)","sakurairo_csf"),
 ));
 
-$vision_resource_basepath = get_option('iro_options')['vision_resource_basepath'] ?? 'https://s.nmxc.ltd/sakurairo_vision/@3.0/';
+$legacy_prefix = 'iro_options';
+$prefix = 'shinonomeiro_options';
 
-$prefix = 'iro_options';
+// 一次性迁移：若新命名空间为空而旧命名空间存在，则复制旧设置，确保与原主题配置解耦且不丢失已配置项
+if ( ! get_option( $prefix ) && get_option( $legacy_prefix ) ) {
+  add_option( $prefix, get_option( $legacy_prefix ) );
+}
+
+$vision_resource_basepath = get_option($prefix)['vision_resource_basepath'] ?? get_option($legacy_prefix)['vision_resource_basepath'] ?? 'https://s.nmxc.ltd/sakurairo_vision/@3.0/';
 
   if ( ! function_exists( 'iro_validate_optional_url' ) ) {
     function iro_validate_optional_url( $value ) {
@@ -33,8 +39,8 @@ $prefix = 'iro_options';
   }
 
   Shinonomeiro_CSF::createOptions( $prefix, array(
-    'menu_title' => __('iro-Options','sakurairo_csf'),
-    'menu_slug'  => 'iro_options',
+    'menu_title' => __('Shinonomeiro Options','sakurairo_csf'),
+    'menu_slug'  => 'shinonomeiro_options',
   ) );
 
   Shinonomeiro_CSF::createSection($prefix, array(
@@ -3538,7 +3544,7 @@ $prefix = 'iro_options';
             e.stopPropagation()
             try {
             for(const key in def){
-            document.querySelector(`input[name="iro_options[${key}]"]`).value = def[key]
+            document.querySelector(`input[name="<?=$prefix?>[${key}]"]`).value = def[key]
             }
             alert('<?=__("Reset successfully","sakurairo_csf")?>')
 

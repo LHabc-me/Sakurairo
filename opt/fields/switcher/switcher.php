@@ -17,8 +17,11 @@ if ( ! class_exists( 'CSF_Field_switcher' ) ) {
     public function render() {
 
       $active     = ( ! empty( $this->value ) ) ? ' csf--active' : '';
-      $text_on    = ( ! empty( $this->field['text_on'] ) ) ? $this->field['text_on'] : esc_html__( 'On', 'sakurairo_csf' );
-      $text_off   = ( ! empty( $this->field['text_off'] ) ) ? $this->field['text_off'] : esc_html__( 'Off', 'sakurairo_csf' );
+      $locale     = function_exists( 'get_locale' ) ? get_locale() : '';
+      $default_on = ( strpos( $locale, 'zh_' ) === 0 ) ? '开' : esc_html__( 'On', 'sakurairo_csf' );
+      $default_off = ( strpos( $locale, 'zh_' ) === 0 ) ? '关' : esc_html__( 'Off', 'sakurairo_csf' );
+      $text_on    = ( ! empty( $this->field['text_on'] ) ) ? $this->field['text_on'] : $default_on;
+      $text_off   = ( ! empty( $this->field['text_off'] ) ) ? $this->field['text_off'] : $default_off;
       $text_width = ( ! empty( $this->field['text_width'] ) ) ? ' style="width: '. esc_attr( $this->field['text_width'] ) .'px;"': '';
 
       echo $this->field_before();
