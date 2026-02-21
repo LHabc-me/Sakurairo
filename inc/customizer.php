@@ -204,6 +204,8 @@ if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
 			'font'                   => esc_html__( '字体家族、字体资源地址或加载方式配置。', 'Shinonomeiro_C' ),
 			'prompt'                 => esc_html__( '提示词文本或模板内容。', 'Shinonomeiro_C' ),
 			'random_graphs_'         => esc_html__( '用于配置首页随机封面图的来源、数量与切换策略。', 'Shinonomeiro_C' ),
+			'cache_cover'            => esc_html__( '用于配置封面图缓存策略与刷新行为。', 'Shinonomeiro_C' ),
+			'exhibition'             => esc_html__( '用于配置首页展示位内容与显示规则。', 'Shinonomeiro_C' ),
 		];
 
 		foreach ( $description_map as $marker => $description ) {
@@ -216,10 +218,7 @@ if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
 			}
 		}
 
-		return sprintf(
-			esc_html__( '配置键：%1$s。该项为历史迁移配置，保存后会作用于对应模块；建议结合分组名称与页面效果进行调整。', 'Shinonomeiro_C' ),
-			esc_html( (string) $legacy_key )
-		);
+		return '';
 	}
 }
 
@@ -967,11 +966,106 @@ $sections = [
 				],
 			],
 			[
+				'type'     => 'color',
+				'settings' => 'cover_poetry_light_color',
+				'iro_key'  => 'cover_poetry_light_color',
+				'label'    => esc_html__( '诗词日间颜色', 'Shinonomeiro_C' ),
+				'default'  => '#333333',
+				'active_callback' => [
+					[
+						'setting'  => 'infor_bar',
+						'operator' => '==',
+						'value'    => true,
+					],
+					[
+						'setting'  => 'cover_daily_poetry',
+						'operator' => '==',
+						'value'    => true,
+					]
+				],
+			],
+			[
+				'type'     => 'color',
+				'settings' => 'cover_poetry_dark_color',
+				'iro_key'  => 'cover_poetry_dark_color',
+				'label'    => esc_html__( '诗词夜间颜色', 'Shinonomeiro_C' ),
+				'default'  => '#e2e8f0',
+				'active_callback' => [
+					[
+						'setting'  => 'infor_bar',
+						'operator' => '==',
+						'value'    => true,
+					],
+					[
+						'setting'  => 'cover_daily_poetry',
+						'operator' => '==',
+						'value'    => true,
+					]
+				],
+			],
+			[
 				'type'     => 'text',
-				'settings' => 'cover_daily_poetry_fallback',
-				'iro_key'  => 'cover_daily_poetry_fallback',
-				'label'    => esc_html__( '诗词兜底文案', 'Shinonomeiro_C' ),
-				'description' => esc_html__( '当诗词服务不可用时显示该文案。', 'Shinonomeiro_C' ),
+				'settings' => 'cover_poetry_author_offset',
+				'iro_key'  => 'cover_poetry_author_offset',
+				'label'    => esc_html__( '作者行偏移', 'Shinonomeiro_C' ),
+				'default'  => '3em',
+				'active_callback' => [
+					[
+						'setting'  => 'infor_bar',
+						'operator' => '==',
+						'value'    => true,
+					],
+					[
+						'setting'  => 'cover_daily_poetry',
+						'operator' => '==',
+						'value'    => true,
+					]
+				],
+			],
+			[
+				'type'     => 'text',
+				'settings' => 'cover_poetry_font_size',
+				'iro_key'  => 'cover_poetry_font_size',
+				'label'    => esc_html__( '诗词字号', 'Shinonomeiro_C' ),
+				'default'  => '1.35em',
+				'active_callback' => [
+					[
+						'setting'  => 'infor_bar',
+						'operator' => '==',
+						'value'    => true,
+					],
+					[
+						'setting'  => 'cover_daily_poetry',
+						'operator' => '==',
+						'value'    => true,
+					]
+				],
+			],
+			[
+				'type'     => 'text',
+				'settings' => 'cover_poetry_author_font_size',
+				'iro_key'  => 'cover_poetry_author_font_size',
+				'label'    => esc_html__( '作者行字号', 'Shinonomeiro_C' ),
+				'default'  => '0.95em',
+				'active_callback' => [
+					[
+						'setting'  => 'infor_bar',
+						'operator' => '==',
+						'value'    => true,
+					],
+					[
+						'setting'  => 'cover_daily_poetry',
+						'operator' => '==',
+						'value'    => true,
+					]
+				],
+			],
+			[
+				'type'     => 'text',
+				'settings' => 'cover_poetry_font_family',
+				'iro_key'  => 'cover_poetry_font_family',
+				'label'    => esc_html__( '诗词字体族', 'Shinonomeiro_C' ),
+				'default'  => "'STKaiti', 'KaiTi', '楷体', serif",
 				'active_callback' => [
 					[
 						'setting'  => 'infor_bar',
@@ -2524,9 +2618,12 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'settings'    => 'legacy_' . $legacy_key,
 				'iro_key'     => $legacy_key,
 				'label'       => iro_customizer_friendly_label_from_key( $legacy_key ),
-				'description' => iro_customizer_legacy_description_from_key( $legacy_key ),
 				'default'     => $default_value,
 			];
+			$legacy_description = iro_customizer_legacy_description_from_key( $legacy_key );
+			if ( '' !== $legacy_description ) {
+				$field['description'] = $legacy_description;
+			}
 
 			if ( in_array( $field_type, [ 'textarea', 'code' ], true ) ) {
 				$field['sanitize_callback'] = 'iro_customizer_sanitize_json_or_text';

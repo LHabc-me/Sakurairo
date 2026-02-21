@@ -340,18 +340,13 @@ $print_social_zone = function() use ($all_opt): void {
                     (function() {
                         // ================= 核心配置区域 =================
                         var CONFIG = {
-                            lightColor: '#333333',
-                            darkColor: '#e2e8f0',
-                            authorOffset: '3em',
-                            poemFontSize: '1.35em',
-                            authorFontSize: '0.95em',
-                            fontFamily: "'STKaiti', 'KaiTi', '楷体', serif",
-                            fallbackPoem: {
-                                content: "墙角数枝梅，凌寒独自开。",
-                                dynasty: "宋代",
-                                author: "王安石",
-                                title: "梅花"
-                            }
+                            lightColor: <?php echo wp_json_encode( iro_opt('cover_poetry_light_color', '#333333') ); ?>,
+                            darkColor: <?php echo wp_json_encode( iro_opt('cover_poetry_dark_color', '#e2e8f0') ); ?>,
+                            authorOffset: <?php echo wp_json_encode( iro_opt('cover_poetry_author_offset', '3em') ); ?>,
+                            poemFontSize: <?php echo wp_json_encode( iro_opt('cover_poetry_font_size', '1.35em') ); ?>,
+                            authorFontSize: <?php echo wp_json_encode( iro_opt('cover_poetry_author_font_size', '0.95em') ); ?>,
+                            fontFamily: <?php echo wp_json_encode( iro_opt('cover_poetry_font_family', "'STKaiti', 'KaiTi', '楷体', serif") ); ?>,
+                            fallbackText: <?php echo wp_json_encode( iro_opt('signature_text', 'Hi, Mashiro?') ); ?>
                         };
                         // ================================================
 
@@ -432,17 +427,10 @@ $print_social_zone = function() use ($all_opt): void {
 
                         function useFallback() {
                             if (hasRendered) return;
-                            poemData = {
-                                data: {
-                                    content: CONFIG.fallbackPoem.content,
-                                    origin: {
-                                        dynasty: CONFIG.fallbackPoem.dynasty,
-                                        author: CONFIG.fallbackPoem.author,
-                                        title: CONFIG.fallbackPoem.title
-                                    }
-                                }
-                            };
-                            renderPoem();
+                            var target = document.querySelector('.header-info > p#cover-signature-text');
+                            if (!target) return;
+                            target.textContent = CONFIG.fallbackText;
+                            hasRendered = true;
                         }
 
                         var script = document.createElement('script');
@@ -479,7 +467,7 @@ $print_social_zone = function() use ($all_opt): void {
                         setTimeout(function() {
                             clearInterval(checkInterval);
                             useFallback();
-                        }, 5000);
+                        }, Math.max(1000, <?php echo (int) iro_opt('cover_daily_poetry_timeout', 5000); ?> || 5000));
                     })();
                     </script>
                     <?php endif; ?>
