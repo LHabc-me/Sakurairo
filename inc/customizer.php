@@ -26,23 +26,27 @@ load_textdomain( 'Shinonomeiro_C', __DIR__ . '/lang/' . get_locale() . '.mo' );
 $panels = [
 	[
         'id'          => 'iro_global',
-        'title'       => esc_html__( 'Global Options', 'Shinonomeiro_C' ),
+        'title'       => esc_html__( '全局与基础', 'Shinonomeiro_C' ),
+        'description' => esc_html__( '站点身份、主题样式、资源与性能等全局配置。', 'Shinonomeiro_C' ),
 		'priority'    => 10,
     ],
 	[
         'id'          => 'iro_cover',
-        'title'       => esc_html__( 'Homepage Cover', 'Shinonomeiro_C' ),
-		'priority'    => 10,
+        'title'       => esc_html__( '首页首屏', 'Shinonomeiro_C' ),
+        'description' => esc_html__( '首页封面、Logo、信息区与展示动画。', 'Shinonomeiro_C' ),
+		'priority'    => 20,
     ],
     [
         'id'          => 'iro_homepage',
-        'title'       => esc_html__( 'Homepage Components', 'Shinonomeiro_C' ),
-		'priority'    => 10,
+        'title'       => esc_html__( '首页内容', 'Shinonomeiro_C' ),
+        'description' => esc_html__( '首页模块布局、展示区与文章区。', 'Shinonomeiro_C' ),
+		'priority'    => 30,
     ],
 	[
         'id'          => 'iro_pages',
-        'title'       => esc_html__( 'Pages Options', 'Shinonomeiro_C' ),
-		'priority'    => 10,
+        'title'       => esc_html__( '页面与互动', 'Shinonomeiro_C' ),
+        'description' => esc_html__( '文章页、独立页、评论区与扩展交互设置。', 'Shinonomeiro_C' ),
+		'priority'    => 40,
     ],
 ];
 
@@ -87,13 +91,14 @@ if ( ! function_exists( 'iro_customizer_friendly_label_from_key' ) ) {
 		}
 
 		$label = ucwords( strtolower( $label ) );
-		$acronyms = [ 'Seo', 'Api', 'Cdn', 'Pjax', 'Ai', 'Wp', 'Php', 'Css', 'Js', 'Svg', 'Url', 'Qq', 'Id', 'Imgur', 'Smms' ];
+		$acronyms = [ 'Seo', 'Api', 'Cdn', 'Pjax', 'Ai', 'Wp', 'Php', 'Css', 'Js', 'Svg', 'Url', 'Qq', 'Id', 'Imgur', 'Smms', 'Bili' ];
 		foreach ( $acronyms as $word ) {
 			$label = preg_replace( '/\b' . preg_quote( $word, '/' ) . '\b/u', strtoupper( $word ), $label );
 		}
 
 		$label = preg_replace( '/\bChatgpt\b/u', 'ChatGPT', $label );
 		$label = preg_replace( '/\bBilibili\b/u', 'Bilibili', $label );
+		$label = preg_replace( '/\bBili\b/u', 'Bili', $label );
 		$label = preg_replace( '/\bWechat\b/u', 'WeChat', $label );
 
 		return $label;
@@ -125,7 +130,7 @@ $sections = [
 	[
         'id'          => 'iro_nav',
         'title'       => esc_html__( 'Nav Menu', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '导航栏样式、布局与交互。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_global',
 
 		'fields'      =>[
@@ -350,7 +355,7 @@ $sections = [
 	[
         'id'          => 'iro_color',
         'title'       => esc_html__( 'Theme Colors', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '主题配色、深色模式与阅读视觉。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_global',
 
 		'fields'      =>[
@@ -439,7 +444,7 @@ $sections = [
     [
         'id'          => 'iro_cover_logo',
         'title'       => esc_html__( 'Logo', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '首页首屏 Logo 与标题展示。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_cover',
 
 		'fields'      =>[
@@ -562,7 +567,7 @@ $sections = [
 	[
         'id'          => 'iro_cover_display',
         'title'       => esc_html__( 'Apperance', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '首屏外观、动画与背景效果。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_cover',
 
 		'fields'      =>[
@@ -680,7 +685,7 @@ $sections = [
 	[
         'id'          => 'iro_cover_info',
         'title'       => esc_html__( 'Infos', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '首屏信息栏与一句话（Yiyan）展示。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_cover',
 
 		'fields'      =>[
@@ -910,7 +915,7 @@ $sections = [
 	[
         'id'          => 'iro_cover_other',
         'title'       => esc_html__( 'Others', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '首屏附加功能与可选开关。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_cover',
 
 		'fields'      =>[
@@ -1015,7 +1020,7 @@ $sections = [
 	[
         'id'          => 'iro_homepages_sections',
         'title'       => esc_html__( 'Overall layout', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '首页模块排序与整体布局。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_homepage',
 
 		'fields'      =>[
@@ -1134,7 +1139,7 @@ $sections = [
 	[
         'id'          => 'iro_display_aera',
         'title'       => esc_html__( 'Display Aera', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '首页展示区（说说/公告/图标）设置。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_homepage',
 		'fields'      =>[
 			[
@@ -1183,7 +1188,7 @@ $sections = [
 	[
         'id'          => 'iro_article_aera',
         'title'       => esc_html__( 'Article Aera', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '首页文章区样式与卡片展示。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_homepage',
 
 		'fields'      =>[
@@ -1323,7 +1328,7 @@ $sections = [
 	[
         'id'          => 'iro_front',
         'title'       => esc_html__( 'Frontend Background', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '前台背景图、透明度与特效。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_global',
 
 		'fields'      =>[
@@ -1429,7 +1434,7 @@ $sections = [
 	[
         'id'          => 'iro_widgets',
         'title'       => esc_html__( 'Widgets Panel', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '小组件外观、字体与昼夜切换。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_global',
 
 		'fields'      =>[
@@ -1578,7 +1583,7 @@ $sections = [
 	[
         'id'          => 'iro_particles',
         'title'       => esc_html__( 'Particles', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '粒子与动态前景效果。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_global',
 
 		'fields'      =>[
@@ -1624,7 +1629,7 @@ $sections = [
 	[
         'id'          => 'iro_footer',
         'title'       => esc_html__( 'Footer Info', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '页脚信息、文案与附加展示。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_global',
 
 		'fields'      =>[
@@ -1714,7 +1719,7 @@ $sections = [
 	[
         'id'          => 'iro_global_others',
         'title'       => esc_html__( 'Others', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '全局补充项与兼容选项。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_global',
 
 		'fields'      =>[
@@ -1789,7 +1794,7 @@ $sections = [
 	[
         'id'          => 'iro_pages_common',
         'title'       => esc_html__( 'Common Options', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '页面通用行为与阅读体验。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_pages',
 
 		'fields'      =>[
@@ -1858,7 +1863,7 @@ $sections = [
 	[
         'id'          => 'iro_pages_post',
         'title'       => esc_html__( 'Posts Pages', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '文章页信息展示与元数据。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_pages',
 
 		'fields'      =>[
@@ -1952,7 +1957,7 @@ $sections = [
 	[
         'id'          => 'iro_pages_extra',
         'title'       => esc_html__( 'Pages Extend Options', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '页面扩展功能（打赏、作者信息等）。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_pages',
 
 		'fields'      =>[
@@ -2135,7 +2140,7 @@ $sections = [
 	[
         'id'          => 'iro_pages_comment',
         'title'       => esc_html__( 'Comment Options', 'Shinonomeiro_C' ),
-        'description' => '',
+        'description' => esc_html__( '评论区样式、占位文案与表情。', 'Shinonomeiro_C' ),
         'panel'       => 'iro_pages',
 
 		'fields'      =>[
@@ -2208,38 +2213,45 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 	if ( is_array( $legacy_migrated_keys ) && ! empty( $legacy_migrated_keys ) ) {
 		$legacy_group_rules = [
 			'iro_legacy_group_site_basics' => [
-				'title' => esc_html__( '高级/兼容迁移：站点身份与 SEO', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes favicon, SEO and base theme behavior.', 'Shinonomeiro_C' ),
+				'title' => esc_html__( '兼容迁移：站点身份与 SEO', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '旧版站点身份与 SEO 相关配置（如 favicon、元信息、主题基础行为）。', 'Shinonomeiro_C' ),
+				'panel' => 'iro_global',
 				'prefixes' => [ 'favicon_', 'iro_seo', 'iro_meta_', 'theme_', 'load_out_svg', 'time_zone_' ],
 			],
 			'iro_legacy_group_search_loading' => [
-				'title' => esc_html__( '高级/兼容迁移：搜索、加载与阅读体验', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes search, preload, PJAX and lazyload related options.', 'Shinonomeiro_C' ),
+				'title' => esc_html__( '兼容迁移：搜索、加载与阅读体验', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '旧版搜索、预加载、PJAX 与懒加载相关配置。', 'Shinonomeiro_C' ),
+								'panel' => 'iro_pages',
 				'prefixes' => [ 'search_', 'only_admin_can_search_', 'sticky_', 'custom_exclude_', 'live_search', 'preload_', 'poi_', 'pjax_', 'missing_', 'clipboard_', 'page_lazyload' ],
 			],
 			'iro_legacy_group_cover_social' => [
-				'title' => esc_html__( '高级/兼容迁移：封面、社交与身份展示', 'Shinonomeiro_C' ),
+				'title' => esc_html__( '兼容迁移：封面、社交与身份展示', 'Shinonomeiro_C' ),
 				'description' => esc_html__( '兼容旧版选项：封面展示、社交链接与个人展示。', 'Shinonomeiro_C' ),
+								'panel' => 'iro_cover',
 				'prefixes' => [ 'cover_', 'social_', 'wechat_', 'qq_', 'email_', 'wangyiyun', 'sina', 'github', 'telegram', 'youtube', 'instagram', 'douyin', 'xiaohongshu', 'discord', 'zhihu', 'linkedin', 'twitter', 'facebook', 'diysocialicons', 'unlisted_', 'random_graphs_', 'cache_cover', 'exhibition', 'post_cover_' ],
 			],
 			'iro_legacy_group_third_party_services' => [
-				'title' => esc_html__( '高级/兼容迁移：第三方服务与数据源', 'Shinonomeiro_C' ),
+				'title' => esc_html__( '兼容迁移：第三方服务与数据源', 'Shinonomeiro_C' ),
 				'description' => esc_html__( '兼容旧版选项：音乐、番剧、Steam、Bilibili 与外部服务集成。', 'Shinonomeiro_C' ),
+								'panel' => 'iro_homepage',
 				'prefixes' => [ 'aplayer_', 'custom_music_', 'bangumi_', 'my_anime_', 'bilibili_', 'bili', 'steam_', 'steam', 'friend_link_', 'statistics_', 'google_analytics_', 'chatgpt_' ],
 			],
 			'iro_legacy_group_comment_media' => [
-				'title' => esc_html__( '高级/兼容迁移：评论与媒体上传', 'Shinonomeiro_C' ),
+				'title' => esc_html__( '兼容迁移：评论与媒体上传', 'Shinonomeiro_C' ),
 				'description' => esc_html__( '兼容旧版选项：表情、评论与图片上传能力。', 'Shinonomeiro_C' ),
+								'panel' => 'iro_pages',
 				'prefixes' => [ 'smilies_', 'comment_', 'qq_avatar_', 'img_', 'imgur_', 'smms_', 'chever', 'lsky_', 'mail_' ],
 			],
 			'iro_legacy_group_auth_admin' => [
-				'title' => esc_html__( '高级/兼容迁移：账号、安全与后台', 'Shinonomeiro_C' ),
+				'title' => esc_html__( '兼容迁移：账号、安全与后台', 'Shinonomeiro_C' ),
 				'description' => esc_html__( '兼容旧版选项：登录、验证码、后台样式与管理通知。', 'Shinonomeiro_C' ),
+								'panel' => 'iro_pages',
 				'prefixes' => [ 'custom_login_', 'login_', 'captcha_', 'vaptcha_', 'turnstile_', 'admin_', 'admin_notify' ],
 			],
 			'iro_legacy_group_dev_runtime' => [
-				'title' => esc_html__( '高级/兼容迁移：性能、开发与更新', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes frontend runtime, CDN, debug and update channel behavior.', 'Shinonomeiro_C' ),
+				'title' => esc_html__( '兼容迁移：性能、开发与更新', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '旧版前端运行时、CDN、调试与更新通道相关配置。', 'Shinonomeiro_C' ),
+								'panel' => 'iro_global',
 				'prefixes' => [ 'reference_', 'exter_', 'gfonts_', 'iro_captcha_', 'site_', 'gravatar_', 'custom_proxy_', 'ghcard_', 'lightbox', 'lightgallery_', 'code_highlight_', 'enable_theme_', 'image_', 'classify_', 'cookie_', 'hide_login_', 'fontawesome_', 'dev_', 'php_notice_', 'iro_update_', 'channel_validate_', 'core_library_', 'shared_library_', 'lib_cdn_', 'external_vendor_', 'vision_resource_', 'send_theme_' ],
 			],
 		];
@@ -2269,7 +2281,7 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'settings'    => 'legacy_' . $legacy_key,
 				'iro_key'     => $legacy_key,
 				'label'       => iro_customizer_friendly_label_from_key( $legacy_key ),
-				'description' => sprintf( esc_html__( 'Migrated from legacy options key: %s', 'Shinonomeiro_C' ), $legacy_key ),
+				'description' => sprintf( esc_html__( '兼容旧版选项键：%s（保持原有存储语义）', 'Shinonomeiro_C' ), $legacy_key ),
 				'default'     => $default_value,
 			];
 
@@ -2301,7 +2313,7 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'id'          => $group_id,
 				'title'       => $group_rule['title'],
 				'description' => $group_rule['description'],
-				'panel'       => 'iro_global',
+				'panel'       => isset( $group_rule['panel'] ) ? $group_rule['panel'] : 'iro_global',
 				'fields'      => $legacy_group_fields[ $group_id ],
 			];
 		}
@@ -2336,7 +2348,7 @@ foreach ( $panels as $panel ) {
                 $panel['id'],
                 [
                     'title'       => $panel['title'],
-                    'description' => isset( $panel['description'] ) ? $panel['description'] : '',
+                    'description' => isset( $section['description'] ) ? $section['description'] : '',
                     'priority'    => $panel['priority'],
                 ]
             );
@@ -2388,7 +2400,7 @@ foreach ( $sections as $section ) {
 		$section['id'],
 		[
 			'title'       => $section['title'],
-			'description' => isset( $panel['description'] ) ? $panel['description'] : '',
+			'description' => isset( $section['description'] ) ? $section['description'] : '',
 			'panel'       => $section['panel'],
 			'priority'    => $section['priority'],
 		]
