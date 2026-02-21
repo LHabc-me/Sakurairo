@@ -30,7 +30,7 @@ Shinonomeiro 是一个基于 Sakura V3 系列重构开发的 WordPress 主题，
 ## 使用与发布
 
 - 本仓库 Release：https://github.com/LHabc-me/Shinonomeiro/releases
-- 当前版本基线：v1.0.2
+- 当前版本基线：v1.0.3
 - 建议通过 Release 页面下载对应版本并部署
 
 ## 贡献
