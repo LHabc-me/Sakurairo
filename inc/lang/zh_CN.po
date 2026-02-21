@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Shinonomeiro\n"
@@ -38,8 +39,7 @@ msgstr "导航栏"
 msgid ""
 "<p>You can edit your nav menu options <a href=\"/wp-admin/nav-"
 "menus.php\">here</a></p>"
-msgstr ""
-"<p>你可以在<a href=\"/wp-admin/nav-menus.php\">这里</a>编辑导航栏选项 </p>"
+msgstr "<p>你可以在<a href=\"/wp-admin/nav-menus.php\">这里</a>编辑导航栏选项 </p>"
 
 #: customizer.php:102
 msgid "Nav Menu Style"
@@ -143,8 +143,8 @@ msgstr "从文章特色图中提取主题色"
 
 #: customizer.php:331
 msgid ""
-"After turning on,the colors displayed on the article page will be taken from "
-"the article featured image"
+"After turning on,the colors displayed on the article page will be taken from"
+" the article featured image"
 msgstr "开启后，在文章页将会从文章特色图提取主题色"
 
 #: customizer.php:336
@@ -439,11 +439,9 @@ msgstr "显示里程碑徽章"
 
 #: customizer.php:1110
 msgid ""
-"Enable to show bronze/silver/gold medal badges for blog milestones, Requires "
-"you to unlock the relevant achievement to replace the relevant capsule"
-msgstr ""
-"开启之后将为博客里程碑显示铜牌/银牌/金牌徽章，需要解锁相关里程碑才能替换相关"
-"胶囊"
+"Enable to show bronze/silver/gold medal badges for blog milestones, Requires"
+" you to unlock the relevant achievement to replace the relevant capsule"
+msgstr "开启之后将为博客里程碑显示铜牌/银牌/金牌徽章，需要解锁相关里程碑才能替换相关胶囊"
 
 #: customizer.php:1116
 msgid "Announcement Text"
@@ -454,8 +452,7 @@ msgid ""
 "Set the text for announcement capsule. The front-end will automatically "
 "split the text into two lines, you can also use line breaks for manual line "
 "breaks"
-msgstr ""
-"为公告胶囊设置文本。前台会自动将文本分成两行，你也可以使用换行符进行手动换行"
+msgstr "为公告胶囊设置文本。前台会自动将文本分成两行，你也可以使用换行符进行手动换行"
 
 #: customizer.php:1131
 msgid "Article Aera"
@@ -555,10 +552,9 @@ msgstr "全局默认字体"
 
 #: customizer.php:1324
 msgid ""
-"Fill in the font name,and you can add your customize font in Font Options of "
-"Global Options in iro-Options."
-msgstr ""
-"填写字体名称即可，你可以在“Shinonomeiro主题设置”—“全局设置”—“字体设置”中添加自定义字体"
+"Fill in the font name,and you can add your customize font in Font Options of"
+" Global Options in iro-Options."
+msgstr "填写字体名称即可，你可以在“Shinonomeiro主题设置”—“全局设置”—“字体设置”中添加自定义字体"
 
 #: customizer.php:1338
 msgid "Non-Emphasis Text Weight"
@@ -990,3 +986,66 @@ msgid ""
 "For more detailed configuration of the comment area, please go to the "
 "backend configuration"
 msgstr "更多评论区详细配置请前往后台"
+
+msgid "Legacy Bridge: Site Basics & SEO"
+msgstr "兼容桥接：站点基础与 SEO"
+
+msgid "Legacy Bridge: Search & Loading"
+msgstr "兼容桥接：搜索与加载"
+
+msgid "Legacy Bridge: Cover, Social & Profile"
+msgstr "兼容桥接：封面、社交与资料"
+
+msgid "Legacy Bridge: Third-party Services"
+msgstr "兼容桥接：第三方服务"
+
+msgid "Legacy Bridge: Comment & Media Upload"
+msgstr "兼容桥接：评论与媒体上传"
+
+msgid "Legacy Bridge: Login & Admin"
+msgstr "兼容桥接：登录与后台"
+
+msgid "Legacy Bridge: Runtime, Dev & Update"
+msgstr "兼容桥接：运行时、开发与更新"
+
+msgid ""
+"Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes "
+"favicon, SEO and base theme behavior."
+msgstr ""
+"来源：Phase2 M2 的兜底键（见 docs/PHASE2_FIELD_MAPPING.md）。包含 favicon、SEO 与主题基础行为。"
+
+msgid ""
+"Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes "
+"search, preload, PJAX and lazyload related options."
+msgstr ""
+"来源：Phase2 M2 的兜底键（见 docs/PHASE2_FIELD_MAPPING.md）。包含搜索、预加载、PJAX 与懒加载相关选项。"
+
+msgid ""
+"Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes "
+"cover media and social account presentation."
+msgstr "来源：Phase2 M2 的兜底键（见 docs/PHASE2_FIELD_MAPPING.md）。包含封面媒体与社交账号展示。"
+
+msgid ""
+"Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes "
+"music, anime, steam and API integrations."
+msgstr ""
+"来源：Phase2 M2 的兜底键（见 docs/PHASE2_FIELD_MAPPING.md）。包含音乐、番剧、Steam 与 API 集成。"
+
+msgid ""
+"Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes "
+"emoticons, comments, uploads and notification settings."
+msgstr "来源：Phase2 M2 的兜底键（见 docs/PHASE2_FIELD_MAPPING.md）。包含表情、评论、上传与通知设置。"
+
+msgid ""
+"Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes "
+"login, captcha and backend style options."
+msgstr "来源：Phase2 M2 的兜底键（见 docs/PHASE2_FIELD_MAPPING.md）。包含登录、验证码与后台样式选项。"
+
+msgid ""
+"Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes "
+"frontend runtime, CDN, debug and update channel behavior."
+msgstr ""
+"来源：Phase2 M2 的兜底键（见 docs/PHASE2_FIELD_MAPPING.md）。包含前端运行时、CDN、调试与更新通道行为。"
+
+msgid "Migrated from legacy options key: %s"
+msgstr "从历史选项键迁移：%s"
