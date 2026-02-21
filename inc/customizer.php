@@ -1672,7 +1672,7 @@ $sections = [
 				'type'     => 'radio_image',
 				'settings' => 'post_list_ticket_type',
 				'iro_key'  => 'post_list_ticket_type',
-				'label'    => esc_html__( 'Article Area Card Design', 'Shinonomeiro_C' ),
+				'label'    => esc_html__( 'Article Area Ticket Layout', 'Shinonomeiro_C' ),
 				'choices'     => [
 					'card' => $vision_resource_basepath . 'options/post_list_design_ticket.webp',
           			'non-card' => $vision_resource_basepath . 'options/post_list_design_ticket_2.webp',
@@ -1953,7 +1953,7 @@ $sections = [
 			],
 			[
 				'type'     => 'text',
-				'settings' => 'global_default_font',
+				'settings' => 'global_default_font_widgets',
 				'iro_key'  => 'global_default_font',
 				'label'    => esc_html__( 'Global Default Font&Widgets Panel Font Switching A', 'Shinonomeiro_C' ),
 				'transport'   => 'auto',
@@ -2349,7 +2349,7 @@ $sections = [
 				'type'     => 'select',
 				'settings' => 'article_meta_show_in_head',
 				'iro_key'  => 'article_meta_show_in_head',
-				'label'    => esc_html__( 'Article Area Meta Displays', 'Shinonomeiro_C' ),
+				'label'    => esc_html__( 'Article Page Meta Displays', 'Shinonomeiro_C' ),
 				'multiple'    => 0,
 				'choices'     => [
 					"author" => __("Author","Shinonomeiro_C"),
@@ -2462,7 +2462,7 @@ $sections = [
 				'settings' => 'reward_area_image1',
 				'iro_key'  => 'reward_area',
 				'iro_subkey' => 'image1',
-				'label'    => esc_html__( 'Reward Image', 'Shinonomeiro_C' ),
+				'label'    => esc_html__( 'Reward Image A', 'Shinonomeiro_C' ),
 				'active_callback' => [
 					[
 						'setting'  => 'article_function',
@@ -2476,7 +2476,7 @@ $sections = [
 				'settings' => 'reward_area_link1',
 				'iro_key'  => 'reward_area',
 				'iro_subkey' => 'link1',
-				'label'    => esc_html__( 'Reward Image Link', 'Shinonomeiro_C' ),
+				'label'    => esc_html__( 'Reward Image Link A', 'Shinonomeiro_C' ),
 				'description' => esc_html__( '点击图片后将跳转到此链接。', 'Shinonomeiro_C' ),
 				'active_callback' => [
 					[
@@ -2491,7 +2491,7 @@ $sections = [
 				'settings' => 'reward_area_image2',
 				'iro_key'  => 'reward_area',
 				'iro_subkey' => 'image2',
-				'label'    => esc_html__( 'Reward Image', 'Shinonomeiro_C' ),
+				'label'    => esc_html__( 'Reward Image B', 'Shinonomeiro_C' ),
 				'active_callback' => [
 					[
 						'setting'  => 'article_function',
@@ -2505,7 +2505,7 @@ $sections = [
 				'settings' => 'reward_area_link2',
 				'iro_key'  => 'reward_area',
 				'iro_subkey' => 'link2',
-				'label'    => esc_html__( 'Reward Image Link', 'Shinonomeiro_C' ),
+				'label'    => esc_html__( 'Reward Image Link B', 'Shinonomeiro_C' ),
 				'description' => esc_html__( '点击图片后将跳转到此链接。', 'Shinonomeiro_C' ),
 				'active_callback' => [
 					[
@@ -2648,7 +2648,7 @@ $sections = [
 			],
 			[
 				'type'     => 'custom',
-				'settings' => 'nav_menu_notice',
+				'settings' => 'comment_area_notice',
 				'default'  => __('For more detailed configuration of the comment area, please go to the backend configuration','Shinonomeiro_C'),
 			],
 		],
