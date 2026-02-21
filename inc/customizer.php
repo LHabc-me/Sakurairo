@@ -157,21 +157,38 @@ if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
 		$key = strtolower( (string) $legacy_key );
 
 		$description_map = [
-			'custom_style'            => esc_html__( '自定义 CSS 样式代码（输出到前台样式表）。', 'Shinonomeiro_C' ),
-			'header_insert'           => esc_html__( '注入到站点 <head> 区域的 HTML/脚本代码。', 'Shinonomeiro_C' ),
-			'footer_addition'         => esc_html__( '注入到页脚区域的附加 HTML/脚本代码。', 'Shinonomeiro_C' ),
-			'meta_description'        => esc_html__( '站点 SEO 描述内容（用于页面描述元信息）。', 'Shinonomeiro_C' ),
-			'google_analytics'        => esc_html__( 'Google Analytics 统计脚本或统计 ID。', 'Shinonomeiro_C' ),
-			'statistics_api'          => esc_html__( '站点统计服务 API 地址或请求配置。', 'Shinonomeiro_C' ),
-			'statistics_format'       => esc_html__( '站点统计数据展示格式模板。', 'Shinonomeiro_C' ),
-			'channel_validate_value'  => esc_html__( '渠道校验值（用于请求来源校验）。', 'Shinonomeiro_C' ),
-			'social_'                 => esc_html__( '社交账号链接或展示信息。', 'Shinonomeiro_C' ),
-			'wechat_'                 => esc_html__( '微信相关账号信息或二维码地址。', 'Shinonomeiro_C' ),
-			'qq_'                     => esc_html__( 'QQ 账号信息或头像来源配置。', 'Shinonomeiro_C' ),
-			'captcha_'                => esc_html__( '验证码服务参数（开关、密钥或校验地址）。', 'Shinonomeiro_C' ),
-			'turnstile_'              => esc_html__( 'Cloudflare Turnstile 验证配置。', 'Shinonomeiro_C' ),
-			'vaptcha_'                => esc_html__( 'Vaptcha 验证服务配置。', 'Shinonomeiro_C' ),
-			'aplayer_'                => esc_html__( 'APlayer 播放器与歌单来源配置。', 'Shinonomeiro_C' ),
+			'custom_style'           => esc_html__( '自定义 CSS 样式代码，保存后会输出到前台全局样式。', 'Shinonomeiro_C' ),
+			'header_insert'          => esc_html__( '注入到站点 <head> 的 HTML/脚本片段（如验证代码、统计脚本）。', 'Shinonomeiro_C' ),
+			'footer_addition'        => esc_html__( '注入到页脚区域的附加 HTML/脚本内容。', 'Shinonomeiro_C' ),
+			'meta_description'       => esc_html__( '站点 SEO 描述文本，用于页面 description 元信息。', 'Shinonomeiro_C' ),
+			'google_analytics'       => esc_html__( 'Google Analytics 跟踪代码或统计 ID。', 'Shinonomeiro_C' ),
+			'statistics_api'         => esc_html__( '站点统计接口地址与请求参数。', 'Shinonomeiro_C' ),
+			'statistics_format'      => esc_html__( '站点统计模块的展示模板或格式化文本。', 'Shinonomeiro_C' ),
+			'channel_validate_value' => esc_html__( '渠道验证参数，用于请求来源校验。', 'Shinonomeiro_C' ),
+			'social_'                => esc_html__( '社交账号链接或展示名称，用于用户资料卡与页脚社交入口。', 'Shinonomeiro_C' ),
+			'wechat_'                => esc_html__( '微信账号信息或二维码资源地址。', 'Shinonomeiro_C' ),
+			'qq_'                    => esc_html__( 'QQ 账号、头像来源或昵称显示配置。', 'Shinonomeiro_C' ),
+			'captcha_'               => esc_html__( '验证码服务参数（开关、站点密钥、校验地址）。', 'Shinonomeiro_C' ),
+			'turnstile_'             => esc_html__( 'Cloudflare Turnstile 验证参数。', 'Shinonomeiro_C' ),
+			'vaptcha_'               => esc_html__( 'Vaptcha 人机验证服务配置。', 'Shinonomeiro_C' ),
+			'custom_login_'          => esc_html__( '登录页样式、跳转与行为控制参数。', 'Shinonomeiro_C' ),
+			'admin_'                 => esc_html__( '后台外观与管理页提示相关配置。', 'Shinonomeiro_C' ),
+			'aplayer_'               => esc_html__( 'APlayer 播放器启用状态、歌单来源与展示选项。', 'Shinonomeiro_C' ),
+			'bangumi_'               => esc_html__( '番剧数据源与展示组件配置。', 'Shinonomeiro_C' ),
+			'bilibili_'              => esc_html__( 'Bilibili 信息展示、跳转或统计参数。', 'Shinonomeiro_C' ),
+			'steam_'                 => esc_html__( 'Steam 玩家信息或游戏展示配置。', 'Shinonomeiro_C' ),
+			'comment_'               => esc_html__( '评论区交互逻辑、提示文案与行为开关。', 'Shinonomeiro_C' ),
+			'smilies_'               => esc_html__( '评论区表情包来源与启用策略。', 'Shinonomeiro_C' ),
+			'imgur_'                 => esc_html__( 'Imgur 图床上传接口与鉴权参数。', 'Shinonomeiro_C' ),
+			'smms_'                  => esc_html__( 'SM.MS 图床上传接口与鉴权参数。', 'Shinonomeiro_C' ),
+			'chever'                 => esc_html__( 'Chevereto 图床上传接口配置。', 'Shinonomeiro_C' ),
+			'vision_resource_'       => esc_html__( '主题视觉资源 CDN 基地址与加载策略。', 'Shinonomeiro_C' ),
+			'iro_update_'            => esc_html__( '主题更新通道、检查频率与源地址。', 'Shinonomeiro_C' ),
+			'core_library_'          => esc_html__( '核心前端库版本或加载来源设置。', 'Shinonomeiro_C' ),
+			'shared_library_'        => esc_html__( '共享依赖库加载策略与来源设置。', 'Shinonomeiro_C' ),
+			'lib_cdn_'               => esc_html__( '第三方前端库 CDN 节点选择。', 'Shinonomeiro_C' ),
+			'font'                   => esc_html__( '字体家族、字体资源地址或加载方式配置。', 'Shinonomeiro_C' ),
+			'prompt'                 => esc_html__( '提示词文本或模板内容。', 'Shinonomeiro_C' ),
 		];
 
 		foreach ( $description_map as $marker => $description ) {
@@ -185,7 +202,7 @@ if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
 		}
 
 		return sprintf(
-			esc_html__( '配置键：%1$s。该项用于兼容历史配置，请按原功能填写。', 'Shinonomeiro_C' ),
+			esc_html__( '配置键：%1$s。该键会直接写入主题配置表，并由对应模板或功能模块按键名读取。', 'Shinonomeiro_C' ),
 			esc_html( (string) $legacy_key )
 		);
 	}
@@ -412,7 +429,7 @@ $sections = [
 				'type'     => 'checkbox',
 				'settings' => 'nav_user_menu',
 				'label'    => esc_html__( 'Nav User Menu', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'It is on by default. The user avatar and menu will be displayed.', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '默认开启。启用后会在导航栏显示用户头像与用户菜单。', 'Shinonomeiro_C' ),
 				'section'  => 'iro_nav',
 				'iro_key'  => 'nav_user_menu',
 			],
@@ -451,14 +468,14 @@ $sections = [
 				'settings' => 'extract_theme_skin_from_cover',
 				'iro_key'  => 'extract_theme_skin_from_cover',
 				'label'    => esc_html__( 'Extract Theme Color from Cover Image', 'Shinonomeiro_C' ),
-				'description' => esc_html__('After turning on,the theme color will be taken from the homepage cover', 'Shinonomeiro_C' ),
+				'description' => esc_html__('启用后，主题主色将从首页封面图自动提取。', 'Shinonomeiro_C' ),
 			],
 			[
 				'type'     => 'checkbox',
 				'settings' => 'extract_article_highlight_from_feature',
 				'iro_key'  => 'extract_article_highlight_from_feature',
 				'label'    => esc_html__( 'Extract Article Highlight from Featured Image', 'Shinonomeiro_C' ),
-				'description' => esc_html__('After turning on,the colors displayed on the article page will be taken from the article featured image', 'Shinonomeiro_C' ),
+				'description' => esc_html__('启用后，文章页配色将从文章特色图自动提取。', 'Shinonomeiro_C' ),
 			],
 			[
 				'type'     => 'color',
@@ -551,7 +568,7 @@ $sections = [
 				'type'     => 'checkbox',
 				'settings' => 'text_logo_options',
 				'label'    => esc_html__( 'Enable Mashiro Special Effects Text', 'Shinonomeiro_C' ),
-				'description' => __('After turning it on, it will replace your avatar on the homepage','Shinonomeiro_C'),
+				'description' => __('启用后，将使用该设置替换首页展示头像。','Shinonomeiro_C'),
 				'iro_key'  => 'text_logo_options',
 			],
 			[
@@ -1010,14 +1027,14 @@ $sections = [
 				'settings' => 'site_bg_as_cover',
 				'iro_key'  => 'site_bg_as_cover',
 				'label'    => esc_html__( 'Cover and Frontend Background Integration', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'When enabled, the background of the cover will be set to transparent, while the frontend background will use the cover\'s random image API', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '启用后，封面背景设为透明，前台背景将调用封面随机图 API。', 'Shinonomeiro_C' ),
 			],
 			[
 				'type'     => 'checkbox',
 				'settings' => 'post_cover_as_bg',
 				'iro_key'  => 'post_cover_as_bg',
 				'label'    => esc_html__( 'Post Cover As Background', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'Use post feature image as background in post pages', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '启用后，文章页将使用文章特色图作为背景。', 'Shinonomeiro_C' ),
 			    'active_callback' => [
 					[
 						'setting'  => 'site_bg_as_cover',
@@ -1031,7 +1048,7 @@ $sections = [
 				'settings' => 'wave_effects',
 				'iro_key'  => 'wave_effects',
 				'label'    => esc_html__( 'Cover Wave Effects', 'Shinonomeiro_C' ),
-				'description' => __('It will be forced off in the dark mode','Shinonomeiro_C'),
+				'description' => __('深色模式下会被强制关闭。','Shinonomeiro_C'),
 			],
 			[
 				'type'     => 'checkbox',
@@ -1252,14 +1269,14 @@ $sections = [
 				'iro_key'  => 'show_medal_capsules',
 				'label'    => esc_html__( 'Show Medal Badges Style Capsule', 'Shinonomeiro_C' ),
 				'default'  => true,
-				'description' => esc_html__( 'Enable to show bronze/silver/gold medal badges for blog milestones, Requires you to unlock the relevant achievement to replace the relevant capsule', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '启用后会显示博客里程碑铜/银/金徽章；需先解锁对应成就，才会替换对应展示卡片。', 'Shinonomeiro_C' ),
 			],
 			[
 				'type'     => 'textarea',
 				'settings' => 'stat_announcement_text',
 				'iro_key'  => 'stat_announcement_text',
 				'label'    => esc_html__( 'Announcement Text', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'Set the text for announcement capsule. The front-end will automatically split the text into two lines, you can also use line breaks for manual line breaks', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '设置公告胶囊文案。前台会自动拆分为两行，也可手动换行。', 'Shinonomeiro_C' ),
 				'active_callback' => [
 					[
 						'setting'  => 'capsule_components',
@@ -1697,7 +1714,7 @@ $sections = [
 				'settings' => 'particles_json',
 				'iro_key'  => 'particles_json',
 				'label'    => esc_html__( 'Particles JSON', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'Vist "https://vincentgarreau.com/particles.js/" for more help', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '粒子参数可参考 https://vincentgarreau.com/particles.js/ 文档。', 'Shinonomeiro_C' ),
 				'active_callback' => [
 					[
 						'setting'  => 'particles_effects',
@@ -1823,14 +1840,14 @@ $sections = [
 				'settings' => 'nprogress_on',
 				'iro_key'  => 'nprogress_on',
 				'label'    => esc_html__( 'NProgress Loading Progress Bar', 'Shinonomeiro_C' ),
-				'description' => esc_html__('Enabled by default, when loading page there will be a progress bar alert','Shinonomeiro_C'),
+				'description' => esc_html__('默认开启。页面加载时会显示顶部进度条。','Shinonomeiro_C'),
 			],
 			[
 				'type'     => 'checkbox',
 				'settings' => 'smoothscroll_option',
 				'iro_key'  => 'smoothscroll_option',
 				'label'    => esc_html__( 'Global Smooth Scroll', 'Shinonomeiro_C' ),
-				'description' => esc_html__('Enabled by default, page scrolling will be smoother','Shinonomeiro_C'),
+				'description' => esc_html__('默认开启。启用后页面滚动更平滑。','Shinonomeiro_C'),
 			],
 			[
 				'type'     => 'select',
@@ -1958,7 +1975,7 @@ $sections = [
 				'type'     => 'slider',
 				'settings' => 'article_title_font_size',
 				'iro_key'  => 'article_title_font_size',
-				'description' => esc_html__( 'This option is only valid for articles with cover', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '该选项仅对设置了封面的文章生效。', 'Shinonomeiro_C' ),
 				'label'    => esc_html__( 'Article Page Title Font Size', 'Shinonomeiro_C' ),
 				'choices'     => [
 					'min'  => 16,
@@ -2083,7 +2100,7 @@ $sections = [
 				'iro_key'  => 'reward_area',
 				'iro_subkey' => 'link',
 				'label'    => esc_html__( 'Reward Button Link', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'The link click the reward button will redirect to', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '点击“赞赏”按钮后将跳转到此链接。', 'Shinonomeiro_C' ),
 				'active_callback' => [
 					[
 						'setting'  => 'article_function',
@@ -2112,7 +2129,7 @@ $sections = [
 				'iro_key'  => 'reward_area',
 				'iro_subkey' => 'link1',
 				'label'    => esc_html__( 'Reward Image Link', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'The link click the image will redirect to', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '点击图片后将跳转到此链接。', 'Shinonomeiro_C' ),
 				'active_callback' => [
 					[
 						'setting'  => 'article_function',
@@ -2141,7 +2158,7 @@ $sections = [
 				'iro_key'  => 'reward_area',
 				'iro_subkey' => 'link2',
 				'label'    => esc_html__( 'Reward Image Link', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'The link click the image will redirect to', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '点击图片后将跳转到此链接。', 'Shinonomeiro_C' ),
 				'active_callback' => [
 					[
 						'setting'  => 'article_function',
@@ -2272,7 +2289,7 @@ $sections = [
 				'settings' => 'smilies_list',
 				'iro_key'  => 'smilies_list',
 				'label'    => esc_html__( 'Comment Area Emoticon', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'Please go to the backend to configure your custom emoticon pack', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '请前往后台配置自定义表情包。', 'Shinonomeiro_C' ),
 				'multiple'    => 0,
 				'choices'     => [
 					'bilibili'   => __('BiliBili Emoticon Pack','Shinonomeiro_C'),
@@ -2315,12 +2332,14 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
                 'title' => esc_html__( '搜索与加载策略', 'Shinonomeiro_C' ),
                 'description' => esc_html__( '用于调整搜索范围、预加载、PJAX 与懒加载等性能策略。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_performance',
+                'merge_to_section' => 'iro_global_others',
                 'prefixes' => [ 'search_', 'only_admin_can_search_', 'sticky_', 'custom_exclude_', 'live_search', 'preload_', 'poi_', 'pjax_', 'missing_', 'clipboard_', 'page_lazyload' ],
             ],
             'iro_legacy_group_home_display' => [
                 'title' => esc_html__( '首页扩展展示', 'Shinonomeiro_C' ),
                 'description' => esc_html__( '用于配置封面展示细节、随机图与首页相关扩展。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_home_display',
+                'merge_to_section' => 'iro_cover_other',
                 'prefixes' => [ 'cover_', 'random_graphs_', 'cache_cover', 'exhibition', 'post_cover_' ],
             ],
             'iro_legacy_group_third_party_services' => [
@@ -2333,6 +2352,7 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
                 'title' => esc_html__( '评论与媒体', 'Shinonomeiro_C' ),
                 'description' => esc_html__( '用于配置评论增强、表情包与图片上传通道。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_comment_interaction',
+                'merge_to_section' => 'iro_pages_comment',
                 'prefixes' => [ 'smilies_', 'comment_', 'qq_avatar_', 'img_', 'imgur_', 'smms_', 'chever', 'lsky_', 'mail_' ],
             ],
             'iro_legacy_group_auth_admin' => [
@@ -2354,16 +2374,27 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 			$legacy_group_fields[ $group_id ] = [];
 		}
 
-		$legacy_textarea_key_markers = [
+		$legacy_code_key_markers = [
 			'custom_style',
 			'header_insert',
 			'footer_addition',
+			'google_analytics',
+			'script',
+			'css',
+			'js',
+			'html',
+			'template',
+		];
+		$legacy_textarea_key_markers = [
 			'statistics_format',
 			'statistics_api',
-			'google_analytics',
 			'channel_validate_value',
 			'meta_description',
 			'prompt',
+			'description',
+			'content',
+			'message',
+			'notice',
 		];
 
 		foreach ( $legacy_migrated_keys as $legacy_key ) {
@@ -2377,10 +2408,18 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				$field_type = 'textarea';
 			} else {
 				$legacy_key_lower = strtolower( (string) $legacy_key );
-				foreach ( $legacy_textarea_key_markers as $marker ) {
+				foreach ( $legacy_code_key_markers as $marker ) {
 					if ( false !== strpos( $legacy_key_lower, $marker ) ) {
-						$field_type = 'textarea';
+						$field_type = 'code';
 						break;
+					}
+				}
+				if ( 'text' === $field_type ) {
+					foreach ( $legacy_textarea_key_markers as $marker ) {
+						if ( false !== strpos( $legacy_key_lower, $marker ) ) {
+							$field_type = 'textarea';
+							break;
+						}
 					}
 				}
 			}
@@ -2398,7 +2437,7 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'default'     => $default_value,
 			];
 
-			if ( 'textarea' === $field_type ) {
+			if ( in_array( $field_type, [ 'textarea', 'code' ], true ) ) {
 				$field['sanitize_callback'] = 'iro_customizer_sanitize_json_or_text';
 			}
 
@@ -2418,6 +2457,20 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 		foreach ( $legacy_group_rules as $group_id => $group_rule ) {
 			if ( empty( $legacy_group_fields[ $group_id ] ) ) {
 				continue;
+			}
+			if ( ! empty( $group_rule['merge_to_section'] ) ) {
+				$merged = false;
+				foreach ( $sections as &$section_item ) {
+					if ( $section_item['id'] === $group_rule['merge_to_section'] ) {
+						$section_item['fields'] = array_merge( $section_item['fields'], $legacy_group_fields[ $group_id ] );
+						$merged = true;
+						break;
+					}
+				}
+				unset( $section_item );
+				if ( $merged ) {
+					continue;
+				}
 			}
 			$sections[] = [
 				'id'          => $group_id,
