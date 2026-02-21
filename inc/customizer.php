@@ -138,6 +138,10 @@ if ( ! function_exists( 'iro_customizer_friendly_label_from_key' ) ) {
 			'chatgpt_api_request_timeout' => esc_html__( 'ChatGPT 请求超时', 'Shinonomeiro_C' ),
 			'theme_darkmode_auto' => esc_html__( '跟随系统自动切换深色模式', 'Shinonomeiro_C' ),
 			'theme_darkmode_strategy' => esc_html__( '深色模式切换策略', 'Shinonomeiro_C' ),
+			'missing_avatars_default' => esc_html__( '缺失头像默认图', 'Shinonomeiro_C' ),
+			'missing_images_default' => esc_html__( '缺失图片默认图', 'Shinonomeiro_C' ),
+			'captcha_select' => esc_html__( '登录验证码提供商', 'Shinonomeiro_C' ),
+			'comment_captcha_select' => esc_html__( '评论验证码提供商', 'Shinonomeiro_C' ),
 		];
 		if ( isset( $explicit_label_map[ $raw_key ] ) ) {
 			return $explicit_label_map[ $raw_key ];
@@ -2670,11 +2674,26 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 			'code_highlight_prism_line_number_all', 'enable_theme_mathjax', 'hide_login_portal',
 			'dev_mode', 'php_notice_filter',
 		];
+		$legacy_force_select_choices = [
+			'captcha_select' => [
+				'off' => esc_html__( '关闭', 'Shinonomeiro_C' ),
+				'iro_captcha' => esc_html__( '主题验证码', 'Shinonomeiro_C' ),
+				'vaptcha' => esc_html__( 'Vaptcha', 'Shinonomeiro_C' ),
+				'turnstile' => esc_html__( 'Cloudflare Turnstile', 'Shinonomeiro_C' ),
+			],
+			'comment_captcha_select' => [
+				'off' => esc_html__( '关闭', 'Shinonomeiro_C' ),
+				'iro_captcha' => esc_html__( '主题验证码', 'Shinonomeiro_C' ),
+				'turnstile' => esc_html__( 'Cloudflare Turnstile', 'Shinonomeiro_C' ),
+			],
+		];
 
 		foreach ( $legacy_migrated_keys as $legacy_key ) {
 			$current_value = $GLOBALS['iro_options'][ $legacy_key ] ?? '';
 			$field_type = 'text';
-			if ( is_bool( $current_value ) || in_array( $legacy_key, $legacy_force_checkbox_keys, true ) ) {
+			if ( isset( $legacy_force_select_choices[ $legacy_key ] ) ) {
+				$field_type = 'select';
+			} elseif ( is_bool( $current_value ) || in_array( $legacy_key, $legacy_force_checkbox_keys, true ) ) {
 				$field_type = 'checkbox';
 			} elseif ( is_int( $current_value ) || is_float( $current_value ) ) {
 				$field_type = 'number';
@@ -2715,6 +2734,9 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'label'       => iro_customizer_friendly_label_from_key( $legacy_key ),
 				'default'     => $default_value,
 			];
+			if ( 'select' === $field_type && isset( $legacy_force_select_choices[ $legacy_key ] ) ) {
+				$field['choices'] = $legacy_force_select_choices[ $legacy_key ];
+			}
 			$legacy_description = iro_customizer_legacy_description_from_key( $legacy_key );
 			if ( '' !== $legacy_description ) {
 				$field['description'] = $legacy_description;
