@@ -38,10 +38,28 @@ $vision_resource_basepath = get_option($prefix)['vision_resource_basepath'] ?? g
     }
   }
 
+  $enable_legacy_options_menu = (bool) apply_filters(
+    'shinonomeiro_enable_legacy_options_menu',
+    defined( 'SHINONOMEIRO_ENABLE_LEGACY_OPTIONS_MENU' ) ? SHINONOMEIRO_ENABLE_LEGACY_OPTIONS_MENU : false
+  );
+
   Shinonomeiro_CSF::createOptions( $prefix, array(
-    'menu_title' => __('Shinonomeiro Options','sakurairo_csf'),
-    'menu_slug'  => 'shinonomeiro_options',
+    'menu_title'    => __('Shinonomeiro Options','sakurairo_csf'),
+    'menu_slug'     => 'shinonomeiro_options',
+    // Phase 1: 下线独立设置页入口，统一收敛到「主题 -> 自定义」
+    'menu_hidden'   => ! $enable_legacy_options_menu,
+    'show_bar_menu' => $enable_legacy_options_menu,
   ) );
+
+  // 兼容旧入口：访问旧设置页时自动跳转到 Customizer（仅在旧菜单关闭时）
+  if ( is_admin() && ! $enable_legacy_options_menu ) {
+    add_action( 'admin_init', static function () {
+      if ( isset( $_GET['page'] ) && 'shinonomeiro_options' === $_GET['page'] ) {
+        wp_safe_redirect( admin_url( 'customize.php' ) );
+        exit;
+      }
+    } );
+  }
 
   Shinonomeiro_CSF::createSection($prefix, array(
     'title' => __('Hello!','sakurairo_csf'),
