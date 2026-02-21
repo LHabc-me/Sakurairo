@@ -138,6 +138,18 @@ if ( ! function_exists( 'iro_customizer_friendly_label_from_key' ) ) {
 			'chatgpt_api_request_timeout' => esc_html__( 'ChatGPT 请求超时', 'Shinonomeiro_C' ),
 			'theme_darkmode_auto' => esc_html__( '跟随系统自动切换深色模式', 'Shinonomeiro_C' ),
 			'theme_darkmode_strategy' => esc_html__( '深色模式切换策略', 'Shinonomeiro_C' ),
+			'theme_darkmode_background_transparency' => esc_html__( '深色模式背景透明度', 'Shinonomeiro_C' ),
+			'theme_commemorate_mode' => esc_html__( '纪念模式', 'Shinonomeiro_C' ),
+			'load_out_svg' => esc_html__( '加载外部SVG图标', 'Shinonomeiro_C' ),
+			'reference_exter_font' => esc_html__( '引用外部字体', 'Shinonomeiro_C' ),
+			'exter_font' => esc_html__( '外部字体地址', 'Shinonomeiro_C' ),
+			'gfonts_api' => esc_html__( 'Google字体接口地址', 'Shinonomeiro_C' ),
+			'gfonts_add_name' => esc_html__( 'Google字体追加名称', 'Shinonomeiro_C' ),
+			'preload_animation_color1' => esc_html__( '预加载动画颜色1', 'Shinonomeiro_C' ),
+			'preload_animation_color2' => esc_html__( '预加载动画颜色2', 'Shinonomeiro_C' ),
+			'preload_blur' => esc_html__( '预加载模糊效果', 'Shinonomeiro_C' ),
+			'poi_pjax' => esc_html__( '启用PJAX过渡', 'Shinonomeiro_C' ),
+			'pjax_keep_loading' => esc_html__( 'PJAX保持加载动画', 'Shinonomeiro_C' ),
 			'missing_avatars_default' => esc_html__( '缺失头像默认图', 'Shinonomeiro_C' ),
 			'missing_images_default' => esc_html__( '缺失图片默认图', 'Shinonomeiro_C' ),
 			'captcha_select' => esc_html__( '登录验证码提供商', 'Shinonomeiro_C' ),
@@ -2691,9 +2703,11 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 		foreach ( $legacy_migrated_keys as $legacy_key ) {
 			$current_value = $GLOBALS['iro_options'][ $legacy_key ] ?? '';
 			$field_type = 'text';
+			$legacy_key_lower = strtolower( (string) $legacy_key );
+			$checkbox_by_pattern = (bool) preg_match( '/(_switch$|_loop$|_live$|_auto$|_notify$|_lazyload$|_keep_loading$|_private_message$|^hide_|^enable_)/', $legacy_key_lower );
 			if ( isset( $legacy_force_select_choices[ $legacy_key ] ) ) {
 				$field_type = 'select';
-			} elseif ( is_bool( $current_value ) || in_array( $legacy_key, $legacy_force_checkbox_keys, true ) ) {
+			} elseif ( is_bool( $current_value ) || in_array( $legacy_key, $legacy_force_checkbox_keys, true ) || $checkbox_by_pattern ) {
 				$field_type = 'checkbox';
 			} elseif ( is_int( $current_value ) || is_float( $current_value ) ) {
 				$field_type = 'number';
@@ -2704,7 +2718,6 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				if ( in_array( $normalized_value, [ '0', '1', 'true', 'false', 'on', 'off' ], true ) ) {
 					$field_type = 'checkbox';
 				}
-				$legacy_key_lower = strtolower( (string) $legacy_key );
 				if ( 'text' === $field_type ) {
 					foreach ( $legacy_code_key_markers as $marker ) {
 						if ( false !== strpos( $legacy_key_lower, $marker ) ) {
