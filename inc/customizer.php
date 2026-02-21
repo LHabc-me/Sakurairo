@@ -303,11 +303,23 @@ if ( ! function_exists( 'iro_customizer_localize_ui_text' ) ) {
 		];
 		$parts = preg_split( '/[^A-Za-z0-9]+/', strtolower( $text ) );
 		$zh_parts = [];
+		$unknown_word_count = 0;
 		foreach ( $parts as $part ) {
 			if ( '' === $part ) {
 				continue;
 			}
-			$zh_parts[] = $word_map[ $part ] ?? $part;
+			if ( isset( $word_map[ $part ] ) ) {
+				$zh_parts[] = $word_map[ $part ];
+				continue;
+			}
+			if ( preg_match( '/^[a-z0-9]+$/', $part ) ) {
+				$unknown_word_count++;
+			}
+			$zh_parts[] = $part;
+		}
+		if ( $unknown_word_count > 0 ) {
+			// 避免退化成“首屏dropdownarrow”这类中英混杂：未完整映射时保留原文。
+			return $text;
 		}
 		$localized = implode( '', array_filter( $zh_parts, static function( $v ) {
 			return '' !== trim( (string) $v );
