@@ -3827,7 +3827,7 @@ $vision_resource_basepath = get_option($prefix)['vision_resource_basepath'] ?? g
         .'<br/><strong><a href="https://www.lightgalleryjs.com/demos/thumbnails/">Demos</a></strong> | <strong><a href="https://www.lightgalleryjs.com/docs/settings/">Reference</a></strong> | <strong><a href="https://fastly.jsdelivr.net/npm/lightgallery@latest/plugins/">Plugin List</a></strong> '
         .'<br/> Please write settings in JavaScript. An example has been provided as default setting.'
         .'<br/> It should be captiable for Most User using WordPress Guttenberg Editor.'
-        .'<br/>Submit new discussion on Github for assistance. https://github.com/mirai-mamori/Shinonomeiro/discussions','sakurairo_csf')       ,
+        .'<br/>Submit new discussion on Github for assistance. https://github.com/LHabc-me/Shinonomeiro/discussions','sakurairo_csf')       ,
         'dependency' => array( 'lightbox', '==', 'lightgallery', '', 'true' ),
       ),
 
@@ -4031,7 +4031,7 @@ $vision_resource_basepath = get_option($prefix)['vision_resource_basepath'] ?? g
       array(
         'type'    => 'submessage',
         'style'   => 'normal',
-        'content' => sprintf(__('Theme Shinonomeiro Version %s | Internal Version %s | <a href="https://github.com/mirai-mamori/Shinonomeiro">Project Address</a>','sakurairo_csf'), IRO_VERSION, INT_VERSION), 
+        'content' => sprintf(__('Theme Shinonomeiro Version %s | Internal Version %s | <a href="https://github.com/LHabc-me/Shinonomeiro">Project Address</a>','sakurairo_csf'), IRO_VERSION, INT_VERSION), 
       ),
 
       array(
@@ -4111,7 +4111,7 @@ $vision_resource_basepath = get_option($prefix)['vision_resource_basepath'] ?? g
         'label' => __('Control the basepath of Frontend Resource.','sakurairo_csf'),
         'options'     => array(
           'https://s.nmxc.ltd/sakurairo/@'  => $vision_resource_basepath . 'options/update_source_wafpro.webp',
-          'https://fastly.jsdelivr.net/gh/mirai-mamori/Shinonomeiro@'  => $vision_resource_basepath . 'options/update_source_jsd.webp',
+          'https://fastly.jsdelivr.net/gh/LHabc-me/Shinonomeiro@'  => $vision_resource_basepath . 'options/update_source_jsd.webp',
         ),
         'default'     => 'https://s.nmxc.ltd/sakurairo/@'
       ),
@@ -4187,7 +4187,7 @@ $vision_resource_basepath = get_option($prefix)['vision_resource_basepath'] ?? g
 
       array(
         'type'    => 'content',
-        'content' => __('<img src="https://img.shields.io/github/v/release/mirai-mamori/Shinonomeiro.svg?style=flat-square"  alt="Theme latest version" style="border-radius: 3px;" />  <img src="https://img.shields.io/github/release-date/mirai-mamori/Shinonomeiro?style=flat-square"  alt="Theme latest version release date" style="border-radius: 3px;" />  <img src="https://data.jsdelivr.com/v1/package/gh/mirai-mamori/Shinonomeiro/badge"  alt="Theme CDN resource access" style="border-radius: 3px;" />','sakurairo_csf'),
+        'content' => __('<img src="https://img.shields.io/github/v/release/LHabc-me/Shinonomeiro.svg?style=flat-square"  alt="Theme latest version" style="border-radius: 3px;" />  <img src="https://img.shields.io/github/release-date/LHabc-me/Shinonomeiro?style=flat-square"  alt="Theme latest version release date" style="border-radius: 3px;" />  <img src="https://data.jsdelivr.com/v1/package/gh/LHabc-me/Shinonomeiro/badge"  alt="Theme CDN resource access" style="border-radius: 3px;" />','sakurairo_csf'),
       ),
 
     )

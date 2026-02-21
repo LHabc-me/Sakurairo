@@ -697,7 +697,7 @@ msgstr "编辑按钮（只在拥有编辑权限时显示）"
 
 #: options/theme-options.php:36
 msgid "iro-Options"
-msgstr "iro 主题设置"
+msgstr "Shinonomeiro 主题设置"
 
 #: options/theme-options.php:41
 msgid "Hello!"

@@ -558,7 +558,7 @@ msgid ""
 "Fill in the font name,and you can add your customize font in Font Options of "
 "Global Options in iro-Options."
 msgstr ""
-"填写字体名称即可，你可以在“iro主题设置”—“全局设置”—“字体设置”中添加自定义字体"
+"填写字体名称即可，你可以在“Shinonomeiro主题设置”—“全局设置”—“字体设置”中添加自定义字体"
 
 #: customizer.php:1338
 msgid "Non-Emphasis Text Weight"
