@@ -146,7 +146,7 @@ if ( ! function_exists( 'iro_customizer_friendly_label_from_key' ) ) {
 		$token_map = [
 			'iro' => '主题', 'meta' => '元信息', 'seo' => 'SEO', 'theme' => '主题', 'darkmode' => '深色模式',
 			'background' => '背景', 'transparency' => '透明度', 'commemorate' => '纪念模式', 'load' => '加载',
-			'out' => '外部', 'svg' => 'SVG', 'reference' => '引用', 'exter' => '外部', 'font' => '字体',
+			'out' => '外部', 'svg' => 'SVG', 'reference' => '引用', 'exter' => '外部', 'font' => '字体', 'favicon' => '站点图标', 'keywords' => '关键词', 'description' => '描述',
 			'gfonts' => 'Google 字体', 'api' => '接口', 'add' => '添加', 'name' => '名称',
 			'unlisted' => '未列出', 'avatar' => '头像', 'footer' => '页脚', 'addition' => '附加内容',
 			'aplayer' => 'APlayer', 'server' => '服务端', 'custom' => '自定义', 'music' => '音乐',
@@ -195,12 +195,25 @@ if ( ! function_exists( 'iro_customizer_friendly_label_from_key' ) ) {
 		} ) );
 		$cn_parts = [];
 		foreach ( $tokens as $token ) {
-			$cn_parts[] = $token_map[ $token ] ?? strtoupper( $token );
+			if ( isset( $token_map[ $token ] ) ) {
+				$mapped = $token_map[ $token ];
+			} else {
+				$mapped = preg_match( '/^[a-z0-9-]+$/', $token ) ? $token : strtoupper( $token );
+			}
+			if ( '' === trim( (string) $mapped ) ) {
+				continue;
+			}
+			$last = end( $cn_parts );
+			if ( false !== $last && $last === $mapped ) {
+				continue;
+			}
+			$cn_parts[] = $mapped;
 		}
-		$label = trim( implode( '', array_filter( $cn_parts, static function( $part ) {
-			return '' !== trim( (string) $part );
-		} ) ) );
+		$label = trim( implode( '', $cn_parts ) );
 		if ( '' !== $label ) {
+			$label = str_replace( '模式模式', '模式', $label );
+			$label = str_replace( '置顶置顶', '置顶', $label );
+			$label = str_replace( 'Google字体', 'Google字体', $label );
 			return $label;
 		}
 
