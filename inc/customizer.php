@@ -154,6 +154,13 @@ if ( ! function_exists( 'iro_customizer_friendly_label_from_key' ) ) {
 			'missing_images_default' => esc_html__( '缺失图片默认图', 'Shinonomeiro_C' ),
 			'captcha_select' => esc_html__( '登录验证码提供商', 'Shinonomeiro_C' ),
 			'comment_captcha_select' => esc_html__( '评论验证码提供商', 'Shinonomeiro_C' ),
+			'code_highlight_method' => esc_html__( '代码高亮引擎', 'Shinonomeiro_C' ),
+			'php_notice_filter' => esc_html__( 'PHP 报错过滤级别', 'Shinonomeiro_C' ),
+			'show_location_in_manage' => esc_html__( '后台显示评论IP归属地', 'Shinonomeiro_C' ),
+			'qq_qrcode' => esc_html__( 'QQ二维码链接', 'Shinonomeiro_C' ),
+			'qq_qrcode_switch' => esc_html__( '显示QQ二维码', 'Shinonomeiro_C' ),
+			'qq' => esc_html__( 'QQ号', 'Shinonomeiro_C' ),
+			'qq_copy_switch' => esc_html__( '显示QQ一键复制按钮', 'Shinonomeiro_C' ),
 		];
 		if ( isset( $explicit_label_map[ $raw_key ] ) ) {
 			return $explicit_label_map[ $raw_key ];
@@ -335,6 +342,13 @@ if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
 			'meta_description'       => esc_html__( '站点 SEO 描述文本，用于页面 description 元信息。', 'Shinonomeiro_C' ),
 			'theme_darkmode_auto'    => esc_html__( '用于设置是否跟随系统外观，在深色与浅色之间自动切换。', 'Shinonomeiro_C' ),
 			'theme_darkmode_strategy'=> esc_html__( '用于设置深色模式的切换规则（手动、自动或按时间策略）。', 'Shinonomeiro_C' ),
+			'code_highlight_method'  => esc_html__( '用于选择代码块高亮引擎（Prism / 关闭）。', 'Shinonomeiro_C' ),
+			'php_notice_filter'      => esc_html__( '用于设置前台 PHP 报错显示策略（推荐“仅严重错误”）。', 'Shinonomeiro_C' ),
+			'show_location_in_manage'=> esc_html__( '用于设置是否在后台评论管理页显示评论者 IP 归属地。', 'Shinonomeiro_C' ),
+			'qq_qrcode'              => esc_html__( '用于设置社交卡片中的 QQ 二维码图片链接。', 'Shinonomeiro_C' ),
+			'qq_qrcode_switch'       => esc_html__( '用于控制是否在社交卡片展示 QQ 二维码入口。', 'Shinonomeiro_C' ),
+			'qq'                     => esc_html__( '用于设置社交卡片中展示的 QQ 账号。', 'Shinonomeiro_C' ),
+			'qq_copy_switch'         => esc_html__( '用于控制是否显示 QQ 账号一键复制按钮。', 'Shinonomeiro_C' ),
 			'google_analytics'       => esc_html__( 'Google Analytics 跟踪代码或统计 ID。', 'Shinonomeiro_C' ),
 			'statistics_api'         => esc_html__( '站点统计接口地址与请求参数。', 'Shinonomeiro_C' ),
 			'statistics_format'      => esc_html__( '站点统计模块的展示模板或格式化文本。', 'Shinonomeiro_C' ),
@@ -2754,7 +2768,7 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 			'clipboard_ref', 'page_lazyload', 'show_location_in_manage', 'save_location', 'comment_private_message',
 			'mail_notify', 'custom_login_switch', 'login_urlskip', 'time_zone_fix', 'lightbox',
 			'code_highlight_prism_line_number_all', 'enable_theme_mathjax', 'hide_login_portal',
-			'dev_mode', 'php_notice_filter',
+			'dev_mode',
 		];
 		$legacy_force_select_choices = [
 			'captcha_select' => [
@@ -2767,6 +2781,15 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'off' => esc_html__( '关闭', 'Shinonomeiro_C' ),
 				'iro_captcha' => esc_html__( '主题验证码', 'Shinonomeiro_C' ),
 				'turnstile' => esc_html__( 'Cloudflare Turnstile', 'Shinonomeiro_C' ),
+			],
+			'code_highlight_method' => [
+				'prismjs' => esc_html__( 'Prism', 'Shinonomeiro_C' ),
+				'' => esc_html__( '关闭', 'Shinonomeiro_C' ),
+			],
+			'php_notice_filter' => [
+				'normal' => esc_html__( '仅严重错误（推荐）', 'Shinonomeiro_C' ),
+				'all' => esc_html__( '屏蔽大部分错误', 'Shinonomeiro_C' ),
+				'inner' => esc_html__( '全部关闭', 'Shinonomeiro_C' ),
 			],
 		];
 
