@@ -78,6 +78,23 @@ $allowed_params = [
 
 $vision_resource_basepath = iro_opt('vision_resource_basepath', 'https://s.nmxc.ltd/sakurairo_vision/@3.0/');
 
+if ( ! function_exists( 'iro_customizer_sanitize_json_or_text' ) ) {
+	function iro_customizer_sanitize_json_or_text( $value ) {
+		if ( is_array( $value ) ) {
+			return $value;
+		}
+		$value = is_string( $value ) ? trim( $value ) : '';
+		if ( '' === $value ) {
+			return '';
+		}
+		$decoded = json_decode( $value, true );
+		if ( JSON_ERROR_NONE === json_last_error() ) {
+			return $decoded;
+		}
+		return $value;
+	}
+}
+
 // 分组和设置项部分
 // 分组：每个分组至少包含 id、title、description、所属面板 panel
 // 设置项（Field）数组：每个设置项至少包含 type、settings、label、所属区块 section
@@ -2159,6 +2176,112 @@ $sections = [
 	],
 ];
 
+$legacy_migrated_keys_file = __DIR__ . '/customizer-migrated-fields.php';
+if ( file_exists( $legacy_migrated_keys_file ) ) {
+	$legacy_migrated_keys = require $legacy_migrated_keys_file;
+	if ( is_array( $legacy_migrated_keys ) && ! empty( $legacy_migrated_keys ) ) {
+		$legacy_group_rules = [
+			'iro_legacy_group_site_basics' => [
+				'title' => esc_html__( 'Legacy Bridge: Site Basics & SEO', 'Shinonomeiro_C' ),
+				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes favicon, SEO and base theme behavior.', 'Shinonomeiro_C' ),
+				'prefixes' => [ 'favicon_', 'iro_seo', 'iro_meta_', 'theme_', 'load_out_svg', 'time_zone_' ],
+			],
+			'iro_legacy_group_search_loading' => [
+				'title' => esc_html__( 'Legacy Bridge: Search & Loading', 'Shinonomeiro_C' ),
+				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes search, preload, PJAX and lazyload related options.', 'Shinonomeiro_C' ),
+				'prefixes' => [ 'search_', 'only_admin_can_search_', 'sticky_', 'custom_exclude_', 'live_search', 'preload_', 'poi_', 'pjax_', 'missing_', 'clipboard_', 'page_lazyload' ],
+			],
+			'iro_legacy_group_cover_social' => [
+				'title' => esc_html__( 'Legacy Bridge: Cover, Social & Profile', 'Shinonomeiro_C' ),
+				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes cover media and social account presentation.', 'Shinonomeiro_C' ),
+				'prefixes' => [ 'cover_', 'social_', 'wechat_', 'qq_', 'email_', 'bili', 'wangyiyun', 'sina', 'github', 'telegram', 'steam', 'youtube', 'instagram', 'douyin', 'xiaohongshu', 'discord', 'zhihu', 'linkedin', 'twitter', 'facebook', 'diysocialicons', 'unlisted_', 'random_graphs_', 'cache_cover', 'exhibition', 'post_cover_' ],
+			],
+			'iro_legacy_group_third_party_services' => [
+				'title' => esc_html__( 'Legacy Bridge: Third-party Services', 'Shinonomeiro_C' ),
+				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes music, anime, steam and API integrations.', 'Shinonomeiro_C' ),
+				'prefixes' => [ 'aplayer_', 'custom_music_', 'bangumi_', 'my_anime_', 'bilibili_', 'friend_link_', 'statistics_', 'google_analytics_', 'chatgpt_' ],
+			],
+			'iro_legacy_group_comment_media' => [
+				'title' => esc_html__( 'Legacy Bridge: Comment & Media Upload', 'Shinonomeiro_C' ),
+				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes emoticons, comments, uploads and notification settings.', 'Shinonomeiro_C' ),
+				'prefixes' => [ 'smilies_', 'comment_', 'qq_avatar_', 'img_', 'imgur_', 'smms_', 'chever', 'lsky_', 'mail_', 'admin_notify' ],
+			],
+			'iro_legacy_group_auth_admin' => [
+				'title' => esc_html__( 'Legacy Bridge: Login & Admin', 'Shinonomeiro_C' ),
+				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes login, captcha and backend style options.', 'Shinonomeiro_C' ),
+				'prefixes' => [ 'custom_login_', 'login_', 'captcha_', 'vaptcha_', 'turnstile_', 'admin_' ],
+			],
+			'iro_legacy_group_dev_runtime' => [
+				'title' => esc_html__( 'Legacy Bridge: Runtime, Dev & Update', 'Shinonomeiro_C' ),
+				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes frontend runtime, CDN, debug and update channel behavior.', 'Shinonomeiro_C' ),
+				'prefixes' => [ 'reference_', 'exter_', 'gfonts_', 'iro_captcha_', 'site_', 'gravatar_', 'custom_proxy_', 'ghcard_', 'lightbox', 'lightgallery_', 'code_highlight_', 'enable_theme_', 'image_', 'classify_', 'cookie_', 'hide_login_', 'fontawesome_', 'dev_', 'php_notice_', 'iro_update_', 'channel_validate_', 'core_library_', 'shared_library_', 'lib_cdn_', 'external_vendor_', 'vision_resource_', 'send_theme_' ],
+			],
+		];
+
+		$legacy_group_fields = [];
+		foreach ( array_keys( $legacy_group_rules ) as $group_id ) {
+			$legacy_group_fields[ $group_id ] = [];
+		}
+
+		foreach ( $legacy_migrated_keys as $legacy_key ) {
+			$current_value = $GLOBALS['iro_options'][ $legacy_key ] ?? '';
+			$field_type = 'text';
+			if ( is_bool( $current_value ) ) {
+				$field_type = 'switch';
+			} elseif ( is_int( $current_value ) || is_float( $current_value ) ) {
+				$field_type = 'number';
+			} elseif ( is_array( $current_value ) ) {
+				$field_type = 'textarea';
+			}
+
+			$default_value = is_array( $current_value )
+				? wp_json_encode( $current_value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES )
+				: $current_value;
+
+			$field = [
+				'type'        => $field_type,
+				'settings'    => 'legacy_' . $legacy_key,
+				'iro_key'     => $legacy_key,
+				'label'       => ucwords( str_replace( '_', ' ', $legacy_key ) ),
+				'description' => sprintf( esc_html__( 'Migrated from legacy options key: %s', 'Shinonomeiro_C' ), $legacy_key ),
+				'default'     => $default_value,
+			];
+
+			if ( 'switch' === $field_type ) {
+				$field['choices'] = [ 'on' => esc_html__( 'On', 'Shinonomeiro_C' ), 'off' => esc_html__( 'Off', 'Shinonomeiro_C' ) ];
+			}
+			if ( 'textarea' === $field_type ) {
+				$field['sanitize_callback'] = 'iro_customizer_sanitize_json_or_text';
+			}
+
+			$target_group = 'iro_legacy_group_dev_runtime';
+			foreach ( $legacy_group_rules as $group_id => $group_rule ) {
+				foreach ( $group_rule['prefixes'] as $prefix ) {
+					if ( 0 === strpos( $legacy_key, $prefix ) || $legacy_key === $prefix ) {
+						$target_group = $group_id;
+						break 2;
+					}
+				}
+			}
+
+			$legacy_group_fields[ $target_group ][] = $field;
+		}
+
+		foreach ( $legacy_group_rules as $group_id => $group_rule ) {
+			if ( empty( $legacy_group_fields[ $group_id ] ) ) {
+				continue;
+			}
+			$sections[] = [
+				'id'          => $group_id,
+				'title'       => $group_rule['title'],
+				'description' => $group_rule['description'],
+				'panel'       => 'iro_global',
+				'fields'      => $legacy_group_fields[ $group_id ],
+			];
+		}
+	}
+}
+
 // ====================Panel注册====================
 $panelAutoPriority = 10;
 foreach ( $panels as &$panel ) {
@@ -2344,6 +2467,10 @@ foreach ( $sections as $section ) {
 				$args['default'] = isset($args['iro_subkey']) 
 								? (is_array($iro_default) && isset($iro_default[$args['iro_subkey']]) ? $iro_default[$args['iro_subkey']] : $type_default) 
 								: ($iro_default !== null ? $iro_default : $type_default); //从iro_opt中获取默认值，或使用种类默认值
+
+				if ( is_array( $args['default'] ) && in_array( str_replace( ' ', '_', strtolower( $field['type'] ?? '' ) ), [ 'text', 'textarea', 'code', 'url' ], true ) ) {
+					$args['default'] = wp_json_encode( $args['default'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+				}
 				
 				// set_theme_mod($setting_id, $args['default']);
 			}
