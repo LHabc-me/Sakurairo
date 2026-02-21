@@ -1,7 +1,4 @@
-**简体中文** | [繁體中文](README_tw.md) | [English](README_en.md) | [日本語](README_ja.md)
-
-[![image](https://s.nmxc.ltd/sakurairo_vision/@3.0/readme/banner-cn.webp)](https://github.com/LHabc-me/Sakurairo)
-
+**简体中文**
 <h1 align="left">Theme Sakurairo</h1>
 
 > 一款具有 AI 辅助阅读功能的 WordPress 主题，多彩、友好、功能全面、体验完善。
