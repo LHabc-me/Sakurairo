@@ -152,7 +152,7 @@ if ( ! function_exists( 'iro_customizer_friendly_label_from_key' ) ) {
 			'cookie' => 'Cookie', 'search' => '搜索', 'filter' => '筛选', 'for' => '', 'shuoshuo' => '说说', 'pages' => '页面',
 			'only' => '仅', 'admin' => '后台', 'can' => '可', 'sticky' => '置顶', 'pinned' => '置顶', 'content' => '内容',
 			'exclude' => '排除', 'results' => '结果', 'live' => '实时', 'comment' => '评论',
-			'animation' => '动画', 'color1' => '颜色 1', 'color2' => '颜色 2', 'blur' => '模糊',
+			'animation' => '动画', 'color' => '颜色', 'color1' => '颜色1', 'color2' => '颜色2', 'blur' => '模糊',
 			'poi' => '过渡', 'pjax' => 'PJAX', 'keep' => '保持', 'loading' => '加载态', 'missing' => '缺失', 'avatars' => '头像',
 			'images' => '图片', 'default' => '默认', 'signature' => '签名', 'typing' => '打字效果', 'placeholder' => '占位文本',
 			'random' => '随机', 'graphs' => '封面图', 'options' => '策略', 'mts' => '数量', 'link' => '链接', 'mobile' => '移动端',
@@ -195,7 +195,7 @@ if ( ! function_exists( 'iro_customizer_friendly_label_from_key' ) ) {
 		foreach ( $tokens as $token ) {
 			$cn_parts[] = $token_map[ $token ] ?? strtoupper( $token );
 		}
-		$label = trim( implode( ' ', array_filter( $cn_parts, static function( $part ) {
+		$label = trim( implode( '', array_filter( $cn_parts, static function( $part ) {
 			return '' !== trim( (string) $part );
 		} ) ) );
 		if ( '' !== $label ) {
@@ -2643,21 +2643,38 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 			'notice',
 		];
 
+		$legacy_force_checkbox_keys = [
+			'theme_darkmode_auto', 'theme_commemorate_mode', 'cover_video_loop', 'cover_video_live',
+			'wechat_qrcode_switch', 'wechat_copy_switch', 'qq_qrcode_switch', 'qq_copy_switch',
+			'search_for_shuoshuo', 'search_for_pages', 'only_admin_can_search_pages', 'sticky_pinned_content',
+			'live_search', 'live_search_comment', 'preload_animation', 'poi_pjax', 'pjax_keep_loading',
+			'clipboard_ref', 'page_lazyload', 'show_location_in_manage', 'save_location', 'comment_private_message',
+			'mail_notify', 'custom_login_switch', 'login_urlskip', 'time_zone_fix', 'lightbox',
+			'code_highlight_prism_line_number_all', 'enable_theme_mathjax', 'hide_login_portal',
+			'dev_mode', 'php_notice_filter',
+		];
+
 		foreach ( $legacy_migrated_keys as $legacy_key ) {
 			$current_value = $GLOBALS['iro_options'][ $legacy_key ] ?? '';
 			$field_type = 'text';
-			if ( is_bool( $current_value ) ) {
+			if ( is_bool( $current_value ) || in_array( $legacy_key, $legacy_force_checkbox_keys, true ) ) {
 				$field_type = 'checkbox';
 			} elseif ( is_int( $current_value ) || is_float( $current_value ) ) {
 				$field_type = 'number';
 			} elseif ( is_array( $current_value ) ) {
 				$field_type = 'textarea';
 			} else {
+				$normalized_value = is_string( $current_value ) ? strtolower( trim( $current_value ) ) : '';
+				if ( in_array( $normalized_value, [ '0', '1', 'true', 'false', 'on', 'off' ], true ) ) {
+					$field_type = 'checkbox';
+				}
 				$legacy_key_lower = strtolower( (string) $legacy_key );
-				foreach ( $legacy_code_key_markers as $marker ) {
-					if ( false !== strpos( $legacy_key_lower, $marker ) ) {
-						$field_type = 'code';
-						break;
+				if ( 'text' === $field_type ) {
+					foreach ( $legacy_code_key_markers as $marker ) {
+						if ( false !== strpos( $legacy_key_lower, $marker ) ) {
+							$field_type = 'code';
+							break;
+						}
 					}
 				}
 				if ( 'text' === $field_type ) {
