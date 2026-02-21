@@ -337,100 +337,149 @@ $print_social_zone = function() use ($all_opt): void {
                     <p id="cover-signature-text"><?php echo iro_opt('signature_text', 'Hi, Mashiro?'); ?></p>
                     <?php if (iro_opt('cover_daily_poetry', false)) : ?>
                     <script>
-                    (function () {
-                        const selector = '.header-info > p#cover-signature-text';
-                        const sdkUrl = 'https://sdk.jinrishici.com/v2/browser/jinrishici.js';
-                        const fallbackText = <?php echo wp_json_encode( iro_opt('cover_daily_poetry_fallback', '你来人间一趟，你要看看太阳。和你的心上人，一起走在街上。' ) ); ?>;
-                        const timeoutMs = Math.max(1000, <?php echo (int) iro_opt('cover_daily_poetry_timeout', 5000); ?> || 5000);
+                    (function() {
+                        // ================= 核心配置区域 =================
+                        var CONFIG = {
+                            lightColor: '#333333',
+                            darkColor: '#e2e8f0',
+                            authorOffset: '3em',
+                            poemFontSize: '1.35em',
+                            authorFontSize: '0.95em',
+                            fontFamily: "'STKaiti', 'KaiTi', '楷体', serif",
+                            fallbackPoem: {
+                                content: "墙角数枝梅，凌寒独自开。",
+                                dynasty: "宋代",
+                                author: "王安石",
+                                title: "梅花"
+                            }
+                        };
+                        // ================================================
 
-                        let target = null;
-                        let finished = false;
-                        let lastPayload = null;
+                        var poemData = null;
+                        var hasRendered = false;
 
-                        function colorSet() {
-                            return document.body.classList.contains('dark')
-                                ? { title: '#f9f8f9', text: '#f9f8f9', source: '#f9f8f9' }
-                                : { title: '#efb73e', text: '#f9f8f9', source: '#f9f8f9' };
-                        }
+                        function renderPoem() {
+                            if (hasRendered || !poemData) return;
 
-                        function render(content, author, dynasty, poemTitle) {
+                            var target = document.querySelector('.header-info > p#cover-signature-text');
                             if (!target) return;
-                            const colors = colorSet();
-                            const source = [dynasty, author].filter(Boolean).join('·');
-                            const titleLine = poemTitle ? '《' + poemTitle + '》' : '';
-                            target.style.textAlign = 'center';
-                            target.style.maxWidth = '70%';
-                            target.innerHTML =
-                                '<span style="font-weight:600;font-size:14px;line-height:1.8;color:' + colors.title + ';">今日诗词</span><br>' +
-                                '<span style="font-size:13px;line-height:1.8;color:' + colors.text + ';">' + (content || fallbackText) + '</span><br>' +
-                                '<span style="font-size:12px;line-height:1.6;color:' + colors.source + ';">' +
-                                (source || '现代·佚名') + (titleLine ? ' ' + titleLine : '') +
-                                '</span>';
+
+                            var data = poemData.data;
+                            var origin = data.origin;
+
+                            var html = `
+                                <div class="poem-wrapper" style="
+                                    width: 100%;
+                                    overflow-x: auto;
+                                    white-space: nowrap;
+                                    text-align: center;
+                                    cursor: default;
+                                ">
+                                    <style>
+                                        .poem-wrapper {
+                                            --poem-text-color: ${CONFIG.lightColor};
+                                        }
+
+                                        body.dark .poem-wrapper {
+                                            --poem-text-color: ${CONFIG.darkColor} !important;
+                                        }
+
+                                        .poem-wrapper::-webkit-scrollbar { display: none; }
+                                        .poem-wrapper {
+                                            scrollbar-width: none;
+                                            -ms-overflow-style: none;
+                                            -webkit-overflow-scrolling: touch;
+                                        }
+
+                                        .poem-wrapper, .poem-wrapper *, .header-info:hover .poem-wrapper {
+                                            color: var(--poem-text-color) !important;
+                                            text-decoration: none !important;
+                                            transition: color 0.3s ease !important;
+                                        }
+                                    </style>
+
+                                    <div style="
+                                        display: inline-block;
+                                        padding: 5px 2.5em;
+                                        letter-spacing: 0.12em;
+                                        font-family: ${CONFIG.fontFamily};
+                                        min-width: 65%;
+                                    ">
+                                        <div style="
+                                            font-size: ${CONFIG.poemFontSize};
+                                            line-height: 1.6;
+                                            margin-bottom: 0.5em;
+                                            text-align: center;
+                                        ">
+                                            ${data.content}
+                                        </div>
+
+                                        <div style="
+                                            text-align: right;
+                                            font-size: ${CONFIG.authorFontSize};
+                                            opacity: 0.85;
+                                            transform: translateX(${CONFIG.authorOffset});
+                                        ">
+                                            —— ${origin.dynasty} · ${origin.author} 《${origin.title}》
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+
+                            target.innerHTML = html;
+                            hasRendered = true;
                         }
 
-                        function done(payload) {
-                            if (finished) return;
-                            finished = true;
-                            lastPayload = payload && payload.data ? payload : null;
-                            if (lastPayload) {
-                                render(
-                                    lastPayload.data.content,
-                                    lastPayload.data.author,
-                                    lastPayload.data.origin && lastPayload.data.origin.dynasty,
-                                    lastPayload.data.origin && lastPayload.data.origin.title
-                                );
-                            } else {
-                                render(fallbackText, '佚名', '现代', '');
-                            }
-                        }
-
-                        function requestPoem() {
-                            if (window.jinrishici && typeof window.jinrishici.load === 'function') {
-                                window.jinrishici.load(function (result) { done(result); });
-                                return;
-                            }
-                            const script = document.createElement('script');
-                            script.src = sdkUrl;
-                            script.async = true;
-                            script.onload = function () {
-                                if (window.jinrishici && typeof window.jinrishici.load === 'function') {
-                                    window.jinrishici.load(function (result) { done(result); });
-                                } else {
-                                    done(null);
+                        function useFallback() {
+                            if (hasRendered) return;
+                            poemData = {
+                                data: {
+                                    content: CONFIG.fallbackPoem.content,
+                                    origin: {
+                                        dynasty: CONFIG.fallbackPoem.dynasty,
+                                        author: CONFIG.fallbackPoem.author,
+                                        title: CONFIG.fallbackPoem.title
+                                    }
                                 }
                             };
-                            script.onerror = function () { done(null); };
-                            document.head.appendChild(script);
+                            renderPoem();
                         }
 
-                        const startedAt = Date.now();
-                        const poll = window.setInterval(function () {
-                            target = document.querySelector(selector);
-                            if (target) {
-                                window.clearInterval(poll);
-                                requestPoem();
-                            } else if (Date.now() - startedAt >= timeoutMs) {
-                                window.clearInterval(poll);
-                                done(null);
+                        var script = document.createElement('script');
+                        script.src = 'https://sdk.jinrishici.com/v2/browser/jinrishici.js';
+                        script.charset = 'utf-8';
+
+                        script.onload = function() {
+                            if (typeof jinrishici !== 'undefined') {
+                                jinrishici.load(function(result) {
+                                    poemData = result;
+                                    renderPoem();
+                                });
+                            }
+                        };
+
+                        script.onerror = useFallback;
+
+                        document.head.appendChild(script);
+
+                        if (document.readyState === 'loading') {
+                            document.addEventListener('DOMContentLoaded', renderPoem);
+                        } else {
+                            renderPoem();
+                        }
+
+                        var checkInterval = setInterval(function() {
+                            if (hasRendered) {
+                                clearInterval(checkInterval);
+                            } else {
+                                renderPoem();
                             }
                         }, 100);
 
-                        window.setTimeout(function () { done(null); }, timeoutMs);
-
-                        const observer = new MutationObserver(function () {
-                            if (!target) return;
-                            if (lastPayload && lastPayload.data) {
-                                render(
-                                    lastPayload.data.content,
-                                    lastPayload.data.author,
-                                    lastPayload.data.origin && lastPayload.data.origin.dynasty,
-                                    lastPayload.data.origin && lastPayload.data.origin.title
-                                );
-                            } else if (finished) {
-                                render(fallbackText, '佚名', '现代', '');
-                            }
-                        });
-                        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+                        setTimeout(function() {
+                            clearInterval(checkInterval);
+                            useFallback();
+                        }, 5000);
                     })();
                     </script>
                     <?php endif; ?>
