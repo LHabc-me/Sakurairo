@@ -1853,7 +1853,7 @@ function theme_admin_notice_callback()
     }
 
     // 显示通知
-    $theme_name = 'Sakurairo';
+    $theme_name = 'Shinonomeiro';
     switch (get_user_locale()) {
         case 'zh_CN':
             $thankyou = '感谢你使用 ' . $theme_name . ' 主题！这里有一些需要你的许可的东西(*/ω＼*)';
@@ -2141,7 +2141,7 @@ function dash_scheme($key, $name, $col1, $col2, $col3, $base, $focus, $current, 
 //Sakurairo
 dash_scheme(
     $key = "sakurairo",
-    $name = "Sakurairo🌸",
+    $name = "Shinonomeiro🌅",
     $col1 = iro_opt('admin_second_class_color'),
     $col2 = iro_opt('admin_first_class_color'), 
     $col3 = iro_opt('admin_emphasize_color'),

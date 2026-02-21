@@ -1,11 +1,11 @@
 **简体中文**
-<h1 align="left">Theme Sakurairo</h1>
+<h1 align="left">Theme Shinonomeiro</h1>
 
 > 一款具有 AI 辅助阅读功能的 WordPress 主题，多彩、友好、功能全面、体验完善。
 
 ## 项目介绍
 
-Sakurairo 是一个基于 Sakura V3 系列重构开发的 WordPress 主题，提供：
+Shinonomeiro 是一个基于 Sakura V3 系列重构开发的 WordPress 主题，提供：
 
 - 可视化主题配置
 - 丰富的首页与文章展示样式
@@ -29,7 +29,7 @@ Sakurairo 是一个基于 Sakura V3 系列重构开发的 WordPress 主题，提
 
 ## 使用与发布
 
-- 本仓库 Release：https://github.com/LHabc-me/Sakurairo/releases
+- 本仓库 Release：https://github.com/LHabc-me/Shinonomeiro/releases
 - 建议通过 Release 页面下载对应版本并部署
 
 ## 贡献

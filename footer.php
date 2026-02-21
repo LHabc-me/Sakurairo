@@ -15,7 +15,7 @@ $reception_background = iro_opt('reception_background');
   <?php comments_template('', true); ?>
 </div><!-- #page Pjax container-->
   <footer id="colophon" class="site-footer" role="contentinfo">
-    <div class="site-info" theme-info="Sakurairo v<?php echo esc_html(IRO_VERSION); ?>">
+    <div class="site-info" theme-info="Shinonomeiro v<?php echo esc_html(IRO_VERSION); ?>">
       <div class="img-preload" style="display:none">
         <img alt="loading_svg" src="<?php echo esc_url(iro_opt('load_nextpage_svg')); ?>">
       </div>
@@ -58,7 +58,7 @@ $reception_background = iro_opt('reception_background');
               </svg>
             </div>
           <?php endif; ?>
-        <a href="https://github.com/mirai-mamori/Sakurairo" rel="noopener" target="_blank">Theme Sakurairo</a>
+        <a href="https://github.com/LHabc-me/Sakurairo" rel="noopener" target="_blank">Theme Shinonomeiro</a>
         <a href="https://docs.fuukei.org/" rel="noopener" target="_blank">by Fuukei</a>
       </div>
     </div><!-- .site-info -->
