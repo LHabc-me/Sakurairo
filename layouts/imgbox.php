@@ -338,48 +338,45 @@ $print_social_zone = function() use ($all_opt): void {
                     <?php if (iro_opt('cover_daily_poetry', false)) : ?>
                     <script>
                     (function () {
-                        const target = document.querySelector('.header-info > p#cover-signature-text');
-                        if (!target) return;
-
-                        const fallbackText = <?php echo wp_json_encode( iro_opt('cover_daily_poetry_fallback', '你来人间一趟，你要看看太阳。和你的心上人，一起走在街上。' ) ); ?>;
-                        const timeoutMs = <?php echo (int) iro_opt('cover_daily_poetry_timeout', 5000); ?>;
+                        const selector = '.header-info > p#cover-signature-text';
                         const sdkUrl = 'https://sdk.jinrishici.com/v2/browser/jinrishici.js';
+                        const fallbackText = <?php echo wp_json_encode( iro_opt('cover_daily_poetry_fallback', '你来人间一趟，你要看看太阳。和你的心上人，一起走在街上。' ) ); ?>;
+                        const timeoutMs = Math.max(1000, <?php echo (int) iro_opt('cover_daily_poetry_timeout', 5000); ?> || 5000);
+
+                        let target = null;
+                        let finished = false;
+                        let lastPayload = null;
+
+                        function colorSet() {
+                            return document.body.classList.contains('dark')
+                                ? { title: '#f9f8f9', text: '#f9f8f9', source: 'rgba(249,248,249,.75)' }
+                                : { title: '#efb73e', text: '#f9f8f9', source: 'rgba(249,248,249,.75)' };
+                        }
 
                         function render(content, author, dynasty) {
-                            const titleColor = document.body.classList.contains('dark') ? '#f9f8f9' : '#efb73e';
-                            const textColor = document.body.classList.contains('dark') ? '#f9f8f9' : '#2c3e50';
+                            if (!target) return;
+                            const colors = colorSet();
                             const source = [author, dynasty].filter(Boolean).join('·');
                             target.innerHTML =
-                                '<span style="font-weight:600;font-size:14px;line-height:1.8;color:' + titleColor + ';">今日诗词：</span><br>' +
-                                '<span style="font-size:13px;line-height:1.8;color:' + textColor + ';">' + (content || fallbackText) + '</span><br>' +
-                                '<span style="font-size:12px;line-height:1.5;color:rgba(255,255,255,.75);">' + source + '</span>';
+                                '<span style="font-weight:600;font-size:14px;line-height:1.8;color:' + colors.title + ';">今日诗词：</span><br>' +
+                                '<span style="font-size:13px;line-height:1.8;color:' + colors.text + ';">' + (content || fallbackText) + '</span><br>' +
+                                '<span style="font-size:12px;line-height:1.5;color:' + colors.source + ';">' + (source || '佚名·现代') + '</span>';
                         }
 
-                        function applyFallback() {
-                            render(fallbackText, '佚名', '现代');
-                        }
-
-                        let finished = false;
-                        function doneWith(payload) {
+                        function done(payload) {
                             if (finished) return;
                             finished = true;
-                            if (payload && payload.data) {
-                                render(payload.data.content, payload.data.author, payload.data.origin && payload.data.origin.dynasty);
+                            lastPayload = payload && payload.data ? payload : null;
+                            if (lastPayload) {
+                                render(lastPayload.data.content, lastPayload.data.author, lastPayload.data.origin && lastPayload.data.origin.dynasty);
                             } else {
-                                applyFallback();
+                                render(fallbackText, '佚名', '现代');
                             }
                         }
 
-                        const timer = window.setTimeout(function () {
-                            if (!finished) doneWith(null);
-                        }, Math.max(1000, timeoutMs || 5000));
-
-                        function boot() {
+                        function requestPoem() {
                             if (window.jinrishici && typeof window.jinrishici.load === 'function') {
-                                window.jinrishici.load(function (result) {
-                                    window.clearTimeout(timer);
-                                    doneWith(result);
-                                });
+                                window.jinrishici.load(function (result) { done(result); });
                                 return;
                             }
                             const script = document.createElement('script');
@@ -387,23 +384,38 @@ $print_social_zone = function() use ($all_opt): void {
                             script.async = true;
                             script.onload = function () {
                                 if (window.jinrishici && typeof window.jinrishici.load === 'function') {
-                                    window.jinrishici.load(function (result) {
-                                        window.clearTimeout(timer);
-                                        doneWith(result);
-                                    });
+                                    window.jinrishici.load(function (result) { done(result); });
                                 } else {
-                                    window.clearTimeout(timer);
-                                    doneWith(null);
+                                    done(null);
                                 }
                             };
-                            script.onerror = function () {
-                                window.clearTimeout(timer);
-                                doneWith(null);
-                            };
+                            script.onerror = function () { done(null); };
                             document.head.appendChild(script);
                         }
 
-                        boot();
+                        const startedAt = Date.now();
+                        const poll = window.setInterval(function () {
+                            target = document.querySelector(selector);
+                            if (target) {
+                                window.clearInterval(poll);
+                                requestPoem();
+                            } else if (Date.now() - startedAt >= timeoutMs) {
+                                window.clearInterval(poll);
+                                done(null);
+                            }
+                        }, 100);
+
+                        window.setTimeout(function () { done(null); }, timeoutMs);
+
+                        const observer = new MutationObserver(function () {
+                            if (!target) return;
+                            if (lastPayload && lastPayload.data) {
+                                render(lastPayload.data.content, lastPayload.data.author, lastPayload.data.origin && lastPayload.data.origin.dynasty);
+                            } else if (finished) {
+                                render(fallbackText, '佚名', '现代');
+                            }
+                        });
+                        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
                     })();
                     </script>
                     <?php endif; ?>
