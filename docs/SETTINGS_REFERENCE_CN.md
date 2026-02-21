@@ -1,195 +1,145 @@
-# Shinonomeiro 配置说明（中文）
+# Shinonomeiro 配置结构参考（重构版）
 
-> 适用范围：`inc/customizer.php` 当前分组结构（含自动补充的“扩展配置”分组）。
+> 本文对应 `inc/customizer.php` 当前信息架构。  
+> 目标：按用户任务心智组织配置，不改变底层 `iro_options` 的 key 语义。
 
-## 目录
+## 面板总览（9 大任务域）
 
-1. [全局与基础（iro_global）](#1-全局与基础iro_global)
-2. [首页首屏（iro_cover）](#2-首页首屏iro_cover)
-3. [首页内容（iro_homepage）](#3-首页内容iro_homepage)
-4. [页面与互动（iro_pages）](#4-页面与互动iro_pages)
-5. [扩展配置分组（自动生成）](#5-扩展配置分组自动生成)
-6. [填写与变更建议（通用）](#6-填写与变更建议通用)
-
----
-
-## 1. 全局与基础（iro_global）
-
-### 1.1 导航栏（`iro_nav`）
-- **用途**：控制导航样式、Logo、菜单布局、搜索与用户菜单。
-- **影响范围**：全站顶部导航（PC/移动端）。
-- **建议/注意**：
-  - 导航字体建议填写已加载字体名，避免回退导致视觉突变。
-  - 若启用文本 Logo，注意与图片 Logo 的优先级与显示冲突。
-
-### 1.2 主题配色（`iro_colors`）
-- **用途**：主题主色、深色模式颜色、组件透明度、封面取色。
-- **影响范围**：全站色彩系统与阅读视觉。
-- **建议/注意**：
-  - 深色模式下避免高饱和纯色，优先对比清晰但不刺眼的组合。
-  - 开启“从封面提取颜色”后，文章与首页色调会随封面变化。
-
-### 1.3 粒子效果（`iro_particles`）
-- **用途**：樱花/粒子动态效果与 JSON 参数。
-- **影响范围**：前台视觉性能与动效表现。
-- **建议/注意**：
-  - 低性能设备建议降低粒子数量或关闭。
-  - JSON 配置错误会导致效果失效，建议先在测试环境验证。
-
-### 1.4 页脚信息（`iro_footer`）
-- **用途**：页脚布局、文案、Hitokoto 接口与附加标识。
-- **影响范围**：全站底部信息区。
-- **建议/注意**：
-  - `footer_info` 支持 HTML，建议只放安全、精简内容。
-  - 自定义 Hitokoto API 时确保接口稳定并限制超时。
-
-### 1.5 全局补充项（`iro_global_others`）
-- **用途**：NProgress、平滑滚动、分页加载方式等。
-- **影响范围**：全站交互节奏与阅读连贯性。
-- **建议/注意**：
-  - 自动加载下一页与 PJAX 并用时，注意统计脚本去重。
-  - 对 SEO 敏感站点建议评估 Ajax 分页的抓取可见性。
+1. **用户信息**（`iro_user_profile`）
+2. **注入与自定义代码**（`iro_custom_code`）
+3. **首页展示**（`iro_home_display`）
+4. **文章阅读**（`iro_article_reading`）
+5. **评论互动**（`iro_comment_interaction`）
+6. **性能加速**（`iro_performance`）
+7. **第三方服务**（`iro_third_party`）
+8. **账号安全**（`iro_account_security`）
+9. **开发维护**（`iro_dev_maintenance`）
 
 ---
 
-## 2. 首页首屏（iro_cover）
+## 1) 用户信息
 
-### 2.1 Logo（`iro_cover_logo`）
-- **用途**：首屏头像、特效文字、字体与尺寸。
-- **影响范围**：首页第一屏视觉识别。
-- **建议/注意**：
-  - 特效文字字体建议与站点主字体风格一致。
-  - 字号过大可能在小屏设备换行或遮挡。
+### 1.1 头像与身份展示（`iro_cover_logo`）
+- 示例项：`personal_avatar`、`text_logo_options`、`text_logo_text`
+- 用途：管理首页头像、身份文案、特效字展示。
 
-### 2.2 外观（`iro_cover_apperance`）
-- **用途**：首屏启用、全屏、随机图、动画、壁纸显示。
-- **影响范围**：首页加载第一印象与动效强度。
-- **建议/注意**：
-  - 随机图 API 需保证可用性和响应速度。
-  - 隐藏开屏壁纸后建议保留足够视觉层次，避免“空白首屏”。
-
-### 2.3 信息栏（`iro_cover_info`）
-- **用途**：信息栏显示、签名、打字机效果、Typed.js 参数。
-- **影响范围**：首页信息展示与个性化文案。
-- **建议/注意**：
-  - 打字机参数建议逐项调整，过高速度会影响可读性。
-  - 签名文案支持换行，适合短句组合展示。
-
-### 2.4 其他（`iro_cover_other`）
-- **用途**：首屏与前台背景联动、下拉箭头、波浪等。
-- **影响范围**：首页与正文背景衔接效果。
-- **建议/注意**：
-  - 背景联动开启后，正文可读性依赖背景透明度配置。
-  - 深色模式中波浪等特效建议弱化避免分散注意力。
+### 1.2 社交与资料（`iro_legacy_group_user_profile`）
+- 示例项：`github`、`telegram`、`wechat_id`、`qq_id`、`email_name`
+- 用途：统一社交地址与对外资料，避免身份信息分散。
 
 ---
 
-## 3. 首页内容（iro_homepage）
+## 2) 注入与自定义代码
 
-### 3.1 总体布局（`iro_homepage_layout`）
-- **用途**：首页模块排序、展示区/文章区标题与图标。
-- **影响范围**：首页信息架构与访问动线。
-- **建议/注意**：
-  - 建议将“高频入口”模块放前，降低首屏滚动成本。
-
-### 3.2 展示区（`iro_display_aera`）
-- **用途**：胶囊组件（说说/公告/链接/在线信息）及公告文案。
-- **影响范围**：首页信息流的补充内容区。
-- **建议/注意**：
-  - 公告文案支持多行，建议控制在 2~4 行内。
-
-### 3.3 文章区（`iro_article_aera`）
-- **用途**：文章卡片样式、Meta 展示、圆角、标题字号。
-- **影响范围**：首页文章列表可读性与视觉密度。
-- **建议/注意**：
-  - 标题字号与卡片圆角需联动调节，避免视觉失衡。
-
-### 3.4 前台背景（`iro_background`）
-- **用途**：全局背景图、透明度、模糊、缩放方式、字体基础项。
-- **影响范围**：全站背景与基础排版风格。
-- **建议/注意**：
-  - 背景透明度+模糊并用时，优先保证正文对比度。
-
-### 3.5 小组件面板（`iro_widgets`）
-- **用途**：小组件面板样式、字体、昼夜切换按钮、背景按钮。
-- **影响范围**：侧边/浮层小组件交互体验。
-- **建议/注意**：
-  - 字体切换选项建议与全局字体池统一命名。
+### 2.1 代码注入（`iro_legacy_group_custom_code`）
+- 示例项：`site_custom_style`（CSS）、`site_header_insert`（页头注入）、`footer_addition`（页脚注入）
+- 用途：集中管理所有“手写注入类”配置。
 
 ---
 
-## 4. 页面与互动（iro_pages）
+## 3) 首页展示
+
+### 3.1 导航栏（`iro_nav`）
+- 示例项：`choice_of_nav_style`、`nav_menu_font`、`nav_user_menu`
+
+### 3.2 主题配色（`iro_color`）
+- 示例项：`theme_skin`、`theme_skin_dark`、`extract_theme_skin_from_cover`
+
+### 3.3 首屏外观（`iro_cover_display`）
+- 示例项：`cover_switch`、`cover_full_screen`、`cover_animation`
+
+### 3.4 首屏信息栏（`iro_cover_info`）
+- 示例项：`infor_bar`、`signature_text`、`signature_typing_json`
+
+### 3.5 首屏其他（`iro_cover_other`）
+- 示例项：`site_bg_as_cover`、`wave_effects`、`drop_down_arrow`
+
+### 3.6 首页模块布局（`iro_homepages_sections`）
+- 示例项：`homepage_components`、`static_page_id`、`post_area_title`
+
+### 3.7 展示区（`iro_display_aera`）
+- 示例项：`capsule_components`、`stat_announcement_text`
+
+### 3.8 文章卡片区（`iro_article_aera`）
+- 示例项：`post_list_design`、`article_meta_displays`、`post_title_font_size`
+
+### 3.9 前台背景（`iro_front`）
+- 示例项：`reception_background_img1`、`reception_background_blur`
+
+### 3.10 小组件面板（`iro_widgets`）
+- 示例项：`style_menu_radius`、`widget_daynight`、`global_font_2`
+
+### 3.11 首页扩展展示（`iro_legacy_group_home_display`）
+- 示例项：`cover_video`、`random_graphs_link`、`post_cover_options`
+
+---
+
+## 4) 文章阅读
 
 ### 4.1 页面通用（`iro_pages_common`）
-- **用途**：页面布局、标题动画、占位图。
-- **影响范围**：文章页与独立页通用体验。
-- **建议/注意**：
-  - 标题动画时长建议控制在 0.3~1.2s。
+- 示例项：`entry_content_style`、`page_title_animation`
 
 ### 4.2 文章页（`iro_pages_post`）
-- **用途**：标题样式、Meta 展示、目录、行内代码配色。
-- **影响范围**：文章阅读效率与信息可见性。
-- **建议/注意**：
-  - Meta 不宜过多，建议保留作者/时间/阅读时长等核心项。
+- 示例项：`article_title_font_size`、`article_auto_toc`、`inline_code_background_color`
 
-### 4.3 页面扩展（`iro_pages_extra`）
-- **用途**：功能条、版权协议、打赏区、作者信息。
-- **影响范围**：文章页互动与版权声明表达。
-- **建议/注意**：
-  - 打赏链接与图片建议使用 HTTPS 且定期检查有效性。
-
-### 4.4 评论区（`iro_pages_comment`）
-- **用途**：评论区展开方式、占位文案、提交按钮文案、表情包。
-- **影响范围**：评论参与率与互动体验。
-- **建议/注意**：
-  - 占位文案建议简洁友好，避免过长影响输入体验。
+### 4.3 文章扩展（`iro_pages_extra`）
+- 示例项：`article_function`、`article_lincenses`、`author_profile_avatar`
 
 ---
 
-## 5. 扩展配置分组（自动生成）
+## 5) 评论互动
 
-> 来源：`customizer-migrated-fields.php` 中的配置键，按功能自动归组展示。
+### 5.1 评论区（`iro_pages_comment`）
+- 示例项：`comment_area`、`comment_placeholder_text`、`smilies_list`
 
-### 5.1 站点身份与 SEO 扩展配置
-- **用途**：站点图标、SEO 元信息、基础行为参数。
-- **影响范围**：搜索可见性、站点识别与基础渲染逻辑。
-- **建议**：SEO 文案保持稳定，不频繁变更关键词与描述。
-
-### 5.2 搜索、加载与阅读体验扩展配置
-- **用途**：搜索范围、预加载、PJAX、懒加载等策略。
-- **影响范围**：页面切换速度、资源加载顺序、阅读连贯性。
-- **建议**：若出现统计异常，优先排查 PJAX/预加载脚本重复执行。
-
-### 5.3 封面、社交与身份展示扩展配置
-- **用途**：封面媒体、社交链接、个人信息展示。
-- **影响范围**：首页品牌呈现与社交跳转质量。
-- **建议**：社交链接统一使用完整 URL，避免相对路径。
-
-### 5.4 第三方服务与数据源扩展配置
-- **用途**：音乐、番剧、Steam、Bilibili、统计 API 等。
-- **影响范围**：外部数据展示与接口稳定性。
-- **建议**：对 API 设置超时与缓存，避免拖慢首页。
-
-### 5.5 评论与媒体上传扩展配置
-- **用途**：评论增强、表情包源、图床上传。
-- **影响范围**：评论可用性与媒体上传成功率。
-- **建议**：图床密钥按平台要求配置，并开启最小权限策略。
-
-### 5.6 账号、安全与后台扩展配置
-- **用途**：登录流程、验证码、后台样式、管理通知。
-- **影响范围**：后台安全性与管理体验。
-- **建议**：验证码/风控策略建议先灰度上线，避免误伤正常登录。
-
-### 5.7 性能、开发与更新扩展配置
-- **用途**：CDN、运行时库、调试开关、更新通道。
-- **影响范围**：资源加载速度、兼容性、版本升级风险。
-- **建议**：开发模式仅用于排障；生产环境建议关闭调试输出。
+### 5.2 评论与媒体（`iro_legacy_group_comment_media`）
+- 示例项：`comment_private_message`、`img_upload_api`、`mail_notify`
 
 ---
 
-## 6. 填写与变更建议（通用）
+## 6) 性能加速
 
-- 涉及 **HTML/CSS/脚本/API 文本块** 的字段，优先在测试环境验证后再上生产。
-- 涉及 **SEO/API/CDN/PJAX/ChatGPT** 的字段，建议记录变更时间与回滚值。
-- 开关类字段统一按“开启/关闭”语义使用；文本类字段仅用于输入内容，不承担布尔开关功能。
-- 修改后若前台无变化，清理页面缓存与对象缓存，再做二次验证。
+### 6.1 粒子与动效（`iro_particles`）
+- 示例项：`sakura_falling_effects`、`particles_effects`、`particles_json`
+
+### 6.2 加载与翻页（`iro_global_others`）
+- 示例项：`nprogress_on`、`smoothscroll_option`、`page_auto_load`
+
+### 6.3 搜索与加载策略（`iro_legacy_group_performance`）
+- 示例项：`search_filter`、`poi_pjax`、`preload_animation`、`page_lazyload`
+
+---
+
+## 7) 第三方服务
+
+### 7.1 外部服务接入（`iro_legacy_group_third_party_services`）
+- 示例项：`aplayer_server`、`steam_id`、`bilibili_id`、`chatgpt_endpoint`
+
+---
+
+## 8) 账号安全
+
+### 8.1 登录与安全（`iro_legacy_group_auth_admin`）
+- 示例项：`custom_login_switch`、`captcha_select`、`turnstile_site_key`
+
+---
+
+## 9) 开发维护
+
+### 9.1 页脚信息（`iro_footer`）
+- 示例项：`footer_info`、`footer_yiyan`、`hide_theme_info_switch`
+
+### 9.2 站点基础与维护（`iro_legacy_group_dev_maintenance`）
+- 示例项：`favicon_link`、`iro_meta_description`、`iro_update_source`、`dev_mode`
+
+---
+
+## 字段类型规范（本次重构约束）
+
+- **布尔开关统一为 `checkbox`**。
+- **长文本统一用 `textarea` / `code`**（按语义自动区分）。
+- 历史 key 继续使用原始 `iro_key` 保存，读取逻辑保持兼容。
+
+## 备注
+
+- 历史项的 key 分桶与旧位置迁移清单见：`docs/SETTINGS_REFACTOR_MAPPING.md`。
