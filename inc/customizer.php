@@ -2807,6 +2807,11 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'all' => esc_html__( '屏蔽大部分错误', 'Shinonomeiro_C' ),
 				'inner' => esc_html__( '全部关闭', 'Shinonomeiro_C' ),
 			],
+			'theme_darkmode_strategy' => [
+				'time' => esc_html__( '按时间自动切换', 'Shinonomeiro_C' ),
+				'client' => esc_html__( '跟随系统外观', 'Shinonomeiro_C' ),
+				'eien' => esc_html__( '始终深色模式', 'Shinonomeiro_C' ),
+			],
 		];
 
 		foreach ( $legacy_migrated_keys as $legacy_key ) {
