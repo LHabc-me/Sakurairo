@@ -273,13 +273,13 @@ $sections = [
 				)
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'cover_random_graphs_switch',
 				'iro_key'  => 'cover_random_graphs_switch',
 				'label'    => esc_html__( 'Switch Button of Random Images', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'nav_user_menu',
 				'label'    => esc_html__( 'Nav User Menu', 'Shinonomeiro_C' ),
 				'description' => esc_html__( 'It is on by default. The user avatar and menu will be displayed.', 'Shinonomeiro_C' ),
@@ -287,7 +287,7 @@ $sections = [
 				'iro_key'  => 'nav_user_menu',
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'nav_menu_search',
 				'iro_key'  => 'nav_menu_search',
 				'label'    => esc_html__( 'Nav Menu Search', 'Shinonomeiro_C' ),
@@ -317,14 +317,14 @@ $sections = [
 		'fields'      =>[
 			// ====================主题色====================
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'extract_theme_skin_from_cover',
 				'iro_key'  => 'extract_theme_skin_from_cover',
 				'label'    => esc_html__( 'Extract Theme Color from Cover Image', 'Shinonomeiro_C' ),
 				'description' => esc_html__('After turning on,the theme color will be taken from the homepage cover', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'extract_article_highlight_from_feature',
 				'iro_key'  => 'extract_article_highlight_from_feature',
 				'label'    => esc_html__( 'Extract Article Highlight from Featured Image', 'Shinonomeiro_C' ),
@@ -418,7 +418,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'text_logo_options',
 				'label'    => esc_html__( 'Enable Mashiro Special Effects Text', 'Shinonomeiro_C' ),
 				'description' => __('After turning it on, it will replace your avatar on the homepage','Shinonomeiro_C'),
@@ -528,13 +528,13 @@ $sections = [
 
 		'fields'      =>[
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'cover_switch',
 				'label'    => esc_html__( 'Enable Cover', 'Shinonomeiro_C' ),
 				'iro_key'  => 'cover_switch',
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'cover_full_screen',
 				'label'    => esc_html__( 'Cover Full Screen', 'Shinonomeiro_C' ),
 				'iro_key'  => 'cover_full_screen',
@@ -567,7 +567,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'cover_half_screen_curve',
 				'label'    => esc_html__( 'Cover Arc Occlusion (Below)', 'Shinonomeiro_C' ),
 				'iro_key'  => 'cover_half_screen_curve',
@@ -585,7 +585,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'cover_animation',
 				'label'    => esc_html__( 'Cover Animation', 'Shinonomeiro_C' ),
 				'iro_key'  => 'cover_animation',
@@ -621,7 +621,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'hide_splash_wallpaper_switch',
 				'iro_key'  => 'hide_splash_wallpaper_switch',
 				'label'    => esc_html__( 'Hide Splash Wallpaper', 'Shinonomeiro_C' ),
@@ -646,7 +646,7 @@ $sections = [
 
 		'fields'      =>[
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'infor_bar',
 				'iro_key'  => 'infor_bar',
 				'label'    => esc_html__( 'Cover Info Bar', 'Shinonomeiro_C' ),
@@ -814,7 +814,7 @@ $sections = [
 				),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'signature_typing',
 				'iro_key'  => 'signature_typing',
 				'label'    => esc_html__( 'Cover Signature Bar Typing Effects', 'Shinonomeiro_C' ),
@@ -827,7 +827,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'signature_typing_marks',
 				'iro_key'  => 'signature_typing_marks',
 				'label'    => esc_html__( 'Cover Signature Field Typing Effects Double Quotes', 'Shinonomeiro_C' ),
@@ -876,14 +876,14 @@ $sections = [
 
 		'fields'      =>[
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'site_bg_as_cover',
 				'iro_key'  => 'site_bg_as_cover',
 				'label'    => esc_html__( 'Cover and Frontend Background Integration', 'Shinonomeiro_C' ),
 				'description' => esc_html__( 'When enabled, the background of the cover will be set to transparent, while the frontend background will use the cover\'s random image API', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'post_cover_as_bg',
 				'iro_key'  => 'post_cover_as_bg',
 				'label'    => esc_html__( 'Post Cover As Background', 'Shinonomeiro_C' ),
@@ -897,20 +897,20 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'wave_effects',
 				'iro_key'  => 'wave_effects',
 				'label'    => esc_html__( 'Cover Wave Effects', 'Shinonomeiro_C' ),
 				'description' => __('It will be forced off in the dark mode','Shinonomeiro_C'),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'drop_down_arrow',
 				'iro_key'  => 'drop_down_arrow',
 				'label'    => esc_html__( 'Cover Dropdown Arrow', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'drop_down_arrow_mobile',
 				'iro_key'  => 'drop_down_arrow_mobile',
 				'label'    => esc_html__( 'Cover Dropdown Arrow Display on Mobile Devices', 'Shinonomeiro_C' ),
@@ -1117,7 +1117,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'show_medal_capsules',
 				'iro_key'  => 'show_medal_capsules',
 				'label'    => esc_html__( 'Show Medal Badges Style Capsule', 'Shinonomeiro_C' ),
@@ -1191,13 +1191,13 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'article_meta_background_compatible',
 				'iro_key'  => 'article_meta_background_compatible',
 				'label'    => esc_html__( 'Article Area Card Information Meta Background Compatible', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'show_shuoshuo_on_home_page',
 				'iro_key'  => 'show_shuoshuo_on_home_page',
 				'label'    => esc_html__( 'Show shuoshuo on home page', 'Shinonomeiro_C' ),
@@ -1307,7 +1307,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'reception_background_blur',
 				'iro_key'  => 'reception_background_blur',
 				'label'    => esc_html__( 'Background Transparency Blur', 'Shinonomeiro_C' ),
@@ -1439,19 +1439,19 @@ $sections = [
 				'label'    => esc_html__( 'Widgets Panel Font', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'sakura_widget',
 				'iro_key'  => 'sakura_widget',
 				'label'    => esc_html__( 'Widgets Panel WP Widget Area', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'iro_widget_daynight',
 				'iro_key'  => 'widget_daynight',
 				'label'    => esc_html__( 'Widgets Panel Day&Night Switching', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'iro_widget_font',
 				'iro_key'  => 'widget_font',
 				'label'    => esc_html__( 'Widgets Panel Font Switching', 'Shinonomeiro_C' ),
@@ -1478,7 +1478,7 @@ $sections = [
 			],
 			//四个背景按钮
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'reception_background_heart_shaped',
 				'iro_key'  => 'reception_background',
 				'iro_subkey'  => 'heart_shaped',
@@ -1492,7 +1492,7 @@ $sections = [
 				'label'    => esc_html__( '♡Corresponding Background', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'reception_background_star_shaped',
 				'iro_key'  => 'reception_background',
 				'iro_subkey'  => 'star_shaped',
@@ -1506,7 +1506,7 @@ $sections = [
 				'label'    => esc_html__( '☆Corresponding Background', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'reception_background_square_shaped',
 				'iro_key'  => 'reception_background',
 				'iro_subkey'  => 'square_shaped',
@@ -1520,7 +1520,7 @@ $sections = [
 				'label'    => esc_html__( '□Corresponding Background', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'reception_background_lemon_shaped',
 				'iro_key'  => 'reception_background',
 				'iro_subkey'  => 'lemon_shaped',
@@ -1557,7 +1557,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'particles_effects',
 				'iro_key'  => 'particles_effects',
 				'label'    => esc_html__( 'Particles Effects', 'Shinonomeiro_C' ),
@@ -1600,7 +1600,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'footer_sakura',
 				'iro_key'  => 'footer_sakura',
 				'label'    => esc_html__( 'Footer Sakura Icon', 'Shinonomeiro_C' ),
@@ -1636,19 +1636,19 @@ $sections = [
 				),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'footer_load_occupancy',
 				'iro_key'  => 'footer_load_occupancy',
 				'label'    => esc_html__( 'Footer Load Occupancy Query', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'footer_upyun',
 				'iro_key'  => 'footer_upyun',
 				'label'    => esc_html__( 'Footer Upyun League Logo', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'footer_yiyan',
 				'iro_key'  => 'footer_yiyan',
 				'label'    => esc_html__( 'Footer Hitokoto', 'Shinonomeiro_C' ),
@@ -1680,14 +1680,14 @@ $sections = [
 
 		'fields'      =>[
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'nprogress_on',
 				'iro_key'  => 'nprogress_on',
 				'label'    => esc_html__( 'NProgress Loading Progress Bar', 'Shinonomeiro_C' ),
 				'description' => esc_html__('Enabled by default, when loading page there will be a progress bar alert','Shinonomeiro_C'),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'hide_theme_info_switch',
 				'iro_key'  => 'hide_theme_info_switch',
 				'label'    => esc_html__( 'Hide Theme Info', 'Shinonomeiro_C' ),
@@ -1695,7 +1695,7 @@ $sections = [
 				'default'  => false,
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'smoothscroll_option',
 				'iro_key'  => 'smoothscroll_option',
 				'label'    => esc_html__( 'Global Smooth Scroll', 'Shinonomeiro_C' ),
@@ -1765,13 +1765,13 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'patternimg',
 				'iro_key'  => 'patternimg',
 				'label'    => esc_html__( 'Page Decoration Image', 'Shinonomeiro_C' ),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'page_title_animation',
 				'iro_key'  => 'page_title_animation',
 				'label'    => esc_html__( 'Page Title Animation', 'Shinonomeiro_C' ),
@@ -1844,7 +1844,7 @@ $sections = [
 				),
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'article_title_line',
 				'iro_key'  => 'article_title_line',
 				'label'    => esc_html__( 'Article Page Title Underline Animation', 'Shinonomeiro_C' ),
@@ -1868,7 +1868,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'article_auto_toc',
 				'iro_key'  => 'article_auto_toc',
 				'label'    => esc_html__( 'Article Page Auto Show Menu', 'Shinonomeiro_C' ),
@@ -1918,7 +1918,7 @@ $sections = [
 
 		'fields'      =>[
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'article_function',
 				'iro_key'  => 'article_function',
 				'label'    => esc_html__( 'Article Page Function Bar', 'Shinonomeiro_C' ),
@@ -2020,7 +2020,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'author_profile_avatar',
 				'iro_key'  => 'author_profile_avatar',
 				'label'    => esc_html__( 'Article Page Author Avatar', 'Shinonomeiro_C' ),
@@ -2033,7 +2033,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'author_profile_name',
 				'iro_key'  => 'author_profile_name',
 				'label'    => esc_html__( 'Article Page Author Name', 'Shinonomeiro_C' ),
@@ -2046,7 +2046,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'author_profile_quote',
 				'iro_key'  => 'author_profile_quote',
 				'label'    => esc_html__( 'Article Page Author Signature', 'Shinonomeiro_C' ),
@@ -2059,7 +2059,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'article_modified_time',
 				'iro_key'  => 'article_modified_time',
 				'label'    => esc_html__( 'Article Last Update Time', 'Shinonomeiro_C' ),
@@ -2072,7 +2072,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'article_tag',
 				'iro_key'  => 'article_tag',
 				'label'    => esc_html__( 'Article Tag', 'Shinonomeiro_C' ),
@@ -2085,7 +2085,7 @@ $sections = [
 				],
 			],
 			[
-				'type'     => 'switch',
+				'type'     => 'checkbox',
 				'settings' => 'article_nextpre',
 				'iro_key'  => 'article_nextpre',
 				'label'    => esc_html__( 'Article Page Prev/Next Article Switcher', 'Shinonomeiro_C' ),
