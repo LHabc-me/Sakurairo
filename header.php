@@ -38,7 +38,7 @@ function use_customize_data() { // 模版中加载，解决其他位置获取不
 }
 if ( is_customize_preview() ) { use_customize_data(); } //预览模式将临时值写入theme_mod中的iro_options
 
-$core_lib_basepath = iro_opt('core_library_basepath') ? get_template_directory_uri() : (iro_opt('lib_cdn_path', 'https://fastly.jsdelivr.net/gh/mirai-mamori/Shinonomeiro@') . IRO_VERSION);
+$core_lib_basepath = iro_opt('core_library_basepath') ? get_template_directory_uri() : (iro_opt('lib_cdn_path', 'https://fastly.jsdelivr.net/gh/LHabc-me/Shinonomeiro@') . IRO_VERSION);
 $nav_text_logo = iro_opt('nav_text_logo');
 $vision_resource_basepath = iro_opt('vision_resource_basepath');
 header('X-Frame-Options: SAMEORIGIN');

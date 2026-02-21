@@ -75,8 +75,8 @@ if (!function_exists('iro_opt_update')) {
     }
 }
 
-$shared_lib_basepath = iro_opt('shared_library_basepath') ? get_template_directory_uri() : (iro_opt('lib_cdn_path', 'https://fastly.jsdelivr.net/gh/mirai-mamori/Shinonomeiro@') . IRO_VERSION);
-$core_lib_basepath = iro_opt('core_library_basepath') ? get_template_directory_uri() : (iro_opt('lib_cdn_path', 'https://fastly.jsdelivr.net/gh/mirai-mamori/Shinonomeiro@') . IRO_VERSION);
+$shared_lib_basepath = iro_opt('shared_library_basepath') ? get_template_directory_uri() : (iro_opt('lib_cdn_path', 'https://fastly.jsdelivr.net/gh/LHabc-me/Shinonomeiro@') . IRO_VERSION);
+$core_lib_basepath = iro_opt('core_library_basepath') ? get_template_directory_uri() : (iro_opt('lib_cdn_path', 'https://fastly.jsdelivr.net/gh/LHabc-me/Shinonomeiro@') . IRO_VERSION);
 
 // 屏蔽php日志信息
 if (iro_opt('php_notice_filter') != 'inner') {
@@ -106,7 +106,7 @@ function UpdateCheck($url, $flag = 'Shinonomeiro')
 }
 switch (iro_opt('iro_update_source')) {
     case 'github':
-        $iroThemeUpdateChecker = UpdateCheck('https://github.com/mirai-mamori/Shinonomeiro', 'Shinonomeiro');
+        $iroThemeUpdateChecker = UpdateCheck('https://github.com/LHabc-me/Shinonomeiro', 'Shinonomeiro');
         break;
     case 'upyun':
         $iroThemeUpdateChecker = UpdateCheck('https://api.fuukei.org/update/jsdelivr.json');
@@ -2740,7 +2740,7 @@ function register_shortcodes() {
 
     add_shortcode('ghcard', function($attr, $content = '') {
         //获取内容
-        $atts = shortcode_atts(array("path" => "mirai-mamori/Shinonomeiro"), $attr);
+        $atts = shortcode_atts(array("path" => "LHabc-me/Shinonomeiro"), $attr);
 
         $path = trim($atts['path']);
 
