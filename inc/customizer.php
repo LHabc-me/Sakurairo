@@ -784,6 +784,53 @@ $sections = [
 			],
 		],
     ],
+	// ====================首屏诗词====================
+	[
+        'id'          => 'iro_custom_code_cover_poetry',
+        'title'       => esc_html__( '首屏诗词', 'Shinonomeiro_C' ),
+        'description' => esc_html__( '在首页信息栏展示今日诗词，可自定义超时与兜底文案。', 'Shinonomeiro_C' ),
+        'panel'       => 'iro_custom_code',
+
+		'fields'      =>[
+			[
+				'type'     => 'checkbox',
+				'settings' => 'cover_daily_poetry',
+				'iro_key'  => 'cover_daily_poetry',
+				'label'    => esc_html__( '启用首屏今日诗词', 'Shinonomeiro_C' ),
+			],
+			[
+				'type'     => 'slider',
+				'settings' => 'cover_daily_poetry_timeout',
+				'iro_key'  => 'cover_daily_poetry_timeout',
+				'label'    => esc_html__( '诗词接口超时（毫秒）', 'Shinonomeiro_C' ),
+				'choices'  => [
+					'min'  => 1000,
+					'max'  => 10000,
+					'step' => 500,
+				],
+				'active_callback' => [
+					[
+						'setting'  => 'cover_daily_poetry',
+						'operator' => '==',
+						'value'    => true,
+					]
+				],
+			],
+			[
+				'type'     => 'text',
+				'settings' => 'cover_daily_poetry_fallback',
+				'iro_key'  => 'cover_daily_poetry_fallback',
+				'label'    => esc_html__( '诗词兜底文案', 'Shinonomeiro_C' ),
+				'active_callback' => [
+					[
+						'setting'  => 'cover_daily_poetry',
+						'operator' => '==',
+						'value'    => true,
+					]
+				],
+			],
+		],
+	],
 	// ====================封面信息栏====================
 	[
         'id'          => 'iro_cover_info',
@@ -2305,6 +2352,13 @@ $sections = [
 			],
 		],
 	],
+	[
+        'id'          => 'iro_pages_comment_media',
+        'title'       => esc_html__( '评论媒体上传', 'Shinonomeiro_C' ),
+        'description' => esc_html__( '图床、邮件通知与评论媒体相关能力。', 'Shinonomeiro_C' ),
+        'panel'       => 'iro_comment_interaction',
+		'fields'      => [],
+	],
 ];
 
 $legacy_migrated_keys_file = __DIR__ . '/customizer-migrated-fields.php';
@@ -2342,24 +2396,36 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
                 'merge_to_section' => 'iro_cover_other',
                 'prefixes' => [ 'cover_', 'random_graphs_', 'cache_cover', 'exhibition', 'post_cover_' ],
             ],
-            'iro_legacy_group_third_party_services' => [
-                'title' => esc_html__( '外部服务接入', 'Shinonomeiro_C' ),
-                'description' => esc_html__( '用于接入音乐、番剧、Steam、Bilibili 与统计服务等外部数据源。', 'Shinonomeiro_C' ),
+            'iro_legacy_group_third_party_media' => [
+                'title' => esc_html__( '媒体与内容服务', 'Shinonomeiro_C' ),
+                'description' => esc_html__( '用于接入音乐、番剧、Steam、Bilibili 等内容服务。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_third_party',
-                'prefixes' => [ 'aplayer_', 'custom_music_', 'bangumi_', 'my_anime_', 'bilibili_', 'bili', 'steam_', 'steam', 'friend_link_', 'statistics_', 'google_analytics_', 'chatgpt_' ],
+                'prefixes' => [ 'aplayer_', 'custom_music_', 'bangumi_', 'my_anime_', 'bilibili_', 'bili', 'steam_', 'steam', 'friend_link_', 'chatgpt_' ],
+            ],
+            'iro_legacy_group_third_party_analytics' => [
+                'title' => esc_html__( '统计与追踪服务', 'Shinonomeiro_C' ),
+                'description' => esc_html__( '用于配置站点统计、分析脚本与外部追踪服务。', 'Shinonomeiro_C' ),
+                'panel' => 'iro_third_party',
+                'prefixes' => [ 'statistics_', 'google_analytics_' ],
             ],
             'iro_legacy_group_comment_media' => [
                 'title' => esc_html__( '评论与媒体', 'Shinonomeiro_C' ),
                 'description' => esc_html__( '用于配置评论增强、表情包与图片上传通道。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_comment_interaction',
-                'merge_to_section' => 'iro_pages_comment',
+                'merge_to_section' => 'iro_pages_comment_media',
                 'prefixes' => [ 'smilies_', 'comment_', 'qq_avatar_', 'img_', 'imgur_', 'smms_', 'chever', 'lsky_', 'mail_' ],
             ],
-            'iro_legacy_group_auth_admin' => [
-                'title' => esc_html__( '登录与安全', 'Shinonomeiro_C' ),
-                'description' => esc_html__( '用于管理登录流程、验证码、安全策略与后台外观通知。', 'Shinonomeiro_C' ),
+            'iro_legacy_group_auth_login' => [
+                'title' => esc_html__( '登录与后台', 'Shinonomeiro_C' ),
+                'description' => esc_html__( '用于管理登录页、后台提示与管理入口相关设置。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_account_security',
-                'prefixes' => [ 'custom_login_', 'login_', 'captcha_', 'vaptcha_', 'turnstile_', 'admin_', 'admin_notify' ],
+                'prefixes' => [ 'custom_login_', 'login_', 'admin_', 'admin_notify' ],
+            ],
+            'iro_legacy_group_auth_captcha' => [
+                'title' => esc_html__( '验证码与防护', 'Shinonomeiro_C' ),
+                'description' => esc_html__( '用于配置验证码、人机校验与登录防护策略。', 'Shinonomeiro_C' ),
+                'panel' => 'iro_account_security',
+                'prefixes' => [ 'captcha_', 'vaptcha_', 'turnstile_' ],
             ],
             'iro_legacy_group_dev_maintenance' => [
                 'title' => esc_html__( '站点基础与维护', 'Shinonomeiro_C' ),
