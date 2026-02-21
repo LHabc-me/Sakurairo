@@ -157,30 +157,37 @@ if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
 		$key = strtolower( (string) $legacy_key );
 
 		$description_map = [
-			'custom_style'            => '自定义 CSS 样式代码（输出到前台样式表）。',
-			'header_insert'           => '注入到站点 <head> 区域的 HTML/脚本代码。',
-			'footer_addition'         => '注入到页脚区域的附加 HTML/脚本代码。',
-			'meta_description'        => '站点 SEO 描述内容（用于页面描述元信息）。',
-			'google_analytics'        => 'Google Analytics 统计脚本或统计 ID。',
-			'statistics_api'          => '站点统计服务 API 地址或请求配置。',
-			'statistics_format'       => '站点统计数据展示格式模板。',
-			'channel_validate_value'  => '渠道校验值（用于请求来源校验）。',
-			'social_'                 => '社交账号链接或展示信息。',
-			'wechat_'                 => '微信相关账号信息或二维码地址。',
-			'qq_'                     => 'QQ 账号信息或头像来源配置。',
-			'captcha_'                => '验证码服务参数（开关、密钥或校验地址）。',
-			'turnstile_'              => 'Cloudflare Turnstile 验证配置。',
-			'vaptcha_'                => 'Vaptcha 验证服务配置。',
-			'aplayer_'                => 'APlayer 播放器与歌单来源配置。',
+			'custom_style'            => esc_html__( '自定义 CSS 样式代码（输出到前台样式表）。', 'Shinonomeiro_C' ),
+			'header_insert'           => esc_html__( '注入到站点 <head> 区域的 HTML/脚本代码。', 'Shinonomeiro_C' ),
+			'footer_addition'         => esc_html__( '注入到页脚区域的附加 HTML/脚本代码。', 'Shinonomeiro_C' ),
+			'meta_description'        => esc_html__( '站点 SEO 描述内容（用于页面描述元信息）。', 'Shinonomeiro_C' ),
+			'google_analytics'        => esc_html__( 'Google Analytics 统计脚本或统计 ID。', 'Shinonomeiro_C' ),
+			'statistics_api'          => esc_html__( '站点统计服务 API 地址或请求配置。', 'Shinonomeiro_C' ),
+			'statistics_format'       => esc_html__( '站点统计数据展示格式模板。', 'Shinonomeiro_C' ),
+			'channel_validate_value'  => esc_html__( '渠道校验值（用于请求来源校验）。', 'Shinonomeiro_C' ),
+			'social_'                 => esc_html__( '社交账号链接或展示信息。', 'Shinonomeiro_C' ),
+			'wechat_'                 => esc_html__( '微信相关账号信息或二维码地址。', 'Shinonomeiro_C' ),
+			'qq_'                     => esc_html__( 'QQ 账号信息或头像来源配置。', 'Shinonomeiro_C' ),
+			'captcha_'                => esc_html__( '验证码服务参数（开关、密钥或校验地址）。', 'Shinonomeiro_C' ),
+			'turnstile_'              => esc_html__( 'Cloudflare Turnstile 验证配置。', 'Shinonomeiro_C' ),
+			'vaptcha_'                => esc_html__( 'Vaptcha 验证服务配置。', 'Shinonomeiro_C' ),
+			'aplayer_'                => esc_html__( 'APlayer 播放器与歌单来源配置。', 'Shinonomeiro_C' ),
 		];
 
 		foreach ( $description_map as $marker => $description ) {
 			if ( false !== strpos( $key, $marker ) ) {
-				return sprintf( '配置键：%s。%s', $legacy_key, $description );
+				return sprintf(
+					esc_html__( '配置键：%1$s。%2$s', 'Shinonomeiro_C' ),
+					esc_html( (string) $legacy_key ),
+					$description
+				);
 			}
 		}
 
-		return sprintf( '配置键：%s。该项来自旧版配置迁移，请按该键历史用途填写。', $legacy_key );
+		return sprintf(
+			esc_html__( '配置键：%1$s。该项用于兼容历史配置，请按原功能填写。', 'Shinonomeiro_C' ),
+			esc_html( (string) $legacy_key )
+		);
 	}
 }
 
