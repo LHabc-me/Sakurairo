@@ -19,8 +19,6 @@ if ( ! class_exists( 'Kirki' ) ) {
 	define( 'KIRKI_NO_GUTENBERG_OUTPUT', true );
 }
 
-// 强制优先中文文案（未命中时回退到当前站点语言）
-load_textdomain( 'Shinonomeiro_C', __DIR__ . '/lang/zh_CN.mo' );
 load_textdomain( 'Shinonomeiro_C', __DIR__ . '/lang/' . get_locale() . '.mo' );
 
 // 面板部分
@@ -626,8 +624,8 @@ $sections = [
 				'type'     => 'checkbox',
 				'settings' => 'hide_splash_wallpaper_switch',
 				'iro_key'  => 'hide_splash_wallpaper_switch',
-				'label'    => esc_html__( 'Hide Splash Wallpaper', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'If enabled, the splash wallpaper and related effects on the homepage will be hidden.', 'Shinonomeiro_C' ),
+				'label'    => esc_html__( '隐藏开屏壁纸', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '启用后，仅隐藏首页开屏壁纸与相关效果，不移除容器结构。', 'Shinonomeiro_C' ),
 				'default'  => false,
 				'active_callback' => [
 					[
@@ -1338,7 +1336,7 @@ $sections = [
 				'settings' => 'global_default_font',
 				'iro_key'  => 'global_default_font',
 				'label'    => esc_html__( 'Global Default Font', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'Fill in the font name,and you can add your customize font in Font Options of Global Options in iro-Options.', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '填写字体名称后，可在“Shinonomeiro Options -> 全局设置 -> 字体设置”中添加自定义字体。', 'Shinonomeiro_C' ),
 				'transport'   => 'auto',
 				'output' => array(
 					array(
@@ -1692,7 +1690,7 @@ $sections = [
 				'type'     => 'checkbox',
 				'settings' => 'hide_theme_info_switch',
 				'iro_key'  => 'hide_theme_info_switch',
-				'label'    => esc_html__( 'Hide Theme Info', 'Shinonomeiro_C' ),
+				'label'    => esc_html__( '隐藏主题信息', 'Shinonomeiro_C' ),
 				'description' => esc_html__( 'Hide the footer theme information block.', 'Shinonomeiro_C' ),
 				'default'  => false,
 			],
