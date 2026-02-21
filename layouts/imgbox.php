@@ -334,7 +334,79 @@ $print_social_zone = function() use ($all_opt): void {
                     <?= iro_opt('signature_typing_json', ''); ?>
                     </script>
                     <?php endif; ?>
-                    <p><?php echo iro_opt('signature_text', 'Hi, Mashiro?'); ?></p>
+                    <p id="cover-signature-text"><?php echo iro_opt('signature_text', 'Hi, Mashiro?'); ?></p>
+                    <?php if (iro_opt('cover_daily_poetry', false)) : ?>
+                    <script>
+                    (function () {
+                        const target = document.querySelector('.header-info > p#cover-signature-text');
+                        if (!target) return;
+
+                        const fallbackText = <?php echo wp_json_encode( iro_opt('cover_daily_poetry_fallback', '你来人间一趟，你要看看太阳。和你的心上人，一起走在街上。' ) ); ?>;
+                        const timeoutMs = <?php echo (int) iro_opt('cover_daily_poetry_timeout', 5000); ?>;
+                        const sdkUrl = 'https://sdk.jinrishici.com/v2/browser/jinrishici.js';
+
+                        function render(content, author, dynasty) {
+                            const titleColor = document.body.classList.contains('dark') ? '#f9f8f9' : '#efb73e';
+                            const textColor = document.body.classList.contains('dark') ? '#f9f8f9' : '#2c3e50';
+                            const source = [author, dynasty].filter(Boolean).join('·');
+                            target.innerHTML =
+                                '<span style="font-weight:600;font-size:14px;line-height:1.8;color:' + titleColor + ';">今日诗词：</span><br>' +
+                                '<span style="font-size:13px;line-height:1.8;color:' + textColor + ';">' + (content || fallbackText) + '</span><br>' +
+                                '<span style="font-size:12px;line-height:1.5;color:rgba(255,255,255,.75);">' + source + '</span>';
+                        }
+
+                        function applyFallback() {
+                            render(fallbackText, '佚名', '现代');
+                        }
+
+                        let finished = false;
+                        function doneWith(payload) {
+                            if (finished) return;
+                            finished = true;
+                            if (payload && payload.data) {
+                                render(payload.data.content, payload.data.author, payload.data.origin && payload.data.origin.dynasty);
+                            } else {
+                                applyFallback();
+                            }
+                        }
+
+                        const timer = window.setTimeout(function () {
+                            if (!finished) doneWith(null);
+                        }, Math.max(1000, timeoutMs || 5000));
+
+                        function boot() {
+                            if (window.jinrishici && typeof window.jinrishici.load === 'function') {
+                                window.jinrishici.load(function (result) {
+                                    window.clearTimeout(timer);
+                                    doneWith(result);
+                                });
+                                return;
+                            }
+                            const script = document.createElement('script');
+                            script.src = sdkUrl;
+                            script.async = true;
+                            script.onload = function () {
+                                if (window.jinrishici && typeof window.jinrishici.load === 'function') {
+                                    window.jinrishici.load(function (result) {
+                                        window.clearTimeout(timer);
+                                        doneWith(result);
+                                    });
+                                } else {
+                                    window.clearTimeout(timer);
+                                    doneWith(null);
+                                }
+                            };
+                            script.onerror = function () {
+                                window.clearTimeout(timer);
+                                doneWith(null);
+                            };
+                            document.head.appendChild(script);
+                        }
+
+                        boot();
+                    })();
+                    </script>
+                    <?php endif; ?>
                     <?php if (iro_opt('infor_bar_style') === 'v2') : ?>
                         <div class="top-social_v2">
                             <?php $print_social_zone(); ?>
