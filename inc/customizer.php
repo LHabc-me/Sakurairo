@@ -2177,7 +2177,8 @@ $sections = [
 ];
 
 $legacy_migrated_keys_file = __DIR__ . '/customizer-migrated-fields.php';
-if ( file_exists( $legacy_migrated_keys_file ) ) {
+$enable_legacy_migrated_section = (bool) apply_filters( 'shinonomeiro_enable_migrated_legacy_section', true );
+if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file ) ) {
 	$legacy_migrated_keys = require $legacy_migrated_keys_file;
 	if ( is_array( $legacy_migrated_keys ) && ! empty( $legacy_migrated_keys ) ) {
 		$legacy_group_rules = [
