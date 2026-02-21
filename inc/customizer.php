@@ -115,7 +115,21 @@ $vision_resource_basepath = iro_opt('vision_resource_basepath', 'https://s.nmxc.
 
 if ( ! function_exists( 'iro_customizer_friendly_label_from_key' ) ) {
 	function iro_customizer_friendly_label_from_key( $key ) {
-		$label = trim( preg_replace( '/\s+/', ' ', str_replace( '_', ' ', (string) $key ) ) );
+		$raw_key = (string) $key;
+		$explicit_label_map = [
+			'random_graphs_mts' => esc_html__( '随机封面图数量', 'Shinonomeiro_C' ),
+			'random_graphs_link' => esc_html__( '随机封面图接口地址', 'Shinonomeiro_C' ),
+			'random_graphs_options' => esc_html__( '随机封面图策略', 'Shinonomeiro_C' ),
+		];
+		if ( isset( $explicit_label_map[ $raw_key ] ) ) {
+			return $explicit_label_map[ $raw_key ];
+		}
+
+		if ( 0 === strpos( $raw_key, 'random_graphs_' ) ) {
+			return esc_html__( '随机封面图设置', 'Shinonomeiro_C' );
+		}
+
+		$label = trim( preg_replace( '/\s+/', ' ', str_replace( '_', ' ', $raw_key ) ) );
 		if ( '' === $label ) {
 			return '';
 		}
@@ -189,6 +203,7 @@ if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
 			'lib_cdn_'               => esc_html__( '第三方前端库 CDN 节点选择。', 'Shinonomeiro_C' ),
 			'font'                   => esc_html__( '字体家族、字体资源地址或加载方式配置。', 'Shinonomeiro_C' ),
 			'prompt'                 => esc_html__( '提示词文本或模板内容。', 'Shinonomeiro_C' ),
+			'random_graphs_'         => esc_html__( '用于配置首页随机封面图的来源、数量与切换策略。', 'Shinonomeiro_C' ),
 		];
 
 		foreach ( $description_map as $marker => $description ) {
@@ -202,7 +217,7 @@ if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
 		}
 
 		return sprintf(
-			esc_html__( '配置键：%1$s。该键会直接写入主题配置表，并由对应模板或功能模块按键名读取。', 'Shinonomeiro_C' ),
+			esc_html__( '配置键：%1$s。该项为历史迁移配置，保存后会作用于对应模块；建议结合分组名称与页面效果进行调整。', 'Shinonomeiro_C' ),
 			esc_html( (string) $legacy_key )
 		);
 	}
@@ -784,53 +799,6 @@ $sections = [
 			],
 		],
     ],
-	// ====================首屏诗词====================
-	[
-        'id'          => 'iro_custom_code_cover_poetry',
-        'title'       => esc_html__( '首屏诗词', 'Shinonomeiro_C' ),
-        'description' => esc_html__( '在首页信息栏展示今日诗词，可自定义超时与兜底文案。', 'Shinonomeiro_C' ),
-        'panel'       => 'iro_custom_code',
-
-		'fields'      =>[
-			[
-				'type'     => 'checkbox',
-				'settings' => 'cover_daily_poetry',
-				'iro_key'  => 'cover_daily_poetry',
-				'label'    => esc_html__( '启用首屏今日诗词', 'Shinonomeiro_C' ),
-			],
-			[
-				'type'     => 'slider',
-				'settings' => 'cover_daily_poetry_timeout',
-				'iro_key'  => 'cover_daily_poetry_timeout',
-				'label'    => esc_html__( '诗词接口超时（毫秒）', 'Shinonomeiro_C' ),
-				'choices'  => [
-					'min'  => 1000,
-					'max'  => 10000,
-					'step' => 500,
-				],
-				'active_callback' => [
-					[
-						'setting'  => 'cover_daily_poetry',
-						'operator' => '==',
-						'value'    => true,
-					]
-				],
-			],
-			[
-				'type'     => 'text',
-				'settings' => 'cover_daily_poetry_fallback',
-				'iro_key'  => 'cover_daily_poetry_fallback',
-				'label'    => esc_html__( '诗词兜底文案', 'Shinonomeiro_C' ),
-				'active_callback' => [
-					[
-						'setting'  => 'cover_daily_poetry',
-						'operator' => '==',
-						'value'    => true,
-					]
-				],
-			],
-		],
-	],
 	// ====================封面信息栏====================
 	[
         'id'          => 'iro_cover_info',
@@ -958,6 +926,63 @@ $sections = [
 						'element'  => '.header-info p',
 						'function' => 'html',
 					],
+				],
+			],
+			[
+				'type'     => 'checkbox',
+				'settings' => 'cover_daily_poetry',
+				'iro_key'  => 'cover_daily_poetry',
+				'label'    => esc_html__( '启用首屏今日诗词', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '开启后，首屏签名文本将替换为今日诗词展示。', 'Shinonomeiro_C' ),
+				'active_callback' => [
+					[
+						'setting'  => 'infor_bar',
+						'operator' => '==',
+						'value'    => true,
+					]
+				],
+			],
+			[
+				'type'     => 'slider',
+				'settings' => 'cover_daily_poetry_timeout',
+				'iro_key'  => 'cover_daily_poetry_timeout',
+				'label'    => esc_html__( '诗词接口超时（毫秒）', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '建议保持 5000 毫秒，网络较慢时可适当调大。', 'Shinonomeiro_C' ),
+				'choices'  => [
+					'min'  => 1000,
+					'max'  => 10000,
+					'step' => 500,
+				],
+				'active_callback' => [
+					[
+						'setting'  => 'infor_bar',
+						'operator' => '==',
+						'value'    => true,
+					],
+					[
+						'setting'  => 'cover_daily_poetry',
+						'operator' => '==',
+						'value'    => true,
+					]
+				],
+			],
+			[
+				'type'     => 'text',
+				'settings' => 'cover_daily_poetry_fallback',
+				'iro_key'  => 'cover_daily_poetry_fallback',
+				'label'    => esc_html__( '诗词兜底文案', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '当诗词服务不可用时显示该文案。', 'Shinonomeiro_C' ),
+				'active_callback' => [
+					[
+						'setting'  => 'infor_bar',
+						'operator' => '==',
+						'value'    => true,
+					],
+					[
+						'setting'  => 'cover_daily_poetry',
+						'operator' => '==',
+						'value'    => true,
+					]
 				],
 			],
 			[
