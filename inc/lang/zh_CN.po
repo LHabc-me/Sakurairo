@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Sakurairo\n"
+"Project-Id-Version: Shinonomeiro\n"
 "POT-Creation-Date: 2025-04-30 13:29+0800\n"
 "PO-Revision-Date: 2025-04-30 13:45+0800\n"
 "Last-Translator: \n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.6\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: Sakurairo_C;__;esc_html__\n"
+"X-Poedit-KeywordsList: Shinonomeiro_C;__;esc_html__\n"
 "X-Poedit-SearchPath-0: customizer.php\n"
 
 #: customizer.php:29

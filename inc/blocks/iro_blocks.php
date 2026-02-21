@@ -1,5 +1,5 @@
 <?php
-// Sakurairo古腾堡编辑器支持
+// Shinonomeiro古腾堡编辑器支持
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

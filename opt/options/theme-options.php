@@ -1,6 +1,6 @@
 <?php
 
-if( class_exists( 'Sakurairo_CSF' ) ) {
+if( class_exists( 'Shinonomeiro_CSF' ) ) {
   $AVAIL_METADATA_ARTICLE_AREA = array(
     "author" => __("Author","sakurairo_csf"),
     "category" => __("Category","sakurairo_csf"),
@@ -32,12 +32,12 @@ $prefix = 'iro_options';
     }
   }
 
-  Sakurairo_CSF::createOptions( $prefix, array(
+  Shinonomeiro_CSF::createOptions( $prefix, array(
     'menu_title' => __('iro-Options','sakurairo_csf'),
     'menu_slug'  => 'iro_options',
   ) );
 
-  Sakurairo_CSF::createSection($prefix, array(
+  Shinonomeiro_CSF::createSection($prefix, array(
     'title' => __('Hello!','sakurairo_csf'),
     'icon'        => 'fa fa-podcast',
     'fields'      => array(
@@ -60,7 +60,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'id'    => 'preliminary',
     'title' => __('Preliminary Options','sakurairo_csf'),
     'icon'      => 'fa fa-sliders',
@@ -69,7 +69,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Preliminary/">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Preliminary/">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -176,13 +176,13 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'id'    => 'global', 
     'title' => __('Global Options','sakurairo_csf'),
     'icon'      => 'fa fa-globe',
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'global', 
     'title'  => __('Appearance Options','sakurairo_csf'),
     'icon'      => 'fa fa-tree',
@@ -191,7 +191,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Global/#%E5%A4%96%E8%A7%82%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Global/#%E5%A4%96%E8%A7%82%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -329,7 +329,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'global', 
     'title'  => __('Font Options','sakurairo_csf'),
     'icon'      => 'fa fa-font',
@@ -338,7 +338,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Global/#%E5%AD%97%E4%BD%93%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Global/#%E5%AD%97%E4%BD%93%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -434,7 +434,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'global', 
     'title'  => __('Navigation Menu Options','sakurairo_csf'),
     'icon'      => 'fa fa-map-signs',
@@ -443,7 +443,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Global/#%E5%AF%BC%E8%88%AA%E8%8F%9C%E5%8D%95%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page</br>Aou can edit your nav menu content <a href="/wp-admin/nav-menus.php">here</a>','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Global/#%E5%AF%BC%E8%88%AA%E8%8F%9C%E5%8D%95%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page</br>Aou can edit your nav menu content <a href="/wp-admin/nav-menus.php">here</a>','sakurairo_csf'),
       ),
 
       array(
@@ -581,7 +581,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'global', 
     'title' => __('Widgets Panel and Frontend Related Options','sakurairo_csf'),
     'icon' => 'fa fa-th-large',
@@ -590,7 +590,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Global/#%E6%A0%B7%E5%BC%8F%E8%8F%9C%E5%8D%95%E5%92%8C%E5%89%8D%E5%8F%B0%E8%83%8C%E6%99%AF%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Global/#%E6%A0%B7%E5%BC%8F%E8%8F%9C%E5%8D%95%E5%92%8C%E5%89%8D%E5%8F%B0%E8%83%8C%E6%99%AF%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -806,7 +806,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'global', 
     'title' => __('Footer Options','sakurairo_csf'),
     'icon' => 'fa fa-caret-square-o-down',
@@ -815,7 +815,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Global/#%E9%A1%B5%E5%B0%BE%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Global/#%E9%A1%B5%E5%B0%BE%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -1007,7 +1007,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'global', 
     'title' => __('Search Options','sakurairo_csf'),
     'icon' => 'fa fa-search',
@@ -1016,7 +1016,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Global/#%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Global/#%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -1104,7 +1104,7 @@ $prefix = 'iro_options';
   ) );
 
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'global', 
     'title' => __('Additional Options','sakurairo_csf'),
     'icon' => 'fa fa-gift',
@@ -1113,7 +1113,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Global/#%E9%A2%9D%E5%A4%96%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Global/#%E9%A2%9D%E5%A4%96%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -1396,13 +1396,13 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'id' => 'homepage', 
     'title' => __('HomePage Options','sakurairo_csf'),
     'icon' => 'fa fa-home',
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'homepage', 
     'title' => __('Cover Options','sakurairo_csf'),
     'icon' => 'fa fa-laptop',
@@ -1411,7 +1411,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Homepage/#%E5%B0%81%E9%9D%A2%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Homepage/#%E5%B0%81%E9%9D%A2%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -1853,7 +1853,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'homepage', 
     'title' => __('Cover Social Area Options','sakurairo_csf'),
     'icon' => 'fa fa-share-square-o',
@@ -1862,7 +1862,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Homepage/#%E5%B0%81%E9%9D%A2%E7%A4%BE%E4%BA%A4%E5%8C%BA%E5%9F%9F%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Homepage/#%E5%B0%81%E9%9D%A2%E7%A4%BE%E4%BA%A4%E5%8C%BA%E5%9F%9F%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -2165,7 +2165,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'homepage', 
     'title' => __('Homepage Components Options','sakurairo_csf'),
     'icon' => 'fa fa-bars',
@@ -2257,7 +2257,7 @@ $prefix = 'iro_options';
     )
   ));
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'homepage', 
     'title' => __('Display Area Options','sakurairo_csf'),
     'icon' => 'fa fa-bookmark',
@@ -2266,7 +2266,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Homepage/#%E5%B1%95%E7%A4%BA%E5%8C%BA%E5%9F%9F%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Homepage/#%E5%B1%95%E7%A4%BA%E5%8C%BA%E5%9F%9F%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -2360,7 +2360,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'homepage', 
     'title' => __('Article Area Options','sakurairo_csf'),
     'icon'      => 'fa fa-book',
@@ -2369,7 +2369,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Homepage/#%E6%96%87%E7%AB%A0%E5%8C%BA%E5%9F%9F%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Homepage/#%E6%96%87%E7%AB%A0%E5%8C%BA%E5%9F%9F%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -2495,13 +2495,13 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'id' => 'page', 
     'title' => __('Page Options','sakurairo_csf'),
     'icon' => 'fa fa-file-text',
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'page', 
     'title' => __('Common Options','sakurairo_csf'),
     'icon' => 'fa fa-compass',
@@ -2510,7 +2510,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Pages/#%E7%BB%BC%E5%90%88%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Pages/#%E7%BB%BC%E5%90%88%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -2588,7 +2588,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'page', 
     'title' => __('Article Page Options','sakurairo_csf'),
     'icon' => 'fa fa-archive',
@@ -2597,7 +2597,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Pages/#%E6%96%87%E7%AB%A0%E9%A1%B5%E9%9D%A2%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Pages/#%E6%96%87%E7%AB%A0%E9%A1%B5%E9%9D%A2%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -2798,7 +2798,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'page', 
     'title' => __('Template Page Options','sakurairo_csf'),
     'icon' => 'fa fa-window-maximize',
@@ -2807,7 +2807,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Pages/#%E6%A8%A1%E6%9D%BF%E9%A1%B5%E9%9D%A2%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Pages/#%E6%A8%A1%E6%9D%BF%E9%A1%B5%E9%9D%A2%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -3014,7 +3014,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'page', 
     'title' => __('Comment-related Options','sakurairo_csf'),
     'icon' => 'fa fa-comments-o',
@@ -3023,7 +3023,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Pages/#%E8%AF%84%E8%AE%BA%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Pages/#%E8%AF%84%E8%AE%BA%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -3099,7 +3099,7 @@ $prefix = 'iro_options';
         'id'         => 'smilies_dir',
         'type'       => 'text',
         'title' => __('Path To Custom Expression','sakurairo_csf'),
-        'desc' => __('Click <a href="./admin.php?update_custom_smilies=true" target="_blank">here</a> updating emoticon list. Specific usage reference: <a href="https://docs.fuukei.org/Sakurairo/Pages/#%E8%AF%84%E8%AE%BA%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE" target="_blank">Comment related settings</a>','sakurairo_csf'),
+        'desc' => __('Click <a href="./admin.php?update_custom_smilies=true" target="_blank">here</a> updating emoticon list. Specific usage reference: <a href="https://docs.fuukei.org/Shinonomeiro/Pages/#%E8%AF%84%E8%AE%BA%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE" target="_blank">Comment related settings</a>','sakurairo_csf'),
         'dependency' => array( 'smilies_list', 'any', 'custom', '', 'true' ),
       ),
 
@@ -3295,13 +3295,13 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'id' => 'others', 
     'title' => __('Other Options','sakurairo_csf'),
     'icon' => 'fa fa-coffee',
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'others', 
     'title' => __('Login Screen and Dashboard Related Options','sakurairo_csf'),
     'icon' => 'fa fa-sign-in',
@@ -3310,7 +3310,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Others/#%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2%E5%92%8C%E4%BB%AA%E8%A1%A8%E7%9B%98%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Others/#%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2%E5%92%8C%E4%BB%AA%E8%A1%A8%E7%9B%98%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -3486,7 +3486,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'others', 
     'title' => __('ChatGPT Options','sakurairo_csf'),
     'icon' => 'fas fa-atom',
@@ -3495,7 +3495,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Others/#ChatGPT%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Others/#ChatGPT%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -3684,7 +3684,7 @@ $prefix = 'iro_options';
       )
     ) );
 
-  Sakurairo_CSF::createSection( $prefix, array(
+  Shinonomeiro_CSF::createSection( $prefix, array(
     'parent' => 'others', 
     'title' => __('Low Use Options','sakurairo_csf'),
     'icon' => 'fa fa-low-vision',
@@ -3693,7 +3693,7 @@ $prefix = 'iro_options';
       array(
         'type' => 'submessage',
         'style' => 'info',
-        'content' => __('You can click <a href="https://docs.fuukei.org/Sakurairo/Others/#%E4%BD%8E%E4%BD%BF%E7%94%A8%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
+        'content' => __('You can click <a href="https://docs.fuukei.org/Shinonomeiro/Others/#%E4%BD%8E%E4%BD%BF%E7%94%A8%E8%AE%BE%E7%BD%AE">here</a> to learn how to set the options on this page','sakurairo_csf'),
       ),
 
       array(
@@ -3821,14 +3821,14 @@ $prefix = 'iro_options';
         .'<br/><strong><a href="https://www.lightgalleryjs.com/demos/thumbnails/">Demos</a></strong> | <strong><a href="https://www.lightgalleryjs.com/docs/settings/">Reference</a></strong> | <strong><a href="https://fastly.jsdelivr.net/npm/lightgallery@latest/plugins/">Plugin List</a></strong> '
         .'<br/> Please write settings in JavaScript. An example has been provided as default setting.'
         .'<br/> It should be captiable for Most User using WordPress Guttenberg Editor.'
-        .'<br/>Submit new discussion on Github for assistance. https://github.com/mirai-mamori/Sakurairo/discussions','sakurairo_csf')       ,
+        .'<br/>Submit new discussion on Github for assistance. https://github.com/mirai-mamori/Shinonomeiro/discussions','sakurairo_csf')       ,
         'dependency' => array( 'lightbox', '==', 'lightgallery', '', 'true' ),
       ),
 
       array(
         'type'    => 'submessage',
         'style'   => 'warning',
-        'content'=>__('Start from Sakurairo v2.4.0, plugins names in LightGallery option follow the form cite in official document (eg. lgHash instead of "hash")','sakurairo_csf')       ,
+        'content'=>__('Start from Shinonomeiro v2.4.0, plugins names in LightGallery option follow the form cite in official document (eg. lgHash instead of "hash")','sakurairo_csf')       ,
         'dependency' => array( 'lightbox', '==', 'lightgallery', '', 'true' ),
       ),
 
@@ -3994,7 +3994,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection($prefix, array(
+  Shinonomeiro_CSF::createSection($prefix, array(
     'title' => __('Backup&Recovery','sakurairo_csf'),
     'icon'        => 'fa fa-shield',
     'description' => __('Backup or Recovery your theme options','sakurairo_csf'),
@@ -4007,7 +4007,7 @@ $prefix = 'iro_options';
     )
   ) );
 
-  Sakurairo_CSF::createSection($prefix, array(
+  Shinonomeiro_CSF::createSection($prefix, array(
     'title' => __('About Theme','sakurairo_csf'),
     'icon'        => 'fa fa-paperclip',
     'fields'      => array(
@@ -4025,7 +4025,7 @@ $prefix = 'iro_options';
       array(
         'type'    => 'submessage',
         'style'   => 'normal',
-        'content' => sprintf(__('Theme Sakurairo Version %s | Internal Version %s | <a href="https://github.com/mirai-mamori/Sakurairo">Project Address</a>','sakurairo_csf'), IRO_VERSION, INT_VERSION), 
+        'content' => sprintf(__('Theme Shinonomeiro Version %s | Internal Version %s | <a href="https://github.com/mirai-mamori/Shinonomeiro">Project Address</a>','sakurairo_csf'), IRO_VERSION, INT_VERSION), 
       ),
 
       array(
@@ -4105,7 +4105,7 @@ $prefix = 'iro_options';
         'label' => __('Control the basepath of Frontend Resource.','sakurairo_csf'),
         'options'     => array(
           'https://s.nmxc.ltd/sakurairo/@'  => $vision_resource_basepath . 'options/update_source_wafpro.webp',
-          'https://fastly.jsdelivr.net/gh/mirai-mamori/Sakurairo@'  => $vision_resource_basepath . 'options/update_source_jsd.webp',
+          'https://fastly.jsdelivr.net/gh/mirai-mamori/Shinonomeiro@'  => $vision_resource_basepath . 'options/update_source_jsd.webp',
         ),
         'default'     => 'https://s.nmxc.ltd/sakurairo/@'
       ),
@@ -4122,7 +4122,7 @@ $prefix = 'iro_options';
         'id' => 'vision_resource_basepath',
         'type' => 'text',
         'title' => __('Vision Resource Basepath','sakurairo_csf'),
-        'desc' => __('This link directory structure needs to be consistent with the <a href="https://github.com/Fuukei/Sakurairo_Vision">Sakurairo Vision</a> repositories officially provided by fuukei, otherwise some resources 404 may appear. The image source officially provided by <a href="https://waf.pro/">WAFPRO</a> is adopted by default.','sakurairo_csf'),
+        'desc' => __('This link directory structure needs to be consistent with the <a href="https://github.com/Fuukei/Shinonomeiro_Vision">Shinonomeiro Vision</a> repositories officially provided by fuukei, otherwise some resources 404 may appear. The image source officially provided by <a href="https://waf.pro/">WAFPRO</a> is adopted by default.','sakurairo_csf'),
         'default' => "https://s.nmxc.ltd/sakurairo_vision/@3.0/"
       ),
 
@@ -4181,7 +4181,7 @@ $prefix = 'iro_options';
 
       array(
         'type'    => 'content',
-        'content' => __('<img src="https://img.shields.io/github/v/release/mirai-mamori/Sakurairo.svg?style=flat-square"  alt="Theme latest version" style="border-radius: 3px;" />  <img src="https://img.shields.io/github/release-date/mirai-mamori/Sakurairo?style=flat-square"  alt="Theme latest version release date" style="border-radius: 3px;" />  <img src="https://data.jsdelivr.com/v1/package/gh/mirai-mamori/Sakurairo/badge"  alt="Theme CDN resource access" style="border-radius: 3px;" />','sakurairo_csf'),
+        'content' => __('<img src="https://img.shields.io/github/v/release/mirai-mamori/Shinonomeiro.svg?style=flat-square"  alt="Theme latest version" style="border-radius: 3px;" />  <img src="https://img.shields.io/github/release-date/mirai-mamori/Shinonomeiro?style=flat-square"  alt="Theme latest version release date" style="border-radius: 3px;" />  <img src="https://data.jsdelivr.com/v1/package/gh/mirai-mamori/Shinonomeiro/badge"  alt="Theme CDN resource access" style="border-radius: 3px;" />','sakurairo_csf'),
       ),
 
     )

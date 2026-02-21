@@ -71,7 +71,7 @@ if ( ! class_exists( 'CSF_Field_background' ) ) {
 
         echo ( ! empty( $args['background_gradient'] ) ) ? '<div class="csf--title">'. esc_html__( 'From', 'sakurairo_csf' ) .'</div>' : '';
 
-        Sakurairo_CSF::field( array(
+        Shinonomeiro_CSF::field( array(
           'id'      => 'background-color',
           'type'    => 'color',
           'default' => $default_value['background-color'],
@@ -89,7 +89,7 @@ if ( ! class_exists( 'CSF_Field_background' ) ) {
 
         echo ( ! empty( $args['background_gradient'] ) ) ? '<div class="csf--title">'. esc_html__( 'To', 'sakurairo_csf' ) .'</div>' : '';
 
-        Sakurairo_CSF::field( array(
+        Shinonomeiro_CSF::field( array(
           'id'      => 'background-gradient-color',
           'type'    => 'color',
           'default' => $default_value['background-gradient-color'],
@@ -107,7 +107,7 @@ if ( ! class_exists( 'CSF_Field_background' ) ) {
 
         echo ( ! empty( $args['background_gradient'] ) ) ? '<div class="csf---title">'. esc_html__( 'Direction', 'sakurairo_csf' ) .'</div>' : '';
 
-        Sakurairo_CSF::field( array(
+        Shinonomeiro_CSF::field( array(
           'id'          => 'background-gradient-direction',
           'type'        => 'select',
           'options'     => array(
@@ -131,7 +131,7 @@ if ( ! class_exists( 'CSF_Field_background' ) ) {
 
         echo '<div class="csf--background-image">';
 
-        Sakurairo_CSF::field( array(
+        Shinonomeiro_CSF::field( array(
           'id'          => 'background-image',
           'type'        => 'media',
           'class'       => 'csf-assign-field-background',
@@ -154,7 +154,7 @@ if ( ! class_exists( 'CSF_Field_background' ) ) {
       // Background Position
       if ( ! empty( $args['background_position'] ) ) {
 
-        Sakurairo_CSF::field( array(
+        Shinonomeiro_CSF::field( array(
           'id'              => 'background-position',
           'type'            => 'select',
           'options'         => array(
@@ -177,7 +177,7 @@ if ( ! class_exists( 'CSF_Field_background' ) ) {
       // Background Repeat
       if ( ! empty( $args['background_repeat'] ) ) {
 
-        Sakurairo_CSF::field( array(
+        Shinonomeiro_CSF::field( array(
           'id'          => 'background-repeat',
           'type'        => 'select',
           'options'     => array(
@@ -195,7 +195,7 @@ if ( ! class_exists( 'CSF_Field_background' ) ) {
       // Background Attachment
       if ( ! empty( $args['background_attachment'] ) ) {
 
-        Sakurairo_CSF::field( array(
+        Shinonomeiro_CSF::field( array(
           'id'       => 'background-attachment',
           'type'     => 'select',
           'options'  => array(
@@ -211,7 +211,7 @@ if ( ! class_exists( 'CSF_Field_background' ) ) {
       // Background Size
       if ( ! empty( $args['background_size'] ) ) {
 
-        Sakurairo_CSF::field( array(
+        Shinonomeiro_CSF::field( array(
           'id'        => 'background-size',
           'type'      => 'select',
           'options'   => array(
@@ -228,7 +228,7 @@ if ( ! class_exists( 'CSF_Field_background' ) ) {
       // Background Origin
       if ( ! empty( $args['background_origin'] ) ) {
 
-        Sakurairo_CSF::field( array(
+        Shinonomeiro_CSF::field( array(
           'id'            => 'background-origin',
           'type'          => 'select',
           'options'       => array(
@@ -245,7 +245,7 @@ if ( ! class_exists( 'CSF_Field_background' ) ) {
       // Background Clip
       if ( ! empty( $args['background_clip'] ) ) {
 
-        Sakurairo_CSF::field( array(
+        Shinonomeiro_CSF::field( array(
           'id'            => 'background-clip',
           'type'          => 'select',
           'options'       => array(
@@ -262,7 +262,7 @@ if ( ! class_exists( 'CSF_Field_background' ) ) {
       // Background Blend Mode
       if ( ! empty( $args['background_blend_mode'] ) ) {
 
-        Sakurairo_CSF::field( array(
+        Shinonomeiro_CSF::field( array(
           'id'            => 'background-blend-mode',
           'type'          => 'select',
           'options'       => array(

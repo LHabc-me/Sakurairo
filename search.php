@@ -5,7 +5,7 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#search-result
  *
- * @package Sakurairo
+ * @package Shinonomeiro
  */
 
 get_header(); ?>

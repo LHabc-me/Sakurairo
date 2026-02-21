@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'Sakurairo_CSF' ) ) {
-  class Sakurairo_CSF {
+if ( ! class_exists( 'Shinonomeiro_CSF' ) ) {
+  class Shinonomeiro_CSF {
 
     // Default constants
     public static $debug  = false;
@@ -67,13 +67,13 @@ if ( ! class_exists( 'Sakurairo_CSF' ) ) {
       // Setup textdomain
       self::textdomain();
 
-      add_action( 'after_setup_theme', array( 'Sakurairo_CSF', 'setup' ) );
-      add_action( 'init', array( 'Sakurairo_CSF', 'setup' ) );
-      add_action( 'switch_theme', array( 'Sakurairo_CSF', 'setup' ) );
-      add_action( 'admin_enqueue_scripts', array( 'Sakurairo_CSF', 'add_admin_enqueue_scripts' ) );
-      add_action( 'wp_enqueue_scripts', array( 'Sakurairo_CSF', 'add_typography_enqueue_styles' ), 80 );
-      add_action( 'wp_head', array( 'Sakurairo_CSF', 'add_custom_css' ), 80 );
-      add_filter( 'admin_body_class', array( 'Sakurairo_CSF', 'add_admin_body_class' ) );
+      add_action( 'after_setup_theme', array( 'Shinonomeiro_CSF', 'setup' ) );
+      add_action( 'init', array( 'Shinonomeiro_CSF', 'setup' ) );
+      add_action( 'switch_theme', array( 'Shinonomeiro_CSF', 'setup' ) );
+      add_action( 'admin_enqueue_scripts', array( 'Shinonomeiro_CSF', 'add_admin_enqueue_scripts' ) );
+      add_action( 'wp_enqueue_scripts', array( 'Shinonomeiro_CSF', 'add_typography_enqueue_styles' ), 80 );
+      add_action( 'wp_head', array( 'Shinonomeiro_CSF', 'add_custom_css' ), 80 );
+      add_filter( 'admin_body_class', array( 'Shinonomeiro_CSF', 'add_admin_body_class' ) );
 
     }
 
@@ -775,4 +775,4 @@ if ( ! class_exists( 'Sakurairo_CSF' ) ) {
 
 }
 
-Sakurairo_CSF::init( __FILE__ );
+Shinonomeiro_CSF::init( __FILE__ );

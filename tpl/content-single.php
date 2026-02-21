@@ -4,7 +4,7 @@
  *
  * @link https://codex.wordpress.org/Template_Hierarchy
  *
- * @package Sakurairo
+ * @package Shinonomeiro
  */
 $post_id = get_the_ID();
 $ai_excerpt = get_post_meta($post_id, "ai_summon_excerpt", true); 

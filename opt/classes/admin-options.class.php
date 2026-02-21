@@ -59,7 +59,7 @@ if ( ! class_exists( 'CSF_Options' ) ) {
       'admin_bar_menu_priority' => 50,
 
       // footer
-      'footer_text'             => 'Sakurairo 使用 Fuukei 定制的 <a href="https://github.com/Fuukei/Sakurairo_CSF" target="_blank">CSF</a> 设置框架，感谢你的使用 0v0',
+      'footer_text'             => 'Shinonomeiro 使用 Fuukei 定制的 <a href="https://github.com/Fuukei/Shinonomeiro_CSF" target="_blank">CSF</a> 设置框架，感谢你的使用 0v0',
       'footer_after'            => '',
       'footer_credit'           => '',
 
@@ -607,7 +607,7 @@ if ( ! class_exists( 'CSF_Options' ) ) {
 
                   $value = ( ! empty( $field['id'] ) && isset( $this->options[$field['id']] ) ) ? $this->options[$field['id']] : '';
 
-                  Sakurairo_CSF::field( $field, $value, $this->unique, 'options' );
+                  Shinonomeiro_CSF::field( $field, $value, $this->unique, 'options' );
 
                 }
 

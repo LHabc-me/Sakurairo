@@ -4,20 +4,20 @@
 
 /**
  * Cookie
- * from github.com/mirai-mamori/Sakurairo ./js/sakura-app.js ,commit 71f5a0c
+ * from github.com/mirai-mamori/Shinonomeiro ./js/sakura-app.js ,commit 71f5a0c
  * @license GPL-v2
  * @date 2021.03
  */
 
 /**
- * app.js - Client script bundle for Sakurairo, a WordPress theme.
+ * app.js - Client script bundle for Shinonomeiro, a WordPress theme.
  * @author bymoye 
  * @author KotoriK
  * @license GPL-v2
  * @date 2021.3.21
  * Github Repository:
- * @url https://github.com/Fuukei/Sakurairo_Scripts
- * @url https://github.com/mirai-mamori/Sakurairo/blob/f7db3c5c73d70a6a3f845844a44f279d540a7b6c/js/sakura-app.js
+ * @url https://github.com/Fuukei/Shinonomeiro_Scripts
+ * @url https://github.com/mirai-mamori/Shinonomeiro/blob/f7db3c5c73d70a6a3f845844a44f279d540a7b6c/js/sakura-app.js
  * 
  * *** ACKNOWLEDGEMENT *** 
  * 

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Sakurairo\n"
+"Project-Id-Version: Shinonomeiro\n"
 "POT-Creation-Date: 2025-09-05 17:01+0800\n"
 "PO-Revision-Date: 2025-09-05 17:03+0800\n"
 "Last-Translator: \n"
@@ -2080,11 +2080,11 @@ msgid "Verification Code"
 msgstr "驗證碼"
 
 #. Theme Name of the plugin/theme
-msgid "Sakurairo"
+msgid "Shinonomeiro"
 msgstr "桜いろ"
 
 #. Theme URI of the plugin/theme
-msgid "https://github.com/mirai-mamori/Sakurairo"
+msgid "https://github.com/mirai-mamori/Shinonomeiro"
 msgstr ""
 
 #. Description of the plugin/theme

@@ -4,7 +4,7 @@
  *
  * Eventually, some of the functionality here could be replaced by core features.
  *
- * @package Sakurairo
+ * @package Shinonomeiro
  */
 
 if ( ! function_exists( 'akina_posted_on' ) ) :
