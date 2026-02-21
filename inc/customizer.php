@@ -2306,7 +2306,7 @@ foreach ( $sections as $section ) {
 				$setting_id    = $args['settings'];
 				$iro_key       = $args['iro_key'];
 				$type_default  = $args['default'];
-				$iro_default   = $GLOBALS['iro_options'][$iro_key];
+				$iro_default   = $GLOBALS['iro_options'][$iro_key] ?? null;
 				$iro_subkey    = isset( $args['iro_subkey'] ) ? $args['iro_subkey'] : '';
 
 				if ( ! isset( $args['transport'] ) ) { // 没设置预览方式的默认请求php渲染
