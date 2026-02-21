@@ -136,6 +136,8 @@ if ( ! function_exists( 'iro_customizer_friendly_label_from_key' ) ) {
 			'chatgpt_model' => esc_html__( 'ChatGPT 模型', 'Shinonomeiro_C' ),
 			'chatgpt_max_tokens' => esc_html__( 'ChatGPT 最大 Token', 'Shinonomeiro_C' ),
 			'chatgpt_api_request_timeout' => esc_html__( 'ChatGPT 请求超时', 'Shinonomeiro_C' ),
+			'theme_darkmode_auto' => esc_html__( '跟随系统自动切换深色模式', 'Shinonomeiro_C' ),
+			'theme_darkmode_strategy' => esc_html__( '深色模式切换策略', 'Shinonomeiro_C' ),
 		];
 		if ( isset( $explicit_label_map[ $raw_key ] ) ) {
 			return $explicit_label_map[ $raw_key ];
@@ -232,6 +234,8 @@ if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
 			'header_insert'          => esc_html__( '注入到站点 <head> 的 HTML/脚本片段（如验证代码、统计脚本）。', 'Shinonomeiro_C' ),
 			'footer_addition'        => esc_html__( '注入到页脚区域的附加 HTML/脚本内容。', 'Shinonomeiro_C' ),
 			'meta_description'       => esc_html__( '站点 SEO 描述文本，用于页面 description 元信息。', 'Shinonomeiro_C' ),
+			'theme_darkmode_auto'    => esc_html__( '用于设置是否跟随系统外观，在深色与浅色之间自动切换。', 'Shinonomeiro_C' ),
+			'theme_darkmode_strategy'=> esc_html__( '用于设置深色模式的切换规则（手动、自动或按时间策略）。', 'Shinonomeiro_C' ),
 			'google_analytics'       => esc_html__( 'Google Analytics 跟踪代码或统计 ID。', 'Shinonomeiro_C' ),
 			'statistics_api'         => esc_html__( '站点统计接口地址与请求参数。', 'Shinonomeiro_C' ),
 			'statistics_format'      => esc_html__( '站点统计模块的展示模板或格式化文本。', 'Shinonomeiro_C' ),
