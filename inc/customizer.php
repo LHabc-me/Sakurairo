@@ -19,6 +19,8 @@ if ( ! class_exists( 'Kirki' ) ) {
 	define( 'KIRKI_NO_GUTENBERG_OUTPUT', true );
 }
 
+// 强制优先中文文案（未命中时回退到当前站点语言）
+load_textdomain( 'Shinonomeiro_C', __DIR__ . '/lang/zh_CN.mo' );
 load_textdomain( 'Shinonomeiro_C', __DIR__ . '/lang/' . get_locale() . '.mo' );
 
 // 面板部分

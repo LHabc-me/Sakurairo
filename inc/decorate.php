@@ -69,7 +69,10 @@ echo $bg_style;
 echo iro_opt('site_bg_as_cover',false)? 'background:#0000;':'';
  ?>}
 <?php if (iro_opt('hide_splash_wallpaper_switch')): ?>
-#centerbg, #banner_wave_1, #banner_wave_2 { display: none !important; }
+#centerbg {
+    background: none !important;
+    background-image: none !important;
+}
 <?php endif; ?>
 
 <?php if (iro_opt('hide_theme_info_switch')): ?>

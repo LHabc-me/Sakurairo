@@ -446,6 +446,8 @@ if ( ! class_exists( 'Shinonomeiro_CSF' ) ) {
 
     // Setup textdomain
     public static function textdomain() {
+      // 强制优先中文文案（未命中时回退到用户语言）
+      load_textdomain( 'sakurairo_csf', self::$dir .'/languages/zh_CN.mo' );
       load_textdomain( 'sakurairo_csf', self::$dir .'/languages/'. get_user_locale() .'.mo' );
     }
 
