@@ -156,6 +156,12 @@ function font_end_js_control()
     $sakura_effect = iro_opt('sakura_falling_effects');
     if ($sakura_effect != 'off') $iro_opt['effect'] = array('amount' => $sakura_effect);
     if (iro_opt('theme_darkmode_auto')) $iro_opt['dm_strategy'] = iro_opt('theme_darkmode_strategy', 'time');
+
+    // 供前端日志等场景动态读取，避免版本/仓库地址硬编码在打包产物里
+    $iro_opt['theme_name'] = wp_get_theme()->get('Name');
+    $iro_opt['theme_version'] = IRO_VERSION;
+    $iro_opt['theme_uri'] = wp_get_theme()->get('ThemeURI');
+
     wp_add_inline_script('app', 'var _iro = ' . json_encode($iro_opt, JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE), 'before');
 }
 add_action('wp_head', 'font_end_js_control');
