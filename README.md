@@ -16,7 +16,7 @@ Shinonomeiro 是一个基于 Sakura V3 系列重构开发的 WordPress 主题，
 
 ## Fork 说明
 
-本仓库是 `mirai-mamori/Shinonomeiro` 的个人 Fork，用于：
+本仓库是 `LHabc-me/Shinonomeiro` 的个人维护版本，用于：
 
 - 按个人需求维护和迭代主题功能
 - 通过 PR 与上游同步或回馈改动
@@ -24,13 +24,13 @@ Shinonomeiro 是一个基于 Sakura V3 系列重构开发的 WordPress 主题，
 
 如需查看上游项目：
 
-- 上游仓库：https://github.com/mirai-mamori/Shinonomeiro
+- 当前仓库：https://github.com/LHabc-me/Shinonomeiro
 - 上游文档：https://docs.fuukei.org/
 
 ## 使用与发布
 
 - 本仓库 Release：https://github.com/LHabc-me/Shinonomeiro/releases
-- 当前版本基线：v1.0.6
+- 当前版本基线：v1.0.7
 - 建议通过 Release 页面下载对应版本并部署
 
 ## 贡献
