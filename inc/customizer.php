@@ -355,21 +355,21 @@ if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
 			'custom_style'           => esc_html__( '自定义 CSS 样式代码，保存后会输出到前台全局样式。', 'Shinonomeiro_C' ),
 			'header_insert'          => esc_html__( '注入到站点 <head> 的 HTML/脚本片段（如验证代码、统计脚本）。', 'Shinonomeiro_C' ),
 			'footer_addition'        => esc_html__( '注入到页脚区域的附加 HTML/脚本内容。', 'Shinonomeiro_C' ),
-			'meta_description'       => esc_html__( '站点 SEO 描述文本，用于页面 description 元信息。', 'Shinonomeiro_C' ),
-			'theme_darkmode_auto'    => esc_html__( '用于设置是否跟随系统外观，在深色与浅色之间自动切换。', 'Shinonomeiro_C' ),
-			'theme_darkmode_strategy'=> esc_html__( '用于设置深色模式的切换规则（手动、自动或按时间策略）。', 'Shinonomeiro_C' ),
-			'code_highlight_method'  => esc_html__( '用于选择代码块高亮引擎（Prism / 关闭）。', 'Shinonomeiro_C' ),
-			'php_notice_filter'      => esc_html__( '用于设置前台 PHP 报错显示策略（推荐“仅严重错误”）。', 'Shinonomeiro_C' ),
-			'show_location_in_manage'=> esc_html__( '用于设置是否在后台评论管理页显示评论者 IP 归属地。', 'Shinonomeiro_C' ),
-			'qq_qrcode'              => esc_html__( '用于设置社交卡片中的 QQ 二维码图片链接。', 'Shinonomeiro_C' ),
-			'qq_qrcode_switch'       => esc_html__( '用于控制是否在社交卡片展示 QQ 二维码入口。', 'Shinonomeiro_C' ),
-			'qq'                     => esc_html__( '用于设置社交卡片中展示的 QQ 账号。', 'Shinonomeiro_C' ),
-			'qq_copy_switch'         => esc_html__( '用于控制是否显示 QQ 账号一键复制按钮。', 'Shinonomeiro_C' ),
+			'meta_description'       => esc_html__( '这里填写站点的 SEO 描述，会写入页面的 description 元信息；搜索引擎和分享卡片常会读取这段文字。', 'Shinonomeiro_C' ),
+			'theme_darkmode_auto'    => esc_html__( '打开后会跟随访客设备的系统外观自动切换明暗主题；关闭后按你在主题里的固定模式显示。', 'Shinonomeiro_C' ),
+			'theme_darkmode_strategy'=> esc_html__( '决定深色模式如何生效：可让用户手动切换、跟随系统，或按设定时间自动切换。', 'Shinonomeiro_C' ),
+			'code_highlight_method'  => esc_html__( '选择文章代码块的着色方式：启用 Prism 会有语法高亮，关闭则按纯文本样式显示。', 'Shinonomeiro_C' ),
+			'php_notice_filter'      => esc_html__( '控制前台 PHP 报错提示的显示级别；线上站点建议仅显示严重错误，避免把调试信息暴露给访客。', 'Shinonomeiro_C' ),
+			'show_location_in_manage'=> esc_html__( '开启后，后台评论列表会显示评论者 IP 的归属地，便于你识别异常评论来源。', 'Shinonomeiro_C' ),
+			'qq_qrcode'              => esc_html__( '填写社交卡片里 QQ 二维码的图片地址；设置后访客可扫码联系你。', 'Shinonomeiro_C' ),
+			'qq_qrcode_switch'       => esc_html__( '开关 QQ 二维码入口：开启后社交卡片会显示扫码入口，关闭则只保留其他联系方式。', 'Shinonomeiro_C' ),
+			'qq'                     => esc_html__( '填写要在社交卡片展示的 QQ 号；访客会按这个号码联系你。', 'Shinonomeiro_C' ),
+			'qq_copy_switch'         => esc_html__( '开启后会在 QQ 信息旁显示“一键复制”按钮，访客复制账号更方便。', 'Shinonomeiro_C' ),
 			'google_analytics'       => esc_html__( 'Google Analytics 跟踪代码或统计 ID。', 'Shinonomeiro_C' ),
 			'statistics_api'         => esc_html__( '站点统计接口地址与请求参数。', 'Shinonomeiro_C' ),
 			'statistics_format'      => esc_html__( '站点统计模块的展示模板或格式化文本。', 'Shinonomeiro_C' ),
-			'channel_validate_value' => esc_html__( '渠道验证参数，用于请求来源校验。', 'Shinonomeiro_C' ),
-			'social_'                => esc_html__( '社交账号链接或展示名称，用于用户资料卡与页脚社交入口。', 'Shinonomeiro_C' ),
+			'channel_validate_value' => esc_html__( '填写渠道校验参数，用来验证请求来源；通常只在接入第三方回调或统计接口时需要修改。', 'Shinonomeiro_C' ),
+			'social_'                => esc_html__( '社交账号链接或显示名称会用于资料卡和页脚图标；改这里会直接影响前台跳转目标与文案。', 'Shinonomeiro_C' ),
 			'wechat_'                => esc_html__( '微信账号信息或二维码资源地址。', 'Shinonomeiro_C' ),
 			'qq_'                    => esc_html__( 'QQ 账号、头像来源或昵称显示配置。', 'Shinonomeiro_C' ),
 			'captcha_'               => esc_html__( '验证码服务参数（开关、站点密钥、校验地址）。', 'Shinonomeiro_C' ),
@@ -393,9 +393,9 @@ if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
 			'lib_cdn_'               => esc_html__( '第三方前端库 CDN 节点选择。', 'Shinonomeiro_C' ),
 			'font'                   => esc_html__( '字体家族、字体资源地址或加载方式配置。', 'Shinonomeiro_C' ),
 			'prompt'                 => esc_html__( '提示词文本或模板内容。', 'Shinonomeiro_C' ),
-			'random_graphs_'         => esc_html__( '用于配置首页随机封面图的来源、数量与切换策略。', 'Shinonomeiro_C' ),
-			'cache_cover'            => esc_html__( '用于配置封面图缓存策略与刷新行为。', 'Shinonomeiro_C' ),
-			'exhibition'             => esc_html__( '用于配置首页展示位内容与显示规则。', 'Shinonomeiro_C' ),
+			'random_graphs_'         => esc_html__( '控制首页随机封面图从哪里取、一次加载多少张以及多久切换；改动会直接影响首屏背景更新节奏。', 'Shinonomeiro_C' ),
+			'cache_cover'            => esc_html__( '设置封面图缓存与刷新规则；缓存时间长可减少请求，刷新更快则能更早看到新图片。', 'Shinonomeiro_C' ),
+			'exhibition'             => esc_html__( '管理首页展示位（如公告、推荐区）的内容和显示条件；调整后会改变首页首屏下方的信息呈现。', 'Shinonomeiro_C' ),
 		];
 
 		foreach ( $description_map as $marker => $description ) {
@@ -407,7 +407,7 @@ if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
 		$label = iro_customizer_friendly_label_from_key( $legacy_key );
 		if ( '' !== trim( (string) $label ) ) {
 			return sprintf(
-				esc_html__( '用于配置 %s 相关功能。', 'Shinonomeiro_C' ),
+				esc_html__( '这个选项会影响「%s」的显示或行为；不确定怎么改时建议先保持默认值。', 'Shinonomeiro_C' ),
 				esc_html( (string) $label )
 			);
 		}
@@ -2697,52 +2697,52 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
             ],
             'iro_legacy_group_performance' => [
                 'title' => esc_html__( '搜索与加载策略', 'Shinonomeiro_C' ),
-                'description' => esc_html__( '用于调整搜索范围、预加载、PJAX 与懒加载等性能策略。', 'Shinonomeiro_C' ),
+                'description' => esc_html__( '这里集中管理搜索范围、预加载、PJAX 与懒加载；主要影响页面打开速度和浏览连贯性。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_performance',
                 'merge_to_section' => 'iro_global_others',
                 'prefixes' => [ 'search_', 'only_admin_can_search_', 'sticky_', 'custom_exclude_', 'live_search', 'preload_', 'poi_', 'pjax_', 'missing_', 'clipboard_', 'page_lazyload' ],
             ],
             'iro_legacy_group_home_display' => [
                 'title' => esc_html__( '首页扩展展示', 'Shinonomeiro_C' ),
-                'description' => esc_html__( '用于配置封面展示细节、随机图与首页相关扩展。', 'Shinonomeiro_C' ),
+                'description' => esc_html__( '用于控制首页封面细节、随机图来源和扩展展示；修改后会直接改变首屏观感。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_home_display',
                 'merge_to_section' => 'iro_cover_other',
                 'prefixes' => [ 'cover_', 'random_graphs_', 'cache_cover', 'exhibition', 'post_cover_' ],
             ],
             'iro_legacy_group_third_party_media' => [
                 'title' => esc_html__( '媒体与内容服务', 'Shinonomeiro_C' ),
-                'description' => esc_html__( '用于接入音乐、番剧、Steam、Bilibili 等内容服务。', 'Shinonomeiro_C' ),
+                'description' => esc_html__( '在这里接入音乐、番剧、Steam、Bilibili 等外部内容；启用后首页或侧栏会出现对应展示模块。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_third_party',
                 'prefixes' => [ 'aplayer_', 'custom_music_', 'bangumi_', 'my_anime_', 'bilibili_', 'bili', 'steam_', 'steam', 'friend_link_', 'chatgpt_' ],
             ],
             'iro_legacy_group_third_party_analytics' => [
                 'title' => esc_html__( '统计与追踪服务', 'Shinonomeiro_C' ),
-                'description' => esc_html__( '用于配置站点统计、分析脚本与外部追踪服务。', 'Shinonomeiro_C' ),
+                'description' => esc_html__( '放置统计代码与分析服务配置（如访问统计、行为追踪）；开启后可在第三方平台查看站点数据。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_third_party',
                 'prefixes' => [ 'statistics_', 'google_analytics_' ],
             ],
             'iro_legacy_group_comment_media' => [
                 'title' => esc_html__( '评论与媒体', 'Shinonomeiro_C' ),
-                'description' => esc_html__( '用于配置评论增强、表情包与图片上传通道。', 'Shinonomeiro_C' ),
+                'description' => esc_html__( '管理评论区增强功能、表情包和图片上传通道；会影响评论可用能力与互动体验。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_comment_interaction',
                 'merge_to_section' => 'iro_pages_comment_media',
                 'prefixes' => [ 'smilies_', 'comment_', 'qq_avatar_', 'img_', 'imgur_', 'smms_', 'chever', 'lsky_', 'mail_' ],
             ],
             'iro_legacy_group_auth_login' => [
                 'title' => esc_html__( '登录与后台', 'Shinonomeiro_C' ),
-                'description' => esc_html__( '用于管理登录页、后台提示与管理入口相关设置。', 'Shinonomeiro_C' ),
+                'description' => esc_html__( '控制登录页样式、后台提示和管理入口行为；常用于统一品牌外观或收紧后台入口。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_account_security',
                 'prefixes' => [ 'custom_login_', 'login_', 'admin_', 'admin_notify' ],
             ],
             'iro_legacy_group_auth_captcha' => [
                 'title' => esc_html__( '验证码与防护', 'Shinonomeiro_C' ),
-                'description' => esc_html__( '用于配置验证码、人机校验与登录防护策略。', 'Shinonomeiro_C' ),
+                'description' => esc_html__( '配置验证码与人机校验策略，主要用于拦截机器登录和恶意提交。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_account_security',
                 'prefixes' => [ 'captcha_', 'vaptcha_', 'turnstile_' ],
             ],
             'iro_legacy_group_dev_maintenance' => [
                 'title' => esc_html__( '站点基础与维护', 'Shinonomeiro_C' ),
-                'description' => esc_html__( '用于控制更新通道、运行时库、CDN 与维护相关配置。', 'Shinonomeiro_C' ),
+                'description' => esc_html__( '管理更新通道、运行库来源、CDN 与维护开关；改动会影响资源加载稳定性和后续升级方式。', 'Shinonomeiro_C' ),
                 'panel' => 'iro_dev_maintenance',
                 'prefixes' => [ 'favicon_', 'iro_seo', 'iro_meta_', 'theme_', 'load_out_svg', 'time_zone_', 'reference_', 'exter_', 'gfonts_', 'iro_captcha_', 'site_', 'gravatar_', 'custom_proxy_', 'ghcard_', 'lightbox', 'lightgallery_', 'code_highlight_', 'enable_theme_', 'image_', 'classify_', 'cookie_', 'hide_login_', 'fontawesome_', 'dev_', 'php_notice_', 'iro_update_', 'channel_validate_', 'core_library_', 'shared_library_', 'lib_cdn_', 'external_vendor_', 'vision_resource_', 'send_theme_' ],
             ],
@@ -2806,6 +2806,11 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'normal' => esc_html__( '仅严重错误（推荐）', 'Shinonomeiro_C' ),
 				'all' => esc_html__( '屏蔽大部分错误', 'Shinonomeiro_C' ),
 				'inner' => esc_html__( '全部关闭', 'Shinonomeiro_C' ),
+			],
+			'theme_darkmode_strategy' => [
+				'time' => esc_html__( '按时间自动切换', 'Shinonomeiro_C' ),
+				'client' => esc_html__( '跟随系统外观', 'Shinonomeiro_C' ),
+				'eien' => esc_html__( '始终深色模式', 'Shinonomeiro_C' ),
 			],
 		];
 
