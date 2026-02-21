@@ -132,7 +132,7 @@ if ( ! class_exists( 'WP_Customize_Control_CSF' ) && class_exists( 'WP_Customize
 
       echo '<div class="csf-customize-field'. esc_attr( $class ) .'"'. $atts .'>';
 
-      Sakurairo_CSF::field( $this->field, $this->value(), $this->unique, 'customize' );
+      Shinonomeiro_CSF::field( $this->field, $this->value(), $this->unique, 'customize' );
 
       echo '</div>';
 

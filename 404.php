@@ -4,7 +4,7 @@
  *
  * @link https://codex.wordpress.org/Creating_an_Error_404_Page
  *
- * @package Sakurairo
+ * @package Shinonomeiro
  */
 
 add_action('wp_head', function() {

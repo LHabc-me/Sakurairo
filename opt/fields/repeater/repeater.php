@@ -37,7 +37,7 @@ if ( ! class_exists( 'CSF_Field_repeater' ) ) {
           $field_default = ( isset( $field['default'] ) ) ? $field['default'] : '';
           $field_unique  = ( ! empty( $this->unique ) ) ? $this->unique .'['. $this->field['id'] .'][0]' : $this->field['id'] .'[0]';
 
-          Sakurairo_CSF::field( $field, $field_default, '___'. $field_unique, 'field/repeater' );
+          Shinonomeiro_CSF::field( $field, $field_default, '___'. $field_unique, 'field/repeater' );
 
         }
         echo '</div>';
@@ -65,7 +65,7 @@ if ( ! class_exists( 'CSF_Field_repeater' ) ) {
               $field_unique = ( ! empty( $this->unique ) ) ? $this->unique .'['. $this->field['id'] .']['. $num .']' : $this->field['id'] .'['. $num .']';
               $field_value  = ( isset( $field['id'] ) && isset( $this->value[$key][$field['id']] ) ) ? $this->value[$key][$field['id']] : '';
 
-              Sakurairo_CSF::field( $field, $field_value, $field_unique, 'field/repeater' );
+              Shinonomeiro_CSF::field( $field, $field_value, $field_unique, 'field/repeater' );
 
             }
             echo '</div>';

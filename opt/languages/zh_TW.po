@@ -730,10 +730,10 @@ msgstr "初步設定"
 
 #: options/theme-options.php:72
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Preliminary/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Preliminary/"
 "\">here</a> to learn how to set the options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Preliminary/\">此處</"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Preliminary/\">此處</"
 "a> 瞭解如何在此頁面上設定選項"
 
 #: options/theme-options.php:78
@@ -849,11 +849,11 @@ msgstr "外觀設定"
 
 #: options/theme-options.php:190
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E5%A4%96%E8%A7%82%E8%AE%BE%E7%BD%AE\">here</a> to learn how to set the "
 "options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E5%A4%96%E8%A7%82%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在此頁面上設定選項"
 
 #: options/theme-options.php:195
@@ -992,11 +992,11 @@ msgstr "字體設定"
 
 #: options/theme-options.php:337
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E5%AD%97%E4%BD%93%E8%AE%BE%E7%BD%AE\">here</a> to learn how to set the "
 "options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E5%AD%97%E4%BD%93%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在此頁面上設定選項"
 
 #: options/theme-options.php:342
@@ -1079,12 +1079,12 @@ msgstr "導航菜單設定"
 
 #: options/theme-options.php:442
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E5%AF%BC%E8%88%AA%E8%8F%9C%E5%8D%95%E8%AE%BE%E7%BD%AE\">here</a> to learn "
 "how to set the options on this page</br>Aou can edit your nav menu content "
 "<a href=\"/wp-admin/nav-menus.php\">here</a>"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E5%AF%BC%E8%88%AA%E8%8F%9C%E5%8D%95%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在"
 "此頁面上設定選項</br>你可以在<a href=\"/wp-admin/nav-menus.php\">此處</a>編輯"
 "選單選項內容"
@@ -1191,11 +1191,11 @@ msgstr "小部件面板和前台相關設定"
 
 #: options/theme-options.php:589
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E6%A0%B7%E5%BC%8F%E8%8F%9C%E5%8D%95%E5%92%8C%E5%89%8D%E5%8F%B0%E8%83%8C%E6%99%AF%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE\">here</"
 "a> to learn how to set the options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E6%A0%B7%E5%BC%8F%E8%8F%9C%E5%8D%95%E5%92%8C%E5%89%8D%E5%8F%B0%E8%83%8C%E6%99%AF%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE\">"
 "此處</a> 瞭解如何在此頁面上設定選項"
 
@@ -1330,11 +1330,11 @@ msgstr "頁尾設定"
 
 #: options/theme-options.php:814
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E9%A1%B5%E5%B0%BE%E8%AE%BE%E7%BD%AE\">here</a> to learn how to set the "
 "options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E9%A1%B5%E5%B0%BE%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在此頁面上設定選項"
 
 #: options/theme-options.php:820
@@ -1552,11 +1552,11 @@ msgstr "網站搜尋選項"
 
 #: options/theme-options.php:1015
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2%E8%AE%BE%E7%BD%AE\">here</a> to learn "
 "how to set the options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E7%AB%99%E5%86%85%E6%90%9C%E7%B4%A2%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在"
 "此頁面上設定選項"
 
@@ -1643,11 +1643,11 @@ msgstr "額外設定"
 
 #: options/theme-options.php:1112
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E9%A2%9D%E5%A4%96%E8%AE%BE%E7%BD%AE\">here</a> to learn how to set the "
 "options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Global/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Global/"
 "#%E9%A2%9D%E5%A4%96%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在此頁面上設定選項"
 
 #: options/theme-options.php:1117
@@ -1859,11 +1859,11 @@ msgstr "封面設定"
 
 #: options/theme-options.php:1410
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Homepage/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Homepage/"
 "#%E5%B0%81%E9%9D%A2%E8%AE%BE%E7%BD%AE\">here</a> to learn how to set the "
 "options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Homepage/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Homepage/"
 "#%E5%B0%81%E9%9D%A2%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在此頁面上設定選項"
 
 #: options/theme-options.php:1416
@@ -2191,11 +2191,11 @@ msgstr "封面社交區域設定"
 
 #: options/theme-options.php:1861
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Homepage/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Homepage/"
 "#%E5%B0%81%E9%9D%A2%E7%A4%BE%E4%BA%A4%E5%8C%BA%E5%9F%9F%E8%AE%BE%E7%BD%AE\">here</"
 "a> to learn how to set the options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Homepage/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Homepage/"
 "#%E5%B0%81%E9%9D%A2%E7%A4%BE%E4%BA%A4%E5%8C%BA%E5%9F%9F%E8%AE%BE%E7%BD%AE\">"
 "此處</a> 瞭解如何在此頁面上設定選項"
 
@@ -2519,11 +2519,11 @@ msgstr "展示區域設定"
 
 #: options/theme-options.php:2265
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Homepage/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Homepage/"
 "#%E5%B1%95%E7%A4%BA%E5%8C%BA%E5%9F%9F%E8%AE%BE%E7%BD%AE\">here</a> to learn "
 "how to set the options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Homepage/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Homepage/"
 "#%E5%B1%95%E7%A4%BA%E5%8C%BA%E5%9F%9F%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在"
 "此頁面上設定選項"
 
@@ -2632,11 +2632,11 @@ msgstr "文章區域設定"
 
 #: options/theme-options.php:2368
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Homepage/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Homepage/"
 "#%E6%96%87%E7%AB%A0%E5%8C%BA%E5%9F%9F%E8%AE%BE%E7%BD%AE\">here</a> to learn "
 "how to set the options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Homepage/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Homepage/"
 "#%E6%96%87%E7%AB%A0%E5%8C%BA%E5%9F%9F%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在"
 "此頁面上設定選項"
 
@@ -2740,11 +2740,11 @@ msgstr "綜合設定"
 
 #: options/theme-options.php:2509
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Pages/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Pages/"
 "#%E7%BB%BC%E5%90%88%E8%AE%BE%E7%BD%AE\">here</a> to learn how to set the "
 "options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Pages/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Pages/"
 "#%E7%BB%BC%E5%90%88%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在此頁面上設定選項"
 
 #: options/theme-options.php:2515
@@ -2835,11 +2835,11 @@ msgstr "文章頁面設定"
 
 #: options/theme-options.php:2596
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Pages/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Pages/"
 "#%E6%96%87%E7%AB%A0%E9%A1%B5%E9%9D%A2%E8%AE%BE%E7%BD%AE\">here</a> to learn "
 "how to set the options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Pages/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Pages/"
 "#%E6%96%87%E7%AB%A0%E9%A1%B5%E9%9D%A2%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在"
 "此頁面上設定選項"
 
@@ -3025,11 +3025,11 @@ msgstr "模板頁面設定"
 
 #: options/theme-options.php:2806
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Pages/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Pages/"
 "#%E6%A8%A1%E6%9D%BF%E9%A1%B5%E9%9D%A2%E8%AE%BE%E7%BD%AE\">here</a> to learn "
 "how to set the options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Pages/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Pages/"
 "#%E6%A8%A1%E6%9D%BF%E9%A1%B5%E9%9D%A2%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在"
 "此頁面上設定選項"
 
@@ -3261,11 +3261,11 @@ msgstr "留言相關設定"
 
 #: options/theme-options.php:3022
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Pages/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Pages/"
 "#%E8%AF%84%E8%AE%BA%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE\">here</a> to learn "
 "how to set the options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Pages/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Pages/"
 "#%E8%AF%84%E8%AE%BA%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在"
 "此頁面上設定選項"
 
@@ -3369,13 +3369,13 @@ msgstr "自訂表情包路徑"
 msgid ""
 "Click <a href=\"./admin.php?update_custom_smilies=true\" "
 "target=\"_blank\">here</a> updating emoticon list. Specific usage reference: "
-"<a href=\"https://docs.fuukei.org/Sakurairo/Pages/"
+"<a href=\"https://docs.fuukei.org/Shinonomeiro/Pages/"
 "#%E8%AF%84%E8%AE%BA%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE\" "
 "target=\"_blank\">Comment related settings</a>"
 msgstr ""
 "點擊 <a href=\"./admin.php?update_custom_smilies=true\" target=\"_blank\">這"
 "裡</a> 更新表情包清單。 使用方法請參攷：<a href=\"https://docs.fuukei.org/"
-"Sakurairo/Pages/#%E8%AF%84%E8%AE%BA%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE\" "
+"Shinonomeiro/Pages/#%E8%AF%84%E8%AE%BA%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE\" "
 "target=\"_blank\">留言相關設定</a>"
 
 #: options/theme-options.php:3105
@@ -3599,11 +3599,11 @@ msgstr "登入介面和儀錶盤相關設定"
 
 #: options/theme-options.php:3309
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Others/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Others/"
 "#%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2%E5%92%8C%E4%BB%AA%E8%A1%A8%E7%9B%98%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE\">here</"
 "a> to learn how to set the options on this page"
 msgstr ""
-"您可以按下 <a href=\"ttps://docs.fuukei.org/Sakurairo/Others/"
+"您可以按下 <a href=\"ttps://docs.fuukei.org/Shinonomeiro/Others/"
 "#%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2%E5%92%8C%E4%BB%AA%E8%A1%A8%E7%9B%98%E7%9B%B8%E5%85%B3%E8%AE%BE%E7%BD%AE\">"
 "此處</a> 瞭解如何在此頁面上設定選項"
 
@@ -3727,11 +3727,11 @@ msgstr "ChatGPT設定"
 
 #: options/theme-options.php:3494
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Others/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Others/"
 "#ChatGPT%E8%AE%BE%E7%BD%AE\">here</a> to learn how to set the options on "
 "this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Others/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Others/"
 "#ChatGPT%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何設定此頁面上的選項"
 
 #: options/theme-options.php:3499
@@ -3896,11 +3896,11 @@ msgstr "低使用設定"
 
 #: options/theme-options.php:3692
 msgid ""
-"You can click <a href=\"https://docs.fuukei.org/Sakurairo/Others/"
+"You can click <a href=\"https://docs.fuukei.org/Shinonomeiro/Others/"
 "#%E4%BD%8E%E4%BD%BF%E7%94%A8%E8%AE%BE%E7%BD%AE\">here</a> to learn how to "
 "set the options on this page"
 msgstr ""
-"您可以按下 <a href=\"https://docs.fuukei.org/Sakurairo/Others/"
+"您可以按下 <a href=\"https://docs.fuukei.org/Shinonomeiro/Others/"
 "#%E4%BD%8E%E4%BD%BF%E7%94%A8%E8%AE%BE%E7%BD%AE\">此處</a> 瞭解如何在此頁面上"
 "設定選項"
 
@@ -4080,7 +4080,7 @@ msgid ""
 "write settings in JavaScript. An example has been provided as default "
 "setting.<br/> It should be captiable for Most User using WordPress "
 "Guttenberg Editor.<br/>Submit new discussion on Github for assistance. "
-"https://github.com/mirai-mamori/Sakurairo/discussions"
+"https://github.com/mirai-mamori/Shinonomeiro/discussions"
 msgstr ""
 "<strong>內涵：使用前請閱讀 <a href=\"https://github.com/sachinchoolur/"
 "lightGallery#license\">許可證說明</a> 。</strong><br/><strong><a "
@@ -4090,14 +4090,14 @@ msgstr ""
 "lightgallery@latest/plugins/\">外掛程式清單</a></strong> <br/> 請在 "
 "JavaScript 中寫下設置。範例已作為預設設置提供。<br/> 對於使用 WordPress 古滕"
 "貝格編輯器的大多數用戶來說， 它應該是可圈可的。<br/>提交關於 Github 的新討論"
-"以尋求説明。https://github.com/mirai-mamori/Sakurairo/discussions"
+"以尋求説明。https://github.com/mirai-mamori/Shinonomeiro/discussions"
 
 #: options/theme-options.php:3827
 msgid ""
-"Start from Sakurairo v2.4.0, plugins names in LightGallery option follow the "
+"Start from Shinonomeiro v2.4.0, plugins names in LightGallery option follow the "
 "form cite in official document (eg. lgHash instead of \"hash\")"
 msgstr ""
-"從Sakurairo v2.4.0開始，LightGallery中的挿件名稱會與官方檔案中引用的表格保持"
+"從Shinonomeiro v2.4.0開始，LightGallery中的挿件名稱會與官方檔案中引用的表格保持"
 "一致（例如“hash”將被表示為IgHash）"
 
 #: options/theme-options.php:3835
@@ -4281,11 +4281,11 @@ msgstr ""
 #: options/theme-options.php:4016
 #, php-format
 msgid ""
-"Theme Sakurairo Version %s | Internal Version %s | <a href=\"https://"
-"github.com/mirai-mamori/Sakurairo\">Project Address</a>"
+"Theme Shinonomeiro Version %s | Internal Version %s | <a href=\"https://"
+"github.com/mirai-mamori/Shinonomeiro\">Project Address</a>"
 msgstr ""
-"Sakurairo 主題版本 %s | 內部版本 %s | <a href=\"https://github.com/mirai-"
-"mamori/Sakurairo\">項目地址</a>"
+"Shinonomeiro 主題版本 %s | 內部版本 %s | <a href=\"https://github.com/mirai-"
+"mamori/Shinonomeiro\">項目地址</a>"
 
 #: options/theme-options.php:4021
 msgid "Update Related"
@@ -4392,13 +4392,13 @@ msgstr "視覺資源基本路徑"
 #: options/theme-options.php:4113
 msgid ""
 "This link directory structure needs to be consistent with the <a "
-"href=\"https://github.com/Fuukei/Sakurairo_Vision\">Sakurairo Vision</a> "
+"href=\"https://github.com/Fuukei/Shinonomeiro_Vision\">Shinonomeiro Vision</a> "
 "repositories officially provided by fuukei, otherwise some resources 404 may "
 "appear. The image source officially provided by <a href=\"https://waf.pro/"
 "\">WAFPRO</a> is adopted by default."
 msgstr ""
 "這個鏈接目錄結構需要與 Fuukei 官方提供的 <a href=\"https://github.com/Fuukei/"
-"Sakurairo_Vision\">Sakurairo Vision</a> 存儲庫保持一致，否則可能會出現一些資"
+"Shinonomeiro_Vision\">Shinonomeiro Vision</a> 存儲庫保持一致，否則可能會出現一些資"
 "源404。默認採用 <a href=\"https://waf.pro/\">WAFPRO</a> 提供的镜像源。"
 
 #: options/theme-options.php:4119
@@ -4473,25 +4473,25 @@ msgstr ""
 #: options/theme-options.php:4172
 msgid ""
 "<img src=\"https://img.shields.io/github/v/release/mirai-mamori/"
-"Sakurairo.svg?style=flat-square\"  alt=\"Theme latest version\" "
+"Shinonomeiro.svg?style=flat-square\"  alt=\"Theme latest version\" "
 "style=\"border-radius: 3px;\" />  <img src=\"https://img.shields.io/github/"
-"release-date/mirai-mamori/Sakurairo?style=flat-square\"  alt=\"Theme latest "
+"release-date/mirai-mamori/Shinonomeiro?style=flat-square\"  alt=\"Theme latest "
 "version release date\" style=\"border-radius: 3px;\" />  <img src=\"https://"
-"data.jsdelivr.com/v1/package/gh/mirai-mamori/Sakurairo/badge\"  alt=\"Theme "
+"data.jsdelivr.com/v1/package/gh/mirai-mamori/Shinonomeiro/badge\"  alt=\"Theme "
 "CDN resource access\" style=\"border-radius: 3px;\" />"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "Sakurairo_CSF"
+msgid "Shinonomeiro_CSF"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "https://github.com/Fuukei/Sakurairo_CSF"
+msgid "https://github.com/Fuukei/Shinonomeiro_CSF"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "A Simple and Lightweight WordPress Option Framework for Sakurairo"
-msgstr "一個簡單，輕量的WordPress設定框架，專為Sakurairo設計"
+msgid "A Simple and Lightweight WordPress Option Framework for Shinonomeiro"
+msgstr "一個簡單，輕量的WordPress設定框架，專為Shinonomeiro設計"
 
 #. Author of the plugin/theme
 msgid "Codestar with Fuukei"

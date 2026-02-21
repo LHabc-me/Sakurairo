@@ -353,7 +353,7 @@ if (!class_exists('CSF_Field_typography')) {
 
       if (!wp_script_is('csf-webfontloader')) {
 
-        Sakurairo_CSF::include_plugin_file('fields/typography/google-fonts.php');
+        Shinonomeiro_CSF::include_plugin_file('fields/typography/google-fonts.php');
 
         wp_enqueue_script('csf-webfontloader', 'https://lib.baomitu.com/webfont/1.6.28/webfontloader.js', array('sakurairo_csf'), '1.6.28', true);
 
@@ -440,7 +440,7 @@ if (!class_exists('CSF_Field_typography')) {
       if (!empty($this->value['type'])) {
         $is_google = ($this->value['type'] === 'google') ? true : false;
       } else {
-        Sakurairo_CSF::include_plugin_file('fields/typography/google-fonts.php');
+        Shinonomeiro_CSF::include_plugin_file('fields/typography/google-fonts.php');
         $is_google = (array_key_exists($this->value['font-family'], csf_get_google_fonts())) ? true : false;
       }
 
@@ -455,10 +455,10 @@ if (!class_exists('CSF_Field_typography')) {
           $style = $font_weight . $font_style;
           if (!empty($style)) {
             $style = ($style === 'normal') ? '400' : $style;
-            Sakurairo_CSF::$webfonts[$method][$font_family][$style] = $style;
+            Shinonomeiro_CSF::$webfonts[$method][$font_family][$style] = $style;
           }
         } else {
-          Sakurairo_CSF::$webfonts[$method][$font_family] = array();
+          Shinonomeiro_CSF::$webfonts[$method][$font_family] = array();
         }
 
         // set extra styles
@@ -466,7 +466,7 @@ if (!class_exists('CSF_Field_typography')) {
           foreach ($this->value['extra-styles'] as $extra_style) {
             if (!empty($extra_style)) {
               $extra_style = ($extra_style === 'normal') ? '400' : $extra_style;
-              Sakurairo_CSF::$webfonts[$method][$font_family][$extra_style] = $extra_style;
+              Shinonomeiro_CSF::$webfonts[$method][$font_family][$extra_style] = $extra_style;
             }
           }
         }
@@ -476,7 +476,7 @@ if (!class_exists('CSF_Field_typography')) {
           $this->value['subset'] = (is_array($this->value['subset'])) ? $this->value['subset'] : array_filter((array) $this->value['subset']);
           foreach ($this->value['subset'] as $subset) {
             if (!empty($subset)) {
-              Sakurairo_CSF::$subsets[$subset] = $subset;
+              Shinonomeiro_CSF::$subsets[$subset] = $subset;
             }
           }
         }

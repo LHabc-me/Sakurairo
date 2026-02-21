@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Sakurairo\n"
+"Project-Id-Version: Shinonomeiro\n"
 "POT-Creation-Date: 2025-05-06 18:17+0900\n"
 "PO-Revision-Date: 2025-05-06 18:17+0900\n"
 "Last-Translator: \n"
@@ -1994,12 +1994,12 @@ msgid "Posts"
 msgstr ""
 
 #. Theme Name of the plugin/theme
-msgid "Sakurairo"
-msgstr "Sakurairo"
+msgid "Shinonomeiro"
+msgstr "Shinonomeiro"
 
 #. Theme URI of the plugin/theme
-msgid "https://github.com/mirai-mamori/Sakurairo"
-msgstr "https://github.com/mirai-mamori/Sakurairo"
+msgid "https://github.com/mirai-mamori/Shinonomeiro"
+msgstr "https://github.com/mirai-mamori/Shinonomeiro"
 
 #. Description of the plugin/theme
 msgid ""

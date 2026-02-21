@@ -54,8 +54,8 @@ if (!function_exists('iro_opt_update')) {
     }
 }
 
-$shared_lib_basepath = iro_opt('shared_library_basepath') ? get_template_directory_uri() : (iro_opt('lib_cdn_path', 'https://fastly.jsdelivr.net/gh/mirai-mamori/Sakurairo@') . IRO_VERSION);
-$core_lib_basepath = iro_opt('core_library_basepath') ? get_template_directory_uri() : (iro_opt('lib_cdn_path', 'https://fastly.jsdelivr.net/gh/mirai-mamori/Sakurairo@') . IRO_VERSION);
+$shared_lib_basepath = iro_opt('shared_library_basepath') ? get_template_directory_uri() : (iro_opt('lib_cdn_path', 'https://fastly.jsdelivr.net/gh/mirai-mamori/Shinonomeiro@') . IRO_VERSION);
+$core_lib_basepath = iro_opt('core_library_basepath') ? get_template_directory_uri() : (iro_opt('lib_cdn_path', 'https://fastly.jsdelivr.net/gh/mirai-mamori/Shinonomeiro@') . IRO_VERSION);
 
 // 屏蔽php日志信息
 if (iro_opt('php_notice_filter') != 'inner') {
@@ -75,7 +75,7 @@ if (iro_opt('php_notice_filter') != 'inner') {
 require 'update-checker/update-checker.php';
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
-function UpdateCheck($url, $flag = 'Sakurairo')
+function UpdateCheck($url, $flag = 'Shinonomeiro')
 {
     return PucFactory::buildUpdateChecker(
         $url,
@@ -85,7 +85,7 @@ function UpdateCheck($url, $flag = 'Sakurairo')
 }
 switch (iro_opt('iro_update_source')) {
     case 'github':
-        $iroThemeUpdateChecker = UpdateCheck('https://github.com/mirai-mamori/Sakurairo', 'Sakurairo');
+        $iroThemeUpdateChecker = UpdateCheck('https://github.com/mirai-mamori/Shinonomeiro', 'Shinonomeiro');
         break;
     case 'upyun':
         $iroThemeUpdateChecker = UpdateCheck('https://api.fuukei.org/update/jsdelivr.json');
@@ -1936,7 +1936,7 @@ function theme_folder_check_on_admin_init() {
     // 获取当前父主题文件夹名称及路径
     $current_theme_path = get_template_directory();
     $theme_folder_name = basename($current_theme_path);
-    $correct_theme_folder = 'Sakurairo';
+    $correct_theme_folder = 'Shinonomeiro';
     $user_locale = get_user_locale();
 
     // 仅管理员用户处理
@@ -2138,7 +2138,7 @@ function dash_scheme($key, $name, $col1, $col2, $col3, $base, $focus, $current, 
     );
 }
 
-//Sakurairo
+//Shinonomeiro
 dash_scheme(
     $key = "sakurairo",
     $name = "Shinonomeiro🌅",
@@ -2718,7 +2718,7 @@ function register_shortcodes() {
 
     add_shortcode('ghcard', function($attr, $content = '') {
         //获取内容
-        $atts = shortcode_atts(array("path" => "mirai-mamori/Sakurairo"), $attr);
+        $atts = shortcode_atts(array("path" => "mirai-mamori/Shinonomeiro"), $attr);
 
         $path = trim($atts['path']);
 
@@ -4508,13 +4508,13 @@ function iro_action_operator()
             break;
         case 'del_exist_theme':
             $current_theme_folder = basename(get_template_directory());
-            if ($current_theme_folder != 'Sakurairo') {
+            if ($current_theme_folder != 'Shinonomeiro') {
                 if (!function_exists('WP_Filesystem')) {
                     require_once ABSPATH . 'wp-admin/includes/file.php';
                 }
                 WP_Filesystem();
                 global $wp_filesystem;
-                $wp_filesystem->delete(get_theme_root() . '/Sakurairo', true);
+                $wp_filesystem->delete(get_theme_root() . '/Shinonomeiro', true);
                 wp_redirect(admin_url(), 302); //重载theme_folder_check_on_admin_init流程
             } else {
                 wp_redirect(admin_url(), 302);
