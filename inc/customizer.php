@@ -253,6 +253,10 @@ if ( ! function_exists( 'iro_customizer_localize_ui_text' ) ) {
 		if ( ! preg_match( '/[A-Za-z]/', $text ) ) {
 			return $text;
 		}
+		// 已经包含中文时，避免把“QQ二维码链接”这类文本误降级为“qq”
+		if ( preg_match( '/[\x{4e00}-\x{9fff}]/u', $text ) ) {
+			return $text;
+		}
 
 		$phrase_map = [
 			'Nav Menu Style' => '导航菜单样式',
