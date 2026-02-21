@@ -119,33 +119,90 @@ if ( ! function_exists( 'iro_customizer_friendly_label_from_key' ) ) {
 		$explicit_label_map = [
 			'random_graphs_mts' => esc_html__( '随机封面图数量', 'Shinonomeiro_C' ),
 			'random_graphs_link' => esc_html__( '随机封面图接口地址', 'Shinonomeiro_C' ),
+			'random_graphs_link_mobile' => esc_html__( '随机封面图移动端接口地址', 'Shinonomeiro_C' ),
 			'random_graphs_options' => esc_html__( '随机封面图策略', 'Shinonomeiro_C' ),
+			'cache_cover' => esc_html__( '封面图缓存', 'Shinonomeiro_C' ),
+			'signature_typing_placeholder' => esc_html__( '打字签名占位文本', 'Shinonomeiro_C' ),
+			'cover_video' => esc_html__( '封面视频开关', 'Shinonomeiro_C' ),
+			'cover_video_loop' => esc_html__( '封面视频循环播放', 'Shinonomeiro_C' ),
+			'cover_video_live' => esc_html__( '封面视频直播模式', 'Shinonomeiro_C' ),
+			'cover_video_link' => esc_html__( '封面视频链接', 'Shinonomeiro_C' ),
+			'cover_video_title' => esc_html__( '封面视频标题', 'Shinonomeiro_C' ),
+			'statistics_api' => esc_html__( '统计接口地址', 'Shinonomeiro_C' ),
+			'statistics_format' => esc_html__( '统计展示格式', 'Shinonomeiro_C' ),
+			'google_analytics_id' => esc_html__( 'Google Analytics ID', 'Shinonomeiro_C' ),
+			'chatgpt_endpoint' => esc_html__( 'ChatGPT 接口地址', 'Shinonomeiro_C' ),
+			'chatgpt_access_token' => esc_html__( 'ChatGPT 访问令牌', 'Shinonomeiro_C' ),
+			'chatgpt_model' => esc_html__( 'ChatGPT 模型', 'Shinonomeiro_C' ),
+			'chatgpt_max_tokens' => esc_html__( 'ChatGPT 最大 Token', 'Shinonomeiro_C' ),
+			'chatgpt_api_request_timeout' => esc_html__( 'ChatGPT 请求超时', 'Shinonomeiro_C' ),
 		];
 		if ( isset( $explicit_label_map[ $raw_key ] ) ) {
 			return $explicit_label_map[ $raw_key ];
 		}
 
-		if ( 0 === strpos( $raw_key, 'random_graphs_' ) ) {
-			return esc_html__( '随机封面图设置', 'Shinonomeiro_C' );
+		$token_map = [
+			'iro' => '主题', 'meta' => '元信息', 'seo' => 'SEO', 'theme' => '主题', 'darkmode' => '深色模式',
+			'background' => '背景', 'transparency' => '透明度', 'commemorate' => '纪念模式', 'load' => '加载',
+			'out' => '外部', 'svg' => 'SVG', 'reference' => '引用', 'exter' => '外部', 'font' => '字体',
+			'gfonts' => 'Google 字体', 'api' => '接口', 'add' => '添加', 'name' => '名称',
+			'unlisted' => '未列出', 'avatar' => '头像', 'footer' => '页脚', 'addition' => '附加内容',
+			'aplayer' => 'APlayer', 'server' => '服务端', 'custom' => '自定义', 'music' => '音乐',
+			'proxy' => '代理', 'playlistid' => '歌单 ID', 'order' => '排序', 'preload' => '预加载', 'volume' => '音量',
+			'cookie' => 'Cookie', 'search' => '搜索', 'filter' => '筛选', 'for' => '', 'shuoshuo' => '说说', 'pages' => '页面',
+			'only' => '仅', 'admin' => '后台', 'can' => '可', 'sticky' => '置顶', 'pinned' => '置顶', 'content' => '内容',
+			'exclude' => '排除', 'results' => '结果', 'live' => '实时', 'comment' => '评论',
+			'animation' => '动画', 'color1' => '颜色 1', 'color2' => '颜色 2', 'blur' => '模糊',
+			'poi' => '过渡', 'pjax' => 'PJAX', 'keep' => '保持', 'loading' => '加载态', 'missing' => '缺失', 'avatars' => '头像',
+			'images' => '图片', 'default' => '默认', 'signature' => '签名', 'typing' => '打字效果', 'placeholder' => '占位文本',
+			'random' => '随机', 'graphs' => '封面图', 'options' => '策略', 'mts' => '数量', 'link' => '链接', 'mobile' => '移动端',
+			'cache' => '缓存', 'cover' => '封面', 'video' => '视频', 'loop' => '循环', 'title' => '标题',
+			'social' => '社交', 'area' => '区域', 'display' => '显示', 'icon' => '图标', 'radius' => '圆角',
+			'wechat' => '微信', 'qrcode' => '二维码', 'id' => 'ID', 'qq' => 'QQ', 'url' => '链接', 'copy' => '复制', 'switch' => '开关',
+			'wangyiyun' => '网易云', 'sina' => '微博', 'github' => 'GitHub', 'telegram' => 'Telegram', 'steam' => 'Steam',
+			'youtube' => 'YouTube', 'instagram' => 'Instagram', 'douyin' => '抖音', 'xiaohongshu' => '小红书',
+			'discord' => 'Discord', 'zhihu' => '知乎', 'linkedin' => 'LinkedIn', 'twitter' => 'X/Twitter', 'facebook' => 'Facebook',
+			'email' => '邮箱', 'domain' => '域名', 'diysocialicons' => '自定义社交图标', 'exhibition' => '展示位',
+			'post' => '文章', 'clipboard' => '剪贴板', 'ref' => '引用', 'lazyload' => '懒加载', 'spinner' => '加载动画',
+			'temp' => '临时', 'bangumi' => '番剧', 'source' => '来源', 'my' => '我的', 'anime' => '动漫', 'list' => '列表',
+			'username' => '用户名', 'sort' => '排序', 'bilibili' => 'Bilibili', 'friend' => '友链', 'align' => '对齐',
+			'form' => '表单', 'sorting' => '排序', 'mode' => '模式', 'key' => '密钥', 'store' => '商店',
+			'smilies' => '表情包', 'dir' => '目录', 'useragent' => '用户代理', 'location' => '地理位置', 'show' => '显示',
+			'save' => '保存', 'private' => '私信', 'message' => '消息', 'captcha' => '验证码', 'select' => '选择',
+			'img' => '图片', 'upload' => '上传', 'max' => '最大', 'size' => '大小', 'imgur' => 'Imgur', 'smms' => 'SM.MS',
+			'chevereto' => 'Chevereto', 'cheverto' => 'Chevereto', 'lsky' => 'Lsky', 'mail' => '邮件', 'notify' => '通知',
+			'login' => '登录', 'logo' => 'Logo', 'vaptcha' => 'Vaptcha', 'vid' => 'VID', 'scene' => '场景',
+			'turnstile' => 'Turnstile', 'site' => '站点', 'secret' => 'Secret', 'skip' => '跳过', 'language' => '语言', 'opt' => '选项',
+			'left' => '左侧', 'first' => '一级', 'class' => '分类', 'second' => '二级', 'emphasize' => '强调', 'text' => '文本',
+			'chatgpt' => 'ChatGPT', 'endpoint' => '接口', 'access' => '访问', 'token' => '令牌', 'request' => '请求', 'timeout' => '超时',
+			'auto' => '自动', 'article' => '文章', 'summarize' => '摘要', 'annotations' => '注释', 'statistics' => '统计', 'analytics' => '分析',
+			'level' => '等级', 'style' => '样式', 'header' => '页头', 'insert' => '插入', 'time' => '时间', 'zone' => '时区',
+			'fix' => '修复', 'gravatar' => 'Gravatar', 'address' => '地址', 'of' => '', 'ghcard' => 'GitHub 卡片',
+			'lightbox' => '灯箱', 'lightgallery' => '图库', 'code' => '代码', 'highlight' => '高亮', 'method' => '方式',
+			'prism' => 'Prism', 'line' => '行号', 'number' => '编号', 'autoload' => '自动加载', 'path' => '路径',
+			'light' => '浅色', 'enable' => '启用', 'mathjax' => 'MathJax', 'cdn' => 'CDN', 'classify' => '分类',
+			'image' => '图片', 'category' => '分类', 'version' => '版本', 'hide' => '隐藏', 'portal' => '入口',
+			'fontawesome' => 'FontAwesome', 'dev' => '开发', 'php' => 'PHP', 'notice' => '通知', 'iro_update' => '更新',
+			'channel' => '通道', 'validate' => '校验', 'value' => '值', 'core' => '核心', 'library' => '库',
+			'basepath' => '基础路径', 'shared' => '共享', 'lib' => '库', 'external' => '外部', 'vendor' => '供应方',
+			'vision' => '视觉资源', 'resource' => '资源', 'send' => '发送'
+		];
+
+		$tokens = array_values( array_filter( explode( '_', strtolower( $raw_key ) ), static function( $token ) {
+			return '' !== $token;
+		} ) );
+		$cn_parts = [];
+		foreach ( $tokens as $token ) {
+			$cn_parts[] = $token_map[ $token ] ?? strtoupper( $token );
+		}
+		$label = trim( implode( ' ', array_filter( $cn_parts, static function( $part ) {
+			return '' !== trim( (string) $part );
+		} ) ) );
+		if ( '' !== $label ) {
+			return $label;
 		}
 
-		$label = trim( preg_replace( '/\s+/', ' ', str_replace( '_', ' ', $raw_key ) ) );
-		if ( '' === $label ) {
-			return '';
-		}
-
-		$label = ucwords( strtolower( $label ) );
-		$acronyms = [ 'Seo', 'Api', 'Cdn', 'Pjax', 'Ai', 'Wp', 'Php', 'Css', 'Js', 'Svg', 'Url', 'Qq', 'Id', 'Imgur', 'Smms', 'Bili' ];
-		foreach ( $acronyms as $word ) {
-			$label = preg_replace( '/\b' . preg_quote( $word, '/' ) . '\b/u', strtoupper( $word ), $label );
-		}
-
-		$label = preg_replace( '/\bChatgpt\b/u', 'ChatGPT', $label );
-		$label = preg_replace( '/\bBilibili\b/u', 'Bilibili', $label );
-		$label = preg_replace( '/\bBili\b/u', 'Bili', $label );
-		$label = preg_replace( '/\bWechat\b/u', 'WeChat', $label );
-
-		return $label;
+		return $raw_key;
 	}
 }
 
@@ -210,12 +267,16 @@ if ( ! function_exists( 'iro_customizer_legacy_description_from_key' ) ) {
 
 		foreach ( $description_map as $marker => $description ) {
 			if ( false !== strpos( $key, $marker ) ) {
-				return sprintf(
-					esc_html__( '配置键：%1$s。%2$s', 'Shinonomeiro_C' ),
-					esc_html( (string) $legacy_key ),
-					$description
-				);
+				return $description;
 			}
+		}
+
+		$label = iro_customizer_friendly_label_from_key( $legacy_key );
+		if ( '' !== trim( (string) $label ) ) {
+			return sprintf(
+				esc_html__( '用于配置 %s 相关功能。', 'Shinonomeiro_C' ),
+				esc_html( (string) $label )
+			);
 		}
 
 		return '';
