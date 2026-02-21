@@ -78,6 +78,28 @@ $allowed_params = [
 
 $vision_resource_basepath = iro_opt('vision_resource_basepath', 'https://s.nmxc.ltd/sakurairo_vision/@3.0/');
 
+
+if ( ! function_exists( 'iro_customizer_friendly_label_from_key' ) ) {
+	function iro_customizer_friendly_label_from_key( $key ) {
+		$label = trim( preg_replace( '/\s+/', ' ', str_replace( '_', ' ', (string) $key ) ) );
+		if ( '' === $label ) {
+			return '';
+		}
+
+		$label = ucwords( strtolower( $label ) );
+		$acronyms = [ 'Seo', 'Api', 'Cdn', 'Pjax', 'Ai', 'Wp', 'Php', 'Css', 'Js', 'Svg', 'Url', 'Qq', 'Id', 'Imgur', 'Smms' ];
+		foreach ( $acronyms as $word ) {
+			$label = preg_replace( '/\b' . preg_quote( $word, '/' ) . '\b/u', strtoupper( $word ), $label );
+		}
+
+		$label = preg_replace( '/\bChatgpt\b/u', 'ChatGPT', $label );
+		$label = preg_replace( '/\bBilibili\b/u', 'Bilibili', $label );
+		$label = preg_replace( '/\bWechat\b/u', 'WeChat', $label );
+
+		return $label;
+	}
+}
+
 if ( ! function_exists( 'iro_customizer_sanitize_json_or_text' ) ) {
 	function iro_customizer_sanitize_json_or_text( $value ) {
 		if ( is_array( $value ) ) {
@@ -2179,44 +2201,44 @@ $sections = [
 $legacy_migrated_keys_file = __DIR__ . '/customizer-migrated-fields.php';
 $enable_legacy_migrated_section = (bool) apply_filters(
 	'shinonomeiro_enable_migrated_legacy_section',
-	defined( 'SHINONOMEIRO_ENABLE_LEGACY_BRIDGE' ) ? SHINONOMEIRO_ENABLE_LEGACY_BRIDGE : false
+	defined( 'SHINONOMEIRO_ENABLE_LEGACY_BRIDGE' ) ? SHINONOMEIRO_ENABLE_LEGACY_BRIDGE : true
 );
 if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file ) ) {
 	$legacy_migrated_keys = require $legacy_migrated_keys_file;
 	if ( is_array( $legacy_migrated_keys ) && ! empty( $legacy_migrated_keys ) ) {
 		$legacy_group_rules = [
 			'iro_legacy_group_site_basics' => [
-				'title' => esc_html__( 'Legacy Bridge: Site Basics & SEO', 'Shinonomeiro_C' ),
+				'title' => esc_html__( '高级/兼容迁移：站点身份与 SEO', 'Shinonomeiro_C' ),
 				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes favicon, SEO and base theme behavior.', 'Shinonomeiro_C' ),
 				'prefixes' => [ 'favicon_', 'iro_seo', 'iro_meta_', 'theme_', 'load_out_svg', 'time_zone_' ],
 			],
 			'iro_legacy_group_search_loading' => [
-				'title' => esc_html__( 'Legacy Bridge: Search & Loading', 'Shinonomeiro_C' ),
+				'title' => esc_html__( '高级/兼容迁移：搜索、加载与阅读体验', 'Shinonomeiro_C' ),
 				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes search, preload, PJAX and lazyload related options.', 'Shinonomeiro_C' ),
 				'prefixes' => [ 'search_', 'only_admin_can_search_', 'sticky_', 'custom_exclude_', 'live_search', 'preload_', 'poi_', 'pjax_', 'missing_', 'clipboard_', 'page_lazyload' ],
 			],
 			'iro_legacy_group_cover_social' => [
-				'title' => esc_html__( 'Legacy Bridge: Cover, Social & Profile', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes cover media and social account presentation.', 'Shinonomeiro_C' ),
-				'prefixes' => [ 'cover_', 'social_', 'wechat_', 'qq_', 'email_', 'bili', 'wangyiyun', 'sina', 'github', 'telegram', 'steam', 'youtube', 'instagram', 'douyin', 'xiaohongshu', 'discord', 'zhihu', 'linkedin', 'twitter', 'facebook', 'diysocialicons', 'unlisted_', 'random_graphs_', 'cache_cover', 'exhibition', 'post_cover_' ],
+				'title' => esc_html__( '高级/兼容迁移：封面、社交与身份展示', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '兼容旧版选项：封面展示、社交链接与个人展示。', 'Shinonomeiro_C' ),
+				'prefixes' => [ 'cover_', 'social_', 'wechat_', 'qq_', 'email_', 'wangyiyun', 'sina', 'github', 'telegram', 'youtube', 'instagram', 'douyin', 'xiaohongshu', 'discord', 'zhihu', 'linkedin', 'twitter', 'facebook', 'diysocialicons', 'unlisted_', 'random_graphs_', 'cache_cover', 'exhibition', 'post_cover_' ],
 			],
 			'iro_legacy_group_third_party_services' => [
-				'title' => esc_html__( 'Legacy Bridge: Third-party Services', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes music, anime, steam and API integrations.', 'Shinonomeiro_C' ),
-				'prefixes' => [ 'aplayer_', 'custom_music_', 'bangumi_', 'my_anime_', 'bilibili_', 'friend_link_', 'statistics_', 'google_analytics_', 'chatgpt_' ],
+				'title' => esc_html__( '高级/兼容迁移：第三方服务与数据源', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '兼容旧版选项：音乐、番剧、Steam、Bilibili 与外部服务集成。', 'Shinonomeiro_C' ),
+				'prefixes' => [ 'aplayer_', 'custom_music_', 'bangumi_', 'my_anime_', 'bilibili_', 'bili', 'steam_', 'steam', 'friend_link_', 'statistics_', 'google_analytics_', 'chatgpt_' ],
 			],
 			'iro_legacy_group_comment_media' => [
-				'title' => esc_html__( 'Legacy Bridge: Comment & Media Upload', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes emoticons, comments, uploads and notification settings.', 'Shinonomeiro_C' ),
-				'prefixes' => [ 'smilies_', 'comment_', 'qq_avatar_', 'img_', 'imgur_', 'smms_', 'chever', 'lsky_', 'mail_', 'admin_notify' ],
+				'title' => esc_html__( '高级/兼容迁移：评论与媒体上传', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '兼容旧版选项：表情、评论与图片上传能力。', 'Shinonomeiro_C' ),
+				'prefixes' => [ 'smilies_', 'comment_', 'qq_avatar_', 'img_', 'imgur_', 'smms_', 'chever', 'lsky_', 'mail_' ],
 			],
 			'iro_legacy_group_auth_admin' => [
-				'title' => esc_html__( 'Legacy Bridge: Login & Admin', 'Shinonomeiro_C' ),
-				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes login, captcha and backend style options.', 'Shinonomeiro_C' ),
-				'prefixes' => [ 'custom_login_', 'login_', 'captcha_', 'vaptcha_', 'turnstile_', 'admin_' ],
+				'title' => esc_html__( '高级/兼容迁移：账号、安全与后台', 'Shinonomeiro_C' ),
+				'description' => esc_html__( '兼容旧版选项：登录、验证码、后台样式与管理通知。', 'Shinonomeiro_C' ),
+				'prefixes' => [ 'custom_login_', 'login_', 'captcha_', 'vaptcha_', 'turnstile_', 'admin_', 'admin_notify' ],
 			],
 			'iro_legacy_group_dev_runtime' => [
-				'title' => esc_html__( 'Legacy Bridge: Runtime, Dev & Update', 'Shinonomeiro_C' ),
+				'title' => esc_html__( '高级/兼容迁移：性能、开发与更新', 'Shinonomeiro_C' ),
 				'description' => esc_html__( 'Source: Phase2 M2 fallback keys from docs/PHASE2_FIELD_MAPPING.md. Includes frontend runtime, CDN, debug and update channel behavior.', 'Shinonomeiro_C' ),
 				'prefixes' => [ 'reference_', 'exter_', 'gfonts_', 'iro_captcha_', 'site_', 'gravatar_', 'custom_proxy_', 'ghcard_', 'lightbox', 'lightgallery_', 'code_highlight_', 'enable_theme_', 'image_', 'classify_', 'cookie_', 'hide_login_', 'fontawesome_', 'dev_', 'php_notice_', 'iro_update_', 'channel_validate_', 'core_library_', 'shared_library_', 'lib_cdn_', 'external_vendor_', 'vision_resource_', 'send_theme_' ],
 			],
@@ -2246,7 +2268,7 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'type'        => $field_type,
 				'settings'    => 'legacy_' . $legacy_key,
 				'iro_key'     => $legacy_key,
-				'label'       => ucwords( str_replace( '_', ' ', $legacy_key ) ),
+				'label'       => iro_customizer_friendly_label_from_key( $legacy_key ),
 				'description' => sprintf( esc_html__( 'Migrated from legacy options key: %s', 'Shinonomeiro_C' ), $legacy_key ),
 				'default'     => $default_value,
 			];
