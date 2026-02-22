@@ -1362,38 +1362,40 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    //二级菜单
-    document.querySelectorAll(".open_submenu").forEach(function (toggle) {
-        toggle.addEventListener("click", function (event) {
-            event.stopPropagation();
+    //二级菜单（使用事件委托，兼容 PJAX 后替换的菜单节点）
+    document.addEventListener("click", function (event) {
+        const toggle = event.target.closest(".open_submenu");
+        if (!toggle || !moNavMenu.contains(toggle)) return;
 
-            let parentLi = this.closest("li");
-            let currentSubMenu = parentLi.querySelector(".sub-menu");
+        event.preventDefault();
+        event.stopPropagation();
 
-            //互斥
-            document.querySelectorAll(".sub-menu.open").forEach(otherSubMenu => {
-                if (otherSubMenu !== currentSubMenu) {
-                    otherSubMenu.classList.remove("open");
-                    let otherToggle = otherSubMenu.closest("li").querySelector(".open_submenu");
-                    if (otherToggle) {
-                        otherToggle.classList.remove("open");
-                    }
+        const parentLi = toggle.closest("li");
+        const currentSubMenu = parentLi ? parentLi.querySelector(".sub-menu") : null;
+
+        if (!currentSubMenu) return;
+
+        // 互斥展开
+        moNavMenu.querySelectorAll(".sub-menu.open").forEach(otherSubMenu => {
+            if (otherSubMenu !== currentSubMenu) {
+                otherSubMenu.classList.remove("open");
+                const otherToggle = otherSubMenu.closest("li")?.querySelector(".open_submenu");
+                if (otherToggle) {
+                    otherToggle.classList.remove("open");
                 }
-            });
-
-            if (currentSubMenu) {
-                currentSubMenu.classList.toggle("open");
-                this.classList.toggle("open");
             }
         });
+
+        currentSubMenu.classList.toggle("open");
+        toggle.classList.toggle("open");
     });
 
-    // 点击选项关闭
-    document.querySelectorAll(".mobile-nav a, .mo_toc_panel a").forEach(link => {
-        link.addEventListener("click", () => {
-                closeMenu(moNavMenu, moNavButton);
-                closeMenu(moTocMenu, moTocButton);
-        });
+    // 点击选项关闭（委托，兼容 PJAX）
+    document.addEventListener("click", function (event) {
+        const link = event.target.closest(".mobile-nav a, .mo_toc_panel a");
+        if (!link) return;
+        closeMenu(moNavMenu, moNavButton);
+        closeMenu(moTocMenu, moTocButton);
     });
 
     // 点击空白处关闭
