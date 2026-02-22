@@ -346,9 +346,7 @@ $print_social_zone = function() use ($all_opt): void {
                             poemFontSize: <?php echo wp_json_encode( iro_opt('cover_poetry_font_size', '1.35em') ); ?>,
                             authorFontSize: <?php echo wp_json_encode( iro_opt('cover_poetry_author_font_size', '0.95em') ); ?>,
                             fontFamily: <?php echo wp_json_encode( iro_opt('cover_poetry_font_family', "'STKaiti', 'KaiTi', '楷体', serif") ); ?>,
-                            fallbackText: <?php echo wp_json_encode( iro_opt('signature_text', 'Hi, Mashiro?') ); ?>,
-                            mobilePoemScale: 0.86,
-                            mobileAuthorScale: 0.84
+                            fallbackText: <?php echo wp_json_encode( iro_opt('signature_text', 'Hi, Mashiro?') ); ?>
                         };
                         // ================================================
 
@@ -374,13 +372,13 @@ $print_social_zone = function() use ($all_opt): void {
                             return fontFamily + ',' + fallback;
                         }
 
-                        function ensurePoetryFont(fontFamily) {
+                        function ensurePoetryFont(fontFamily, preferKaiStyle) {
                             if (!('fonts' in document)) return;
                             var firstFamily = (fontFamily || '').split(',')[0].replace(/["']/g, '').trim();
                             if (!firstFamily) return;
                             if (document.fonts.check('16px "' + firstFamily + '"')) return;
 
-                            var isKaiStyle = /kaiti|楷/i.test(firstFamily);
+                            var isKaiStyle = !!preferKaiStyle || /kaiti|楷|wenkai|lxgw/i.test(firstFamily);
                             var id = isKaiStyle ? 'lxgw-wenkai' : 'noto-serif-sc';
                             if (document.querySelector('link[data-poem-font="' + id + '"]')) return;
 
@@ -408,7 +406,7 @@ $print_social_zone = function() use ($all_opt): void {
                             if (prefersKai) {
                                 fontStack = "'LXGW WenKai'," + fontStack;
                             }
-                            ensurePoetryFont(fontStack);
+                            ensurePoetryFont(fontStack, prefersKai);
 
                             var html = `
                                 <div class="poem-wrapper" style="
@@ -461,27 +459,20 @@ $print_social_zone = function() use ($all_opt): void {
                                                 letter-spacing: 0.08em !important;
                                             }
                                             .poem-wrapper .poem-content {
-                                                font-size: calc(var(--poem-font-size) * ${CONFIG.mobilePoemScale}) !important;
+                                                font-size: var(--poem-font-size) !important;
                                                 line-height: 1.45 !important;
                                                 margin-bottom: 0.35em !important;
-                                                overflow: hidden;
-                                                text-overflow: ellipsis;
-                                                display: -webkit-box;
-                                                -webkit-line-clamp: 2;
-                                                -webkit-box-orient: vertical;
+                                                white-space: normal !important;
+                                                overflow-wrap: anywhere;
                                             }
                                             .poem-wrapper .poem-author {
-                                                font-size: calc(var(--author-font-size) * ${CONFIG.mobileAuthorScale}) !important;
+                                                font-size: var(--author-font-size) !important;
                                                 transform: none !important;
                                                 text-align: center !important;
                                                 opacity: 0.8;
-                                                overflow: hidden;
-                                                text-overflow: ellipsis;
-                                                white-space: normal;
+                                                white-space: normal !important;
+                                                overflow-wrap: anywhere;
                                                 line-height: 1.4;
-                                                display: -webkit-box;
-                                                -webkit-line-clamp: 2;
-                                                -webkit-box-orient: vertical;
                                             }
                                         }
                                     </style>
