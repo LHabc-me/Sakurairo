@@ -612,10 +612,15 @@ animation: slow-rotate 10s linear infinite;
     overflow-x: auto !important;
     overflow-y: hidden !important;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     text-overflow: initial !important;
     white-space: nowrap !important;
     transition: all 0.6s ease-in-out;
     -webkit-transition: all 0.6s ease-in-out;
+}
+.post-meta::-webkit-scrollbar{
+    display: none;
 }
 .post-meta span,
 .post-meta a{
@@ -639,10 +644,15 @@ animation: slow-rotate 10s linear infinite;
     overflow-x: auto !important;
     overflow-y: hidden !important;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     text-overflow: initial !important;
     white-space: nowrap !important;
     transition: all 0.6s ease-in-out;
     -webkit-transition: all 0.6s ease-in-out;
+}
+.post-meta::-webkit-scrollbar{
+    display: none;
 }
 .post-meta span,
 .post-meta a{
