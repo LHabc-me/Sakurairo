@@ -211,7 +211,9 @@ header('X-Frame-Options: SAMEORIGIN');
         <?php endif;
 
         // Cache commonly used options
-        $show_user_avatar = (bool)iro_opt('nav_user_menu', true) && !((bool)iro_opt('hide_login_portal', false) && !is_user_logged_in());
+        $hide_login_portal_for_guest = (bool)iro_opt('hide_login_portal', false) && !is_user_logged_in();
+        $show_user_avatar = (bool)iro_opt('nav_user_menu', true) && !$hide_login_portal_for_guest;
+        $show_mo_toc_button = !$hide_login_portal_for_guest;
         $enable_random_graphs = (bool)iro_opt('cover_switch', true) && (bool)iro_opt('cover_random_graphs_switch', true) && !(bool)iro_opt('hide_splash_wallpaper_switch');
         ?>
 
@@ -252,9 +254,11 @@ header('X-Frame-Options: SAMEORIGIN');
             <?php endif; ?>
         </div>
 
-        <div class="mo-toc-button">
-            <i class="fa-solid fa-bookmark"></i>
-        </div>
+        <?php if ($show_mo_toc_button): ?>
+            <div class="mo-toc-button">
+                <i class="fa-solid fa-bookmark"></i>
+            </div>
+        <?php endif; ?>
 
         <?php get_template_part('layouts/mo_toc_menu');?> 
 

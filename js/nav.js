@@ -1064,7 +1064,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //移动端菜单开关
     //通用部分
     let moNavButton = document.querySelector(".mo-nav-button");
-    let moTocButton = document.querySelector(".mo-toc-button");
+    let moTocButton = document.querySelector(".mo-toc-button") || document.createElement("button");
     let moNavMenu   = document.querySelector(".mobile-nav");
     let moTocMenu   = document.querySelector(".mo_toc_panel");
     let moHeader    = document.querySelector(".site-header");
