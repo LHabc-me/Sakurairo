@@ -604,29 +604,12 @@ animation: slow-rotate 10s linear infinite;
     right: 10px;
     height: fit-content;
     width: fit-content;
-    max-height: none;
-    max-width: 85%;
+    max-height: 32%;
+    max-width: 32%;
     top: 10px;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    text-overflow: initial !important;
-    white-space: nowrap !important;
+    flex-direction: column;
     transition: all 0.6s ease-in-out;
     -webkit-transition: all 0.6s ease-in-out;
-}
-.post-meta::-webkit-scrollbar{
-    display: none;
-}
-.post-meta span,
-.post-meta a{
-    white-space: nowrap !important;
-    overflow: visible !important;
-    text-overflow: initial !important;
 }
 
 }
@@ -636,29 +619,12 @@ animation: slow-rotate 10s linear infinite;
     right: 21.5%;
     height: fit-content;
     width: fit-content;
-    max-height: none;
-    max-width: 78%;
+    max-height: 32%;
+    max-width: 32%;
     top: 10px;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    text-overflow: initial !important;
-    white-space: nowrap !important;
+    flex-direction: column;
     transition: all 0.6s ease-in-out;
     -webkit-transition: all 0.6s ease-in-out;
-}
-.post-meta::-webkit-scrollbar{
-    display: none;
-}
-.post-meta span,
-.post-meta a{
-    white-space: nowrap !important;
-    overflow: visible !important;
-    text-overflow: initial !important;
 }
 
 }
