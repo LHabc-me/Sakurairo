@@ -1362,8 +1362,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    const isMobileNavRuntime = () => window.innerWidth < 860;
-
     const toggleMobileSubMenu = (parentLi) => {
         const currentSubMenu = parentLi ? parentLi.querySelector(".sub-menu") : null;
         const currentToggle = parentLi ? parentLi.querySelector(".open_submenu") : null;
@@ -1387,8 +1385,6 @@ document.addEventListener("DOMContentLoaded", () => {
     //二级菜单（事件委托，兼容 PJAX 后替换的菜单节点）
     // 1) 点小箭头可展开
     document.addEventListener("click", function (event) {
-        if (!isMobileNavRuntime()) return;
-
         const toggle = event.target.closest(".open_submenu");
         if (!toggle || !moNavMenu.contains(toggle)) return;
 
@@ -1399,18 +1395,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2) 点父级整行控件（标题区域）也可展开/收起
     document.addEventListener("click", function (event) {
-        if (!isMobileNavRuntime()) return;
+        const parentLink = event.target.closest(".mobile-nav .menu > li.menu-item-has-children > a");
+        if (!parentLink || !moNavMenu.contains(parentLink)) return;
 
-        const parentLi = event.target.closest(".mobile-nav .menu > li.menu-item-has-children");
-        if (!parentLi || !moNavMenu.contains(parentLi)) return;
-
-        // 点到子菜单内部链接时，不走父级展开逻辑
-        if (event.target.closest('.sub-menu')) return;
-
-        // 点到右侧小箭头由上面的 handler 处理
-        if (event.target.closest('.open_submenu')) return;
-
-        if (!parentLi.querySelector('.sub-menu')) return;
+        const parentLi = parentLink.closest("li");
+        if (!parentLi || !parentLi.querySelector('.sub-menu')) return;
 
         event.preventDefault();
         event.stopPropagation();
@@ -1419,8 +1408,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 点击选项关闭（委托，兼容 PJAX）
     document.addEventListener("click", function (event) {
-        if (!isMobileNavRuntime()) return;
-
         const link = event.target.closest(".mobile-nav a, .mo_toc_panel a");
         if (!link) return;
 
@@ -1435,8 +1422,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 点击空白处关闭
     document.addEventListener("click", function (event) {
-        if (!isMobileNavRuntime()) return;
-
         let navButton = document.querySelector(".mo-nav-button");
         let tocButton = document.querySelector(".mo-toc-button");
 
@@ -1488,9 +1473,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // 关闭所有展开的二级菜单
         // 注意：点击展开控件时（小箭头/父级标题），不能在同一次事件里把刚打开的子菜单立刻关闭
         const clickedSubmenuToggle = event.target.closest('.open_submenu');
-        const clickedParentMenuItem = event.target.closest('.mobile-nav .menu > li.menu-item-has-children');
+        const clickedParentMenuLink = event.target.closest('.mobile-nav .menu > li.menu-item-has-children > a');
         document.querySelectorAll(".sub-menu.open").forEach(function (subMenu) {
-            if (clickedSubmenuToggle || clickedParentMenuItem) return;
+            if (clickedSubmenuToggle || clickedParentMenuLink) return;
             if (!subMenu.contains(event.target)) {
                 subMenu.classList.remove("open");
                 let submenuToggle = subMenu.closest("li").querySelector(".open_submenu");
