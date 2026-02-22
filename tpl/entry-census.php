@@ -31,6 +31,9 @@ function get_entry_census_meta_html($has_splitter)
             case "category":
                 $content = get_meta_category_html($post_id);
                 break;
+            case "post_tags":
+                $content = get_meta_tags_html($post_id);
+                break;
             case "comment_count":
                 ob_start();
                 render_meta_comments();
