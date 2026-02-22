@@ -207,16 +207,6 @@ nav .menu>li .sub-menu li {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transform-origin: center center;
-}
-
-/* 保留原图标的同时做视觉放大，尽量接近搜索图标的 16x16 观感 */
-.quick-switch-btn.js-theme-toggle i {
-    transform: scale(1.22);
-}
-
-.quick-switch-btn.js-lang-toggle i {
-    transform: scale(1.12);
 }
 
 
