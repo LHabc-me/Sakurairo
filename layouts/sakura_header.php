@@ -8,7 +8,9 @@ if (!defined('ABSPATH')) {
 $nav_style = iro_opt('sakura_nav_style');
 $nav_text_logo = iro_opt('nav_text_logo');
 $show_search = (bool)iro_opt('nav_menu_search');
-$show_user_avatar = (bool)iro_opt('nav_user_menu',true);
+$hide_login_portal_for_guest = (bool)iro_opt('hide_login_portal', false) && !is_user_logged_in();
+$show_user_avatar = (bool)iro_opt('nav_user_menu',true) && !$hide_login_portal_for_guest;
+$show_mo_toc_button = !$hide_login_portal_for_guest;
 ?>
 <style>
   <?php if (!empty($nav_text_logo['font_name'])){ ?>
@@ -152,9 +154,11 @@ $show_user_avatar = (bool)iro_opt('nav_user_menu',true);
     <?php endif; //选项全在menu-wrapper中，防止bg-switch隐藏宽度变化导致brand缩放?>
   </div>
 
-  <div class="mo-toc-button">
-      <i class="fa-solid fa-bookmark"></i>
-  </div>
+  <?php if ($show_mo_toc_button): ?>
+    <div class="mo-toc-button">
+        <i class="fa-solid fa-bookmark"></i>
+    </div>
+  <?php endif; ?>
 
   <?php get_template_part('layouts/mo_toc_menu');?> 
 
