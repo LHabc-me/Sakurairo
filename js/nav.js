@@ -6,9 +6,9 @@ if (!nav.classList.contains('sakura_nav')) {
 function bindQuickSwitches() {
     const darkKey = 'iro_manual_darkmode';
     const html = document.documentElement;
-    const body = document.body;
 
     const setDarkMode = (enabled) => {
+        const body = document.body;
         html.classList.toggle('dark', enabled);
         if (body) body.classList.toggle('dark', enabled);
         try {
@@ -31,6 +31,7 @@ function bindQuickSwitches() {
         if (btn.dataset.bound === '1') return;
         btn.dataset.bound = '1';
         btn.addEventListener('click', () => {
+            const body = document.body;
             const isDark = html.classList.contains('dark') || (body && body.classList.contains('dark'));
             setDarkMode(!isDark);
         });
@@ -40,9 +41,11 @@ function bindQuickSwitches() {
         if (btn.dataset.bound === '1') return;
         btn.dataset.bound = '1';
         btn.addEventListener('click', () => {
-            const current = (btn.dataset.currentLocale || html.lang || 'zh-CN').replace('_', '-').toLowerCase();
-            const next = current.startsWith('zh') ? 'en_US' : 'zh_CN';
             const url = new URL(window.location.href);
+            const queryLang = (url.searchParams.get('lang') || '').replace('_', '-').toLowerCase();
+            const fallback = (btn.dataset.currentLocale || html.lang || 'zh-CN').replace('_', '-').toLowerCase();
+            const current = queryLang || fallback;
+            const next = current.startsWith('zh') ? 'en_US' : 'zh_CN';
             url.searchParams.set('lang', next);
             window.location.href = url.toString();
         });
