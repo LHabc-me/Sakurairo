@@ -211,7 +211,7 @@ header('X-Frame-Options: SAMEORIGIN');
         <?php endif;
 
         // Cache commonly used options
-        $show_user_avatar = (bool)iro_opt('nav_user_menu',true);
+        $show_user_avatar = (bool)iro_opt('nav_user_menu', true) && !((bool)iro_opt('hide_login_portal', false) && !is_user_logged_in());
         $enable_random_graphs = (bool)iro_opt('cover_switch', true) && (bool)iro_opt('cover_random_graphs_switch', true) && !(bool)iro_opt('hide_splash_wallpaper_switch');
         ?>
 
