@@ -176,63 +176,7 @@ nav .menu>li .sub-menu li {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    outline: none;
-    box-shadow: none;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -webkit-tap-highlight-color: transparent;
-    background-image: none;
 }
-
-.quick-switch-btn:focus,
-.quick-switch-btn:focus-visible,
-.quick-switch-btn:active {
-    outline: none;
-    box-shadow: none;
-    background: transparent;
-}
-
-.quick-switch-btn * {
-    -webkit-tap-highlight-color: transparent;
-}
-
-
-.quick-switch-btn::-moz-focus-inner {
-    border: 0;
-}
-
-.quick-switch-btn i {
-    margin: 17px 0;
-    border-radius: 10px !important;
-    border: 2px solid transparent;
-    font-size: 18px;
-    font-weight: 900;
-    line-height: 1;
-    min-width: 38px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* 使用明确字号补偿，避免 transform 在部分设备上视觉不生效 */
-.quick-switch-btn.js-theme-toggle i {
-    font-size: 22px !important;
-}
-
-.quick-switch-btn.js-lang-toggle i {
-    font-size: 20px !important;
-}
-
-.quick-switch-btn i:active,
-.quick-switch-btn:active i,
-.quick-switch-btn:focus i,
-.quick-switch-btn:focus-visible i {
-    box-shadow: none !important;
-    outline: none !important;
-    background: transparent !important;
-}
-
 
 .bg-switch {
     font-size: 16px;
@@ -253,18 +197,12 @@ nav .menu>li .sub-menu li {
 }
 
 .searchbox.js-toggle-search i:hover,
-.bg-switch i:hover {
+.bg-switch i:hover,
+.quick-switch-btn i:hover,
+.quick-switch-btn:focus-visible i{
     color: var(--theme-skin-matching);
     border: 2px solid var(--theme-skin-matching);
     background-color: transparent;
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .quick-switch-btn i:hover {
-        color: var(--theme-skin-matching);
-        border: 2px solid var(--theme-skin-matching);
-        background-color: transparent;
-    }
 }
 
 .bg-switch.hide-state {
@@ -314,16 +252,9 @@ body.dark .site-header:hover .searchbox.js-toggle-search i, body.dark .site-head
     color: var(--dark-text-primary) !important;
 }
 
-body.dark .searchbox.js-toggle-search i:hover, body.dark .bg-switch i:hover{
+body.dark .searchbox.js-toggle-search i:hover, body.dark .bg-switch i:hover, body.dark .quick-switch-btn i:hover, body.dark .quick-switch-btn:focus-visible i{
     color: var(--theme-skin-dark);
     border: 2px solid var(--theme-skin-dark);
-}
-
-@media (hover: hover) and (pointer: fine) {
-    body.dark .quick-switch-btn i:hover {
-        color: var(--theme-skin-dark);
-        border: 2px solid var(--theme-skin-dark);
-    }
 }
 
 @keyframes fadeInLeft {
@@ -350,54 +281,4 @@ body.dark .searchbox.js-toggle-search i:hover, body.dark .bg-switch i:hover{
         transform: translateX(0%);
         opacity: 1;
     }
-}
-
-/* 强制覆盖：当前线上为 <i> 渲染，使用高特异性确保尺寸与点击态生效 */
-.site-header .quick-switches .quick-switch-btn,
-.site-header .mobile-quick-switches .quick-switch-btn,
-.site-header .mo-quick-switches .quick-switch-btn {
-    -webkit-tap-highlight-color: transparent !important;
-    outline: none !important;
-    box-shadow: none !important;
-}
-
-.site-header .quick-switches .quick-switch-btn i.fa-moon,
-.site-header .mobile-quick-switches .quick-switch-btn i.fa-moon,
-.site-header .mo-quick-switches .quick-switch-btn i.fa-moon {
-    font-size: 22px !important;
-    width: 1em;
-    height: 1em;
-    line-height: 1 !important;
-}
-
-.site-header .quick-switches .quick-switch-btn i.fa-language,
-.site-header .mobile-quick-switches .quick-switch-btn i.fa-language,
-.site-header .mo-quick-switches .quick-switch-btn i.fa-language {
-    font-size: 20px !important;
-    width: 1em;
-    height: 1em;
-    line-height: 1 !important;
-}
-
-.site-header .quick-switches .quick-switch-btn:active,
-.site-header .quick-switches .quick-switch-btn:focus,
-.site-header .quick-switches .quick-switch-btn:focus-visible,
-.site-header .quick-switches .quick-switch-btn:active i,
-.site-header .quick-switches .quick-switch-btn:focus i,
-.site-header .quick-switches .quick-switch-btn:focus-visible i,
-.site-header .mobile-quick-switches .quick-switch-btn:active,
-.site-header .mobile-quick-switches .quick-switch-btn:focus,
-.site-header .mobile-quick-switches .quick-switch-btn:focus-visible,
-.site-header .mobile-quick-switches .quick-switch-btn:active i,
-.site-header .mobile-quick-switches .quick-switch-btn:focus i,
-.site-header .mobile-quick-switches .quick-switch-btn:focus-visible i,
-.site-header .mo-quick-switches .quick-switch-btn:active,
-.site-header .mo-quick-switches .quick-switch-btn:focus,
-.site-header .mo-quick-switches .quick-switch-btn:focus-visible,
-.site-header .mo-quick-switches .quick-switch-btn:active i,
-.site-header .mo-quick-switches .quick-switch-btn:focus i,
-.site-header .mo-quick-switches .quick-switch-btn:focus-visible i {
-    outline: none !important;
-    box-shadow: none !important;
-    background: transparent !important;
 }
