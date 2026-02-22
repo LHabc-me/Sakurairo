@@ -149,7 +149,7 @@ nav .menu>li .sub-menu li {
     padding: 10px 0;
 }
 
-.searchbox.js-toggle-search i, .bg-switch i{
+.searchbox.js-toggle-search i, .bg-switch i, .quick-switch-btn i{
     padding: 11px 10px;
 }
 
@@ -163,6 +163,19 @@ nav .menu>li .sub-menu li {
     border: 2px solid transparent;
     font-size: 18px;
     font-weight: 900;
+}
+
+
+.quick-switch-btn {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .bg-switch {
@@ -184,7 +197,9 @@ nav .menu>li .sub-menu li {
 }
 
 .searchbox.js-toggle-search i:hover,
-.bg-switch i:hover{
+.bg-switch i:hover,
+.quick-switch-btn i:hover,
+.quick-switch-btn:focus-visible i{
     color: var(--theme-skin-matching);
     border: 2px solid var(--theme-skin-matching);
     background-color: transparent;
@@ -232,12 +247,12 @@ body.dark .site-branding {
 
 body.dark .site-header.bg nav ul li a, 
 body.dark .site-header:hover nav ul li a,
-body.dark .site-header.bg .searchbox.js-toggle-search i, body.dark .site-header.bg .bg-switch i,
-body.dark .site-header:hover .searchbox.js-toggle-search i, body.dark .site-header:hover .bg-switch i{
+body.dark .site-header.bg .searchbox.js-toggle-search i, body.dark .site-header.bg .bg-switch i, body.dark .site-header.bg .quick-switch-btn i,
+body.dark .site-header:hover .searchbox.js-toggle-search i, body.dark .site-header:hover .bg-switch i, body.dark .site-header:hover .quick-switch-btn i{
     color: var(--dark-text-primary) !important;
 }
 
-body.dark .searchbox.js-toggle-search i:hover, body.dark .bg-switch i:hover{
+body.dark .searchbox.js-toggle-search i:hover, body.dark .bg-switch i:hover, body.dark .quick-switch-btn i:hover, body.dark .quick-switch-btn:focus-visible i{
     color: var(--theme-skin-dark);
     border: 2px solid var(--theme-skin-dark);
 }
