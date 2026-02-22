@@ -2353,7 +2353,7 @@ h1.main-title {
 
 .header-info p {
   margin: 0;
-  font-family: 'Noto Serif SC';
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', 'SimSun', serif;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

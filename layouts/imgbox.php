@@ -346,12 +346,34 @@ $print_social_zone = function() use ($all_opt): void {
                             poemFontSize: <?php echo wp_json_encode( iro_opt('cover_poetry_font_size', '1.35em') ); ?>,
                             authorFontSize: <?php echo wp_json_encode( iro_opt('cover_poetry_author_font_size', '0.95em') ); ?>,
                             fontFamily: <?php echo wp_json_encode( iro_opt('cover_poetry_font_family', "'STKaiti', 'KaiTi', '楷体', serif") ); ?>,
-                            fallbackText: <?php echo wp_json_encode( iro_opt('signature_text', 'Hi, Mashiro?') ); ?>
+                            fallbackText: <?php echo wp_json_encode( iro_opt('signature_text', 'Hi, Mashiro?') ); ?>,
+                            mobilePoemScale: 0.86,
+                            mobileAuthorScale: 0.84
                         };
                         // ================================================
 
                         var poemData = null;
                         var hasRendered = false;
+
+                        function withFallbackFontStack(fontFamily) {
+                            var fallback = "'Noto Serif SC','Source Han Serif SC','Songti SC','STSong','SimSun','Noto Serif CJK SC',serif";
+                            if (!fontFamily || typeof fontFamily !== 'string') return fallback;
+                            return fontFamily + ',' + fallback;
+                        }
+
+                        function ensurePoetryFont(fontFamily) {
+                            if (!('fonts' in document)) return;
+                            var firstFamily = (fontFamily || '').split(',')[0].replace(/["']/g, '').trim();
+                            if (!firstFamily) return;
+                            if (document.fonts.check('16px "' + firstFamily + '"')) return;
+                            if (document.querySelector('link[data-poem-font="noto-serif-sc"]')) return;
+
+                            var link = document.createElement('link');
+                            link.rel = 'stylesheet';
+                            link.href = 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap';
+                            link.setAttribute('data-poem-font', 'noto-serif-sc');
+                            document.head.appendChild(link);
+                        }
 
                         function renderPoem() {
                             if (hasRendered || !poemData) return;
@@ -361,6 +383,9 @@ $print_social_zone = function() use ($all_opt): void {
 
                             var data = poemData.data;
                             var origin = data.origin;
+
+                            var fontStack = withFallbackFontStack(CONFIG.fontFamily);
+                            ensurePoetryFont(fontStack);
 
                             var html = `
                                 <div class="poem-wrapper" style="
@@ -373,6 +398,8 @@ $print_social_zone = function() use ($all_opt): void {
                                     <style>
                                         .poem-wrapper {
                                             --poem-text-color: ${CONFIG.lightColor};
+                                            --poem-font-size: ${CONFIG.poemFontSize};
+                                            --author-font-size: ${CONFIG.authorFontSize};
                                         }
 
                                         body.dark .poem-wrapper {
@@ -391,17 +418,50 @@ $print_social_zone = function() use ($all_opt): void {
                                             text-decoration: none !important;
                                             transition: color 0.3s ease !important;
                                         }
+
+                                        @media (max-width: 860px) {
+                                            .poem-wrapper {
+                                                overflow-x: hidden !important;
+                                                white-space: normal !important;
+                                            }
+                                            .poem-wrapper .poem-inner {
+                                                display: block !important;
+                                                width: 100% !important;
+                                                min-width: 0 !important;
+                                                padding: 4px 0.2em !important;
+                                                letter-spacing: 0.08em !important;
+                                            }
+                                            .poem-wrapper .poem-content {
+                                                font-size: calc(var(--poem-font-size) * ${CONFIG.mobilePoemScale}) !important;
+                                                line-height: 1.45 !important;
+                                                margin-bottom: 0.35em !important;
+                                                overflow: hidden;
+                                                text-overflow: ellipsis;
+                                                display: -webkit-box;
+                                                -webkit-line-clamp: 2;
+                                                -webkit-box-orient: vertical;
+                                            }
+                                            .poem-wrapper .poem-author {
+                                                font-size: calc(var(--author-font-size) * ${CONFIG.mobileAuthorScale}) !important;
+                                                transform: none !important;
+                                                text-align: center !important;
+                                                opacity: 0.8;
+                                                overflow: hidden;
+                                                text-overflow: ellipsis;
+                                                white-space: nowrap;
+                                            }
+                                        }
                                     </style>
 
-                                    <div style="
+                                    <div class="poem-inner" style="
                                         display: inline-block;
                                         padding: 5px 2.5em;
                                         letter-spacing: 0.12em;
-                                        font-family: ${CONFIG.fontFamily};
+                                        font-family: ${fontStack};
                                         min-width: 65%;
                                     ">
-                                        <div style="
-                                            font-size: ${CONFIG.poemFontSize};
+                                        <div class="poem-content" style="
+                                            font-size: var(--poem-font-size);
                                             line-height: 1.6;
                                             margin-bottom: 0.5em;
                                             text-align: center;
@@ -409,9 +469,9 @@ $print_social_zone = function() use ($all_opt): void {
                                             ${data.content}
                                         </div>
 
-                                        <div style="
+                                        <div class="poem-author" style="
                                             text-align: right;
-                                            font-size: ${CONFIG.authorFontSize};
+                                            font-size: var(--author-font-size);
                                             opacity: 0.85;
                                             transform: translateX(${CONFIG.authorOffset});
                                         ">
