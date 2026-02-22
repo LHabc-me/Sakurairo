@@ -242,13 +242,15 @@ header('X-Frame-Options: SAMEORIGIN');
         <?php if ($show_quick_theme_toggle || $show_quick_lang_toggle): ?>
         <div class="mobile-quick-switches" aria-label="Quick switches">
             <?php if ($show_quick_theme_toggle): ?>
-            <button class="quick-switch-btn js-theme-toggle" type="button" title="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>">
+            <button class="quick-switch-btn js-theme-toggle" type="button" aria-label="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>">
                 <i class="fa-solid fa-moon" aria-hidden="true"></i>
+                <span class="screen-reader-text"><?php esc_html_e('Toggle dark mode', 'sakurairo'); ?></span>
             </button>
             <?php endif; ?>
             <?php if ($show_quick_lang_toggle): ?>
-            <button class="quick-switch-btn js-lang-toggle" type="button" title="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" data-current-locale="<?php echo esc_attr(get_locale()); ?>">
+            <button class="quick-switch-btn js-lang-toggle" type="button" aria-label="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" data-current-locale="<?php echo esc_attr(get_locale()); ?>">
                 <i class="fa-solid fa-language" aria-hidden="true"></i>
+                <span class="screen-reader-text"><?php esc_html_e('Switch language', 'sakurairo'); ?></span>
             </button>
             <?php endif; ?>
         </div>
@@ -330,13 +332,15 @@ header('X-Frame-Options: SAMEORIGIN');
             <?php if ($show_quick_theme_toggle || $show_quick_lang_toggle): ?>
             <div class="quick-switches" aria-label="Quick switches">
                 <?php if ($show_quick_theme_toggle): ?>
-                <button class="quick-switch-btn js-theme-toggle" type="button" title="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>">
+                <button class="quick-switch-btn js-theme-toggle" type="button" aria-label="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>">
                     <i class="fa-solid fa-moon" aria-hidden="true"></i>
+                <span class="screen-reader-text"><?php esc_html_e('Toggle dark mode', 'sakurairo'); ?></span>
                 </button>
                 <?php endif; ?>
                 <?php if ($show_quick_lang_toggle): ?>
-                <button class="quick-switch-btn js-lang-toggle" type="button" title="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" data-current-locale="<?php echo esc_attr($current_locale); ?>">
+                <button class="quick-switch-btn js-lang-toggle" type="button" aria-label="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" data-current-locale="<?php echo esc_attr($current_locale); ?>">
                     <i class="fa-solid fa-language" aria-hidden="true"></i>
+                <span class="screen-reader-text"><?php esc_html_e('Switch language', 'sakurairo'); ?></span>
                 </button>
                 <?php endif; ?>
             </div>
