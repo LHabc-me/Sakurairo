@@ -607,17 +607,24 @@ animation: slow-rotate 10s linear infinite;
     max-height: none;
     max-width: 85%;
     top: 10px;
-    flex-direction: column;
-    overflow: visible !important;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     text-overflow: initial !important;
-    white-space: normal !important;
+    white-space: nowrap !important;
     transition: all 0.6s ease-in-out;
     -webkit-transition: all 0.6s ease-in-out;
 }
+.post-meta::-webkit-scrollbar{
+    display: none;
+}
 .post-meta span,
 .post-meta a{
-    white-space: normal !important;
-    word-break: break-word;
+    white-space: nowrap !important;
     overflow: visible !important;
     text-overflow: initial !important;
 }
@@ -632,17 +639,24 @@ animation: slow-rotate 10s linear infinite;
     max-height: none;
     max-width: 78%;
     top: 10px;
-    flex-direction: column;
-    overflow: visible !important;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     text-overflow: initial !important;
-    white-space: normal !important;
+    white-space: nowrap !important;
     transition: all 0.6s ease-in-out;
     -webkit-transition: all 0.6s ease-in-out;
 }
+.post-meta::-webkit-scrollbar{
+    display: none;
+}
 .post-meta span,
 .post-meta a{
-    white-space: normal !important;
-    word-break: break-word;
+    white-space: nowrap !important;
     overflow: visible !important;
     text-overflow: initial !important;
 }
