@@ -1367,16 +1367,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    //二级菜单（移动端）
-    function isMobileMenuRuntime() {
-        return window.innerWidth < 860;
-    }
-
     //二级菜单
     document.querySelectorAll(".open_submenu").forEach(function (toggle) {
         toggle.addEventListener("click", function (event) {
-            if (!isMobileMenuRuntime()) return;
-            event.preventDefault();
             event.stopPropagation();
 
             let parentLi = this.closest("li");
@@ -1400,45 +1393,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 点击父级整行（含标题）也可展开/收起二级菜单（事件委托，兼容 PJAX/DOM 替换）
-    document.addEventListener("click", function (event) {
-        if (!isMobileMenuRuntime()) return;
-
-        const parentLink = event.target.closest(".mobile-nav li.menu-item-has-children > a");
-        if (!parentLink) return;
-
-        const parentLi = parentLink.closest("li.menu-item-has-children");
-        const currentSubMenu = parentLi ? parentLi.querySelector(":scope > .sub-menu") || parentLi.querySelector(".sub-menu") : null;
-        const toggle = parentLi ? parentLi.querySelector(":scope > .open_submenu") || parentLi.querySelector(".open_submenu") : null;
-        if (!currentSubMenu || !toggle) return;
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        // 互斥展开
-        document.querySelectorAll(".sub-menu.open").forEach(otherSubMenu => {
-            if (otherSubMenu !== currentSubMenu) {
-                otherSubMenu.classList.remove("open");
-                let otherToggle = otherSubMenu.closest("li")?.querySelector(".open_submenu");
-                if (otherToggle) {
-                    otherToggle.classList.remove("open");
-                }
-            }
-        });
-
-        currentSubMenu.classList.toggle("open");
-        toggle.classList.toggle("open");
-    });
-
     // 点击选项关闭
     document.querySelectorAll(".mobile-nav a, .mo_toc_panel a").forEach(link => {
         link.addEventListener("click", () => {
-            // 顶层父级链接用于展开子菜单，不触发关闭
-            if (link.matches(".mobile-nav li.menu-item-has-children > a")) {
-                return;
-            }
-            closeMenu(moNavMenu, moNavButton);
-            closeMenu(moTocMenu, moTocButton);
+                closeMenu(moNavMenu, moNavButton);
+                closeMenu(moTocMenu, moTocButton);
         });
     });
 
@@ -1492,30 +1451,8 @@ document.addEventListener("DOMContentLoaded", () => {
             activeAllButton();
         }
 
-        // 点击移动菜单容器内的空白区域时，也应关闭菜单（用户感知“透明处点击关闭”）
-        const clickedInsideNavBlank = (
-            moNavMenu.classList.contains("open") &&
-            moNavMenu.contains(event.target) &&
-            !event.target.closest(".mo_nav_item") &&
-            !event.target.closest("a") &&
-            !event.target.closest(".open_submenu") &&
-            !event.target.closest(".mobile-quick-switches") &&
-            !event.target.closest(".mo-menu-search")
-        );
-        if (clickedInsideNavBlank) {
-            closeMenu(moNavMenu, moNavButton, false);
-            moNavMenu.removeEventListener("transitionend", panelOrderAnime);
-            moTocMenu.removeEventListener("transitionend", panelOrderAnime);
-            activeAllButton();
-        }
-
         // 关闭所有展开的二级菜单
-        const clickedSubmenuToggle = event.target.closest('.open_submenu');
-        const clickedParentMenuLink = event.target.closest('.mobile-nav li.menu-item-has-children > a');
         document.querySelectorAll(".sub-menu.open").forEach(function (subMenu) {
-            // 点击展开控件（箭头/父级标题）时，不要在同一次事件里把刚打开的子菜单立刻关闭
-            if (clickedSubmenuToggle || clickedParentMenuLink) return;
-
             if (!subMenu.contains(event.target)) {
                 subMenu.classList.remove("open");
                 let submenuToggle = subMenu.closest("li").querySelector(".open_submenu");
