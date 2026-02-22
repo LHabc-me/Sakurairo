@@ -215,6 +215,7 @@ header('X-Frame-Options: SAMEORIGIN');
         $show_user_avatar = (bool)iro_opt('nav_user_menu', true) && !$hide_login_portal_for_guest;
         $show_mo_toc_button = !$hide_login_portal_for_guest;
         $enable_random_graphs = (bool)iro_opt('cover_switch', true) && (bool)iro_opt('cover_random_graphs_switch', true) && !(bool)iro_opt('hide_splash_wallpaper_switch');
+        $current_locale = get_locale();
         ?>
 
         <!-- Navigation and Search Section -->
@@ -252,6 +253,15 @@ header('X-Frame-Options: SAMEORIGIN');
                     </span>
                 </div>
             <?php endif; ?>
+
+            <div class="quick-switches" aria-label="Quick switches">
+                <button class="quick-switch-btn js-theme-toggle" type="button" title="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>">
+                    <i class="fa-solid fa-moon" aria-hidden="true"></i>
+                </button>
+                <button class="quick-switch-btn js-lang-toggle" type="button" title="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" data-current-locale="<?php echo esc_attr($current_locale); ?>">
+                    <i class="fa-solid fa-language" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
 
         <?php if ($show_mo_toc_button): ?>

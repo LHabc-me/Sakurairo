@@ -79,6 +79,16 @@ if ( ! defined( 'ABSPATH' ) ) {
         }
         ?>
     </div>
+
+    <div class="mo-quick-switches" aria-label="Quick switches">
+        <button class="quick-switch-btn js-theme-toggle" type="button" title="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>">
+            <i class="fa-solid fa-moon" aria-hidden="true"></i>
+        </button>
+        <button class="quick-switch-btn js-lang-toggle" type="button" title="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" data-current-locale="<?php echo esc_attr(get_locale()); ?>">
+            <i class="fa-solid fa-language" aria-hidden="true"></i>
+        </button>
+    </div>
+
     <?php // 目录区域 ?>
     <div class="mo_toc"></div>
 </div>

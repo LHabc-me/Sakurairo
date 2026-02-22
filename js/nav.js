@@ -2,6 +2,56 @@ const nav = document.querySelector('nav');
 if (!nav.classList.contains('sakura_nav')) {
     init_iro_nav();
 }
+
+function bindQuickSwitches() {
+    const darkKey = 'iro_manual_darkmode';
+    const html = document.documentElement;
+    const body = document.body;
+
+    const setDarkMode = (enabled) => {
+        html.classList.toggle('dark', enabled);
+        if (body) body.classList.toggle('dark', enabled);
+        try {
+            localStorage.setItem(darkKey, enabled ? 'dark' : 'light');
+        } catch (e) {}
+    };
+
+    const savedDark = (() => {
+        try {
+            return localStorage.getItem(darkKey);
+        } catch (e) {
+            return null;
+        }
+    })();
+
+    if (savedDark === 'dark') setDarkMode(true);
+    if (savedDark === 'light') setDarkMode(false);
+
+    document.querySelectorAll('.js-theme-toggle').forEach((btn) => {
+        if (btn.dataset.bound === '1') return;
+        btn.dataset.bound = '1';
+        btn.addEventListener('click', () => {
+            const isDark = html.classList.contains('dark') || (body && body.classList.contains('dark'));
+            setDarkMode(!isDark);
+        });
+    });
+
+    document.querySelectorAll('.js-lang-toggle').forEach((btn) => {
+        if (btn.dataset.bound === '1') return;
+        btn.dataset.bound = '1';
+        btn.addEventListener('click', () => {
+            const current = (btn.dataset.currentLocale || html.lang || 'zh-CN').replace('_', '-').toLowerCase();
+            const next = current.startsWith('zh') ? 'en_US' : 'zh_CN';
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', next);
+            window.location.href = url.toString();
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', bindQuickSwitches);
+document.addEventListener('pjax:complete', bindQuickSwitches);
+
 function init_iro_nav() {
 // 导航栏长度限制
     function initNavWidth() {
