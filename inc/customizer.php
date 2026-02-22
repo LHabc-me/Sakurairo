@@ -2950,13 +2950,22 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'preview' => esc_html__( '预览通道', 'Shinonomeiro_C' ),
 			],
 		];
+		$legacy_force_slider_choices = [
+			'iro_captcha_level' => [
+				'min' => 0,
+				'max' => 100,
+				'step' => 1,
+			],
+		];
 
 		foreach ( $legacy_migrated_keys as $legacy_key ) {
 			$current_value = $GLOBALS['iro_options'][ $legacy_key ] ?? '';
 			$field_type = 'text';
 			$legacy_key_lower = strtolower( (string) $legacy_key );
 			$checkbox_by_pattern = (bool) preg_match( '/(_switch$|_loop$|_live$|_auto$|_notify$|_lazyload$|_keep_loading$|_private_message$|^hide_|^enable_)/', $legacy_key_lower );
-			if ( isset( $legacy_force_select_choices[ $legacy_key ] ) ) {
+			if ( isset( $legacy_force_slider_choices[ $legacy_key ] ) ) {
+				$field_type = 'slider';
+			} elseif ( isset( $legacy_force_select_choices[ $legacy_key ] ) ) {
 				$field_type = 'select';
 			} elseif ( is_bool( $current_value ) || in_array( $legacy_key, $legacy_force_checkbox_keys, true ) || $checkbox_by_pattern ) {
 				$field_type = 'checkbox';
@@ -3000,6 +3009,9 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 			];
 			if ( 'select' === $field_type && isset( $legacy_force_select_choices[ $legacy_key ] ) ) {
 				$field['choices'] = $legacy_force_select_choices[ $legacy_key ];
+			}
+			if ( 'slider' === $field_type && isset( $legacy_force_slider_choices[ $legacy_key ] ) ) {
+				$field['choices'] = $legacy_force_slider_choices[ $legacy_key ];
 			}
 			$legacy_description = iro_customizer_legacy_description_from_key( $legacy_key );
 			if ( '' !== $legacy_description ) {
