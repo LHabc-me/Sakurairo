@@ -604,17 +604,22 @@ animation: slow-rotate 10s linear infinite;
     right: 10px;
     height: fit-content;
     width: fit-content;
-    max-height: 45%;
-    max-width: 72%;
+    max-height: none;
+    max-width: 85%;
     top: 10px;
     flex-direction: column;
+    overflow: visible !important;
+    text-overflow: initial !important;
+    white-space: normal !important;
     transition: all 0.6s ease-in-out;
     -webkit-transition: all 0.6s ease-in-out;
 }
 .post-meta span,
 .post-meta a{
-    white-space: normal;
+    white-space: normal !important;
     word-break: break-word;
+    overflow: visible !important;
+    text-overflow: initial !important;
 }
 
 }
@@ -624,17 +629,22 @@ animation: slow-rotate 10s linear infinite;
     right: 21.5%;
     height: fit-content;
     width: fit-content;
-    max-height: 45%;
-    max-width: 72%;
+    max-height: none;
+    max-width: 78%;
     top: 10px;
     flex-direction: column;
+    overflow: visible !important;
+    text-overflow: initial !important;
+    white-space: normal !important;
     transition: all 0.6s ease-in-out;
     -webkit-transition: all 0.6s ease-in-out;
 }
 .post-meta span,
 .post-meta a{
-    white-space: normal;
+    white-space: normal !important;
     word-break: break-word;
+    overflow: visible !important;
+    text-overflow: initial !important;
 }
 
 }
