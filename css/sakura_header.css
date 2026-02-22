@@ -200,10 +200,6 @@ nav .menu>li .sub-menu li {
     justify-content: center;
 }
 
-/* 语言图标视觉上比搜索镜头略小，做轻微补偿 */
-.quick-switch-btn.js-lang-toggle i {
-    font-size: 19px;
-}
 
 .bg-switch {
     font-size: 16px;
