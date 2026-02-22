@@ -37,7 +37,9 @@ function get_entry_census_meta_html($has_splitter)
                 $content = get_meta_category_html($post_id);
                 break;
             case "post_tags":
-                $content = get_meta_tags_html($post_id);
+                if (!wp_is_mobile()) {
+                    $content = get_meta_tags_html($post_id);
+                }
                 break;
             case "comment_count":
                 ob_start();
