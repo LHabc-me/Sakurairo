@@ -351,3 +351,53 @@ body.dark .searchbox.js-toggle-search i:hover, body.dark .bg-switch i:hover{
         opacity: 1;
     }
 }
+
+/* 强制覆盖：当前线上为 <i> 渲染，使用高特异性确保尺寸与点击态生效 */
+.site-header .quick-switches .quick-switch-btn,
+.site-header .mobile-quick-switches .quick-switch-btn,
+.site-header .mo-quick-switches .quick-switch-btn {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.site-header .quick-switches .quick-switch-btn i.fa-moon,
+.site-header .mobile-quick-switches .quick-switch-btn i.fa-moon,
+.site-header .mo-quick-switches .quick-switch-btn i.fa-moon {
+    font-size: 22px !important;
+    width: 1em;
+    height: 1em;
+    line-height: 1 !important;
+}
+
+.site-header .quick-switches .quick-switch-btn i.fa-language,
+.site-header .mobile-quick-switches .quick-switch-btn i.fa-language,
+.site-header .mo-quick-switches .quick-switch-btn i.fa-language {
+    font-size: 20px !important;
+    width: 1em;
+    height: 1em;
+    line-height: 1 !important;
+}
+
+.site-header .quick-switches .quick-switch-btn:active,
+.site-header .quick-switches .quick-switch-btn:focus,
+.site-header .quick-switches .quick-switch-btn:focus-visible,
+.site-header .quick-switches .quick-switch-btn:active i,
+.site-header .quick-switches .quick-switch-btn:focus i,
+.site-header .quick-switches .quick-switch-btn:focus-visible i,
+.site-header .mobile-quick-switches .quick-switch-btn:active,
+.site-header .mobile-quick-switches .quick-switch-btn:focus,
+.site-header .mobile-quick-switches .quick-switch-btn:focus-visible,
+.site-header .mobile-quick-switches .quick-switch-btn:active i,
+.site-header .mobile-quick-switches .quick-switch-btn:focus i,
+.site-header .mobile-quick-switches .quick-switch-btn:focus-visible i,
+.site-header .mo-quick-switches .quick-switch-btn:active,
+.site-header .mo-quick-switches .quick-switch-btn:focus,
+.site-header .mo-quick-switches .quick-switch-btn:focus-visible,
+.site-header .mo-quick-switches .quick-switch-btn:active i,
+.site-header .mo-quick-switches .quick-switch-btn:focus i,
+.site-header .mo-quick-switches .quick-switch-btn:focus-visible i {
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
