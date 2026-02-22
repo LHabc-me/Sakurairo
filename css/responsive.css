@@ -972,3 +972,8 @@
     margin-block-end: -10px;
   }
 }
+
+.mobile-nav .open_submenu {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
