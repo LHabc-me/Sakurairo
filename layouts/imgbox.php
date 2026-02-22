@@ -368,55 +368,56 @@ $print_social_zone = function() use ($all_opt): void {
                             }
                         }
 
-                        function withFallbackFontStack(fontFamily) {
-                            var fallback = "'Noto Serif SC','Source Han Serif SC','Songti SC','STSong','SimSun','Noto Serif CJK SC',serif";
-                            if (!fontFamily || typeof fontFamily !== 'string') return fallback;
-                            return fontFamily + ',' + fallback;
+                        function hasLocalKaiFont() {
+                            if (!('fonts' in document)) return false;
+                            return document.fonts.check('16px "STKaiti"')
+                                || document.fonts.check('16px "KaiTi"')
+                                || document.fonts.check('16px "Kaiti SC"')
+                                || document.fonts.check('16px "BiauKai"')
+                                || document.fonts.check('16px "楷体"');
                         }
 
-                        function ensurePoetryFont(fontFamily, preferKaiStyle) {
-                            if (!('fonts' in document)) return;
-                            var firstFamily = (fontFamily || '').split(',')[0].replace(/["']/g, '').trim();
-                            if (!firstFamily) return;
+                        function loadStylesheetOnce(id, href) {
+                            return new Promise(function (resolve, reject) {
+                                if (document.querySelector('link[data-poem-font="' + id + '"]')) {
+                                    resolve();
+                                    return;
+                                }
+                                var link = document.createElement('link');
+                                link.rel = 'stylesheet';
+                                link.href = href;
+                                link.setAttribute('data-poem-font', id);
+                                link.onload = function () { resolve(); };
+                                link.onerror = function () { reject(new Error('load failed')); };
+                                document.head.appendChild(link);
+                            });
+                        }
 
-                            var isKaiStyle = !!preferKaiStyle || /kaiti|楷|wenkai|lxgw/i.test(firstFamily);
-                            var id = isKaiStyle ? 'lxgw-wenkai' : 'noto-serif-sc';
-                            if (document.querySelector('link[data-poem-font="' + id + '"]')) return;
-
-                            if (isKaiStyle) {
-                                var hasLocalKai = document.fonts.check('16px "STKaiti"')
-                                    || document.fonts.check('16px "KaiTi"')
-                                    || document.fonts.check('16px "Kaiti SC"')
-                                    || document.fonts.check('16px "BiauKai"')
-                                    || document.fonts.check('16px "楷体"');
-                                if (hasLocalKai) return;
-
-                                var kaiLink = document.createElement('link');
-                                kaiLink.rel = 'stylesheet';
-                                kaiLink.href = 'https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css';
-                                kaiLink.setAttribute('data-poem-font', 'lxgw-wenkai');
-                                kaiLink.onerror = function () {
-                                    var backup = document.createElement('link');
-                                    backup.rel = 'stylesheet';
-                                    backup.href = 'https://unpkg.com/lxgw-wenkai-webfont@1.7.0/style.css';
-                                    backup.setAttribute('data-poem-font', 'lxgw-wenkai');
-                                    document.head.appendChild(backup);
-                                };
-                                document.head.appendChild(kaiLink);
-                                return;
+                        async function ensureKaiFontReady() {
+                            if (hasLocalKaiFont()) return true;
+                            try {
+                                await loadStylesheetOnce('lxgw-wenkai', 'https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css');
+                            } catch (e) {
+                                try {
+                                    await loadStylesheetOnce('lxgw-wenkai-backup', 'https://unpkg.com/lxgw-wenkai-webfont@1.7.0/style.css');
+                                } catch (e2) {
+                                    return false;
+                                }
                             }
-
-                            if (document.fonts.check('16px "' + firstFamily + '"')) return;
-                            var link = document.createElement('link');
-                            link.rel = 'stylesheet';
-                            link.href = 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap';
-                            link.setAttribute('data-poem-font', 'noto-serif-sc');
-                            document.head.appendChild(link);
+                            if (!('fonts' in document)) return true;
+                            try {
+                                await Promise.race([
+                                    document.fonts.load('16px "LXGW WenKai"'),
+                                    new Promise(function (_, reject) { setTimeout(function () { reject(new Error('font timeout')); }, 2000); })
+                                ]);
+                                return document.fonts.check('16px "LXGW WenKai"');
+                            } catch (e3) {
+                                return false;
+                            }
                         }
 
-                        function renderPoem() {
+                        async function renderPoem() {
                             if (hasRendered || !poemData) return;
-                            setHeaderInfoLoading(false);
 
                             var target = document.querySelector('.header-info > p#cover-signature-text');
                             if (!target) return;
@@ -424,12 +425,16 @@ $print_social_zone = function() use ($all_opt): void {
                             var data = poemData.data;
                             var origin = data.origin;
 
-                            var fontStack = withFallbackFontStack(CONFIG.fontFamily);
                             var prefersKai = /kaiti|楷/i.test(CONFIG.fontFamily || '');
+                            var fontStack = CONFIG.fontFamily || "'STKaiti','KaiTi','Kaiti SC','BiauKai','楷体'";
                             if (prefersKai) {
-                                fontStack = "'LXGW WenKai'," + fontStack;
+                                var kaiReady = await ensureKaiFontReady();
+                                if (!kaiReady) {
+                                    useFallback();
+                                    return;
+                                }
+                                fontStack = "'LXGW WenKai','STKaiti','KaiTi','Kaiti SC','BiauKai','楷体'";
                             }
-                            ensurePoetryFont(fontStack, prefersKai);
 
                             var html = `
                                 <div class="poem-wrapper" style="
@@ -531,6 +536,7 @@ $print_social_zone = function() use ($all_opt): void {
                             target.innerHTML = html;
                             target.classList.add('poem-rendered');
                             hasRendered = true;
+                            setHeaderInfoLoading(false);
                         }
 
                         function useFallback() {
