@@ -26,7 +26,9 @@ if (!function_exists('render_article_meta')) {
                         echo get_meta_category_html($post_id);
                         break;
                     case "post_tags":
-                        echo get_meta_tags_html($post_id);
+                        if (!wp_is_mobile()) {
+                            echo get_meta_tags_html($post_id);
+                        }
                         break;
                     case "comment_count":
                         render_meta_comments();
