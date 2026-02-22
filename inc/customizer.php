@@ -3013,6 +3013,12 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'jsd' => esc_html__( 'jsDelivr', 'Shinonomeiro_C' ),
 				'custom' => esc_html__( '自定义地址', 'Shinonomeiro_C' ),
 			],
+			'aplayer_server' => [
+				'off' => esc_html__( '关闭', 'Shinonomeiro_C' ),
+				'netease' => esc_html__( '网易云音乐', 'Shinonomeiro_C' ),
+				'kugou' => esc_html__( '酷狗音乐（可能不可用）', 'Shinonomeiro_C' ),
+				'tencent' => esc_html__( 'QQ 音乐（可能不可用）', 'Shinonomeiro_C' ),
+			],
 		];
 		$legacy_force_slider_choices = [
 			'iro_captcha_level' => [
