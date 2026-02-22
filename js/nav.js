@@ -1138,8 +1138,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let moNavButton = document.querySelector(".mo-nav-button");
     let moTocButton = document.querySelector(".mo-toc-button") || document.createElement("button");
     let moNavMenu   = document.querySelector(".mobile-nav");
-    let moTocMenu   = document.querySelector(".mo_toc_panel");
+    let moTocMenu   = document.querySelector(".mo_toc_panel") || document.createElement("div");
     let moHeader    = document.querySelector(".site-header");
+
+    if (!moNavButton || !moNavMenu || !moHeader) {
+        return;
+    }
     let navTransitionHandler = null;
     let panelTransitionHandler = null;
 
@@ -1362,7 +1366,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    const isMobileNavRuntime = () => window.innerWidth < 860;
+    // 不依赖 innerWidth，按实际控件可见状态判断（避免 viewport 差异导致移动端失效）
+    const isMobileNavRuntime = () => {
+        if (!moNavButton || !moNavMenu) return false;
+        const buttonVisible = window.getComputedStyle(moNavButton).display !== 'none';
+        return buttonVisible;
+    };
 
     const toggleMobileSubMenu = (parentLi) => {
         const currentSubMenu = parentLi ? parentLi.querySelector(".sub-menu") : null;
