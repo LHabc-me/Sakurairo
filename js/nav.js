@@ -1,6 +1,14 @@
-const nav = document.querySelector('nav');
-if (nav && !nav.classList.contains('sakura_nav')) {
-    init_iro_nav();
+function safeInitIroNav() {
+    const nav = document.querySelector('nav');
+    if (!nav || nav.classList.contains('sakura_nav')) {
+        return;
+    }
+
+    try {
+        init_iro_nav();
+    } catch (error) {
+        console.error('init_iro_nav failed:', error);
+    }
 }
 
 function bindQuickSwitches() {
@@ -59,6 +67,12 @@ function bindQuickSwitches() {
 bindQuickSwitches();
 document.addEventListener('DOMContentLoaded', bindQuickSwitches);
 document.addEventListener('pjax:complete', bindQuickSwitches);
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', safeInitIroNav, { once: true });
+} else {
+    safeInitIroNav();
+}
 
 function init_iro_nav() {
 // 导航栏长度限制
