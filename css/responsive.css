@@ -260,6 +260,21 @@
   gap: 15px;
 }
 
+.mo-quick-switches {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 0 0 10px;
+}
+
+.mo-quick-switches .quick-switch-btn {
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+}
+
 .mo-user-menu {
   display: flex;
   align-items: center;
@@ -277,14 +292,19 @@
 .mo_toc_panel .mo-avatar img,
 .mo_toc_panel .mo-avatar i {
   width: 40px;
-  height: fit-content;
-  aspect-ratio: 1;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   border-radius: 50%;
   font-size: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   object-fit: cover;
+}
+
+.mo_toc_panel .mo-avatar img {
+  display: block;
 }
 
 .mo_toc_panel .user-menu-option {
