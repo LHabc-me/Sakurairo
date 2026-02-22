@@ -1492,23 +1492,6 @@ document.addEventListener("DOMContentLoaded", () => {
             activeAllButton();
         }
 
-        // 点击移动菜单容器内的空白区域时，也应关闭菜单（用户感知“透明处点击关闭”）
-        const clickedInsideNavBlank = (
-            moNavMenu.classList.contains("open") &&
-            moNavMenu.contains(event.target) &&
-            !event.target.closest(".mo_nav_item") &&
-            !event.target.closest("a") &&
-            !event.target.closest(".open_submenu") &&
-            !event.target.closest(".mobile-quick-switches") &&
-            !event.target.closest(".mo-menu-search")
-        );
-        if (clickedInsideNavBlank) {
-            closeMenu(moNavMenu, moNavButton, false);
-            moNavMenu.removeEventListener("transitionend", panelOrderAnime);
-            moTocMenu.removeEventListener("transitionend", panelOrderAnime);
-            activeAllButton();
-        }
-
         // 关闭所有展开的二级菜单
         const clickedSubmenuToggle = event.target.closest('.open_submenu');
         const clickedParentMenuLink = event.target.closest('.mobile-nav li.menu-item-has-children > a');
