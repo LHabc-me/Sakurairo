@@ -491,7 +491,7 @@ $print_social_zone = function() use ($all_opt): void {
                                             .poem-wrapper .poem-author {
                                                 font-size: calc(var(--author-font-size) * ${CONFIG.mobileAuthorScale}) !important;
                                                 transform: none !important;
-                                                text-align: center !important;
+                                                text-align: right !important;
                                                 opacity: 0.8;
                                                 white-space: normal !important;
                                                 overflow-wrap: anywhere;
