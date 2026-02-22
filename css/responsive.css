@@ -619,9 +619,20 @@
     inset: 10px 10px auto auto;
     height: fit-content;
     width: fit-content;
-    max-block-size: 32%;
-    max-inline-size: 32%;
-    flex-direction: column;
+    max-block-size: none;
+    max-inline-size: 85%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    white-space: nowrap;
+  }
+
+  .post-meta::-webkit-scrollbar {
+    display: none;
   }
 
   .post-excerpt {
@@ -638,6 +649,11 @@
   .post-title {
     inset-block-end: 20%;
     max-inline-size: 85%;
+  }
+
+  .post-meta span,
+  .post-meta a {
+    white-space: nowrap;
   }
 
   .post-meta .meta-author {
