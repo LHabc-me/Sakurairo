@@ -1,5 +1,5 @@
 const nav = document.querySelector('nav');
-if (!nav.classList.contains('sakura_nav')) {
+if (nav && !nav.classList.contains('sakura_nav')) {
     init_iro_nav();
 }
 
@@ -27,31 +27,36 @@ function bindQuickSwitches() {
     if (savedDark === 'dark') setDarkMode(true);
     if (savedDark === 'light') setDarkMode(false);
 
-    document.querySelectorAll('.js-theme-toggle').forEach((btn) => {
-        if (btn.dataset.bound === '1') return;
-        btn.dataset.bound = '1';
-        btn.addEventListener('click', () => {
+    if (document.documentElement.dataset.quickSwitchDelegated === '1') {
+        return;
+    }
+    document.documentElement.dataset.quickSwitchDelegated = '1';
+
+    document.addEventListener('click', (event) => {
+        const themeBtn = event.target.closest('.js-theme-toggle');
+        if (themeBtn) {
+            event.preventDefault();
             const body = document.body;
             const isDark = html.classList.contains('dark') || (body && body.classList.contains('dark'));
             setDarkMode(!isDark);
-        });
-    });
+            return;
+        }
 
-    document.querySelectorAll('.js-lang-toggle').forEach((btn) => {
-        if (btn.dataset.bound === '1') return;
-        btn.dataset.bound = '1';
-        btn.addEventListener('click', () => {
+        const langBtn = event.target.closest('.js-lang-toggle');
+        if (langBtn) {
+            event.preventDefault();
             const url = new URL(window.location.href);
             const queryLang = (url.searchParams.get('lang') || '').replace('_', '-').toLowerCase();
-            const fallback = (btn.dataset.currentLocale || html.lang || 'zh-CN').replace('_', '-').toLowerCase();
+            const fallback = (langBtn.dataset.currentLocale || html.lang || 'zh-CN').replace('_', '-').toLowerCase();
             const current = queryLang || fallback;
             const next = current.startsWith('zh') ? 'en_US' : 'zh_CN';
             url.searchParams.set('lang', next);
             window.location.href = url.toString();
-        });
+        }
     });
 }
 
+bindQuickSwitches();
 document.addEventListener('DOMContentLoaded', bindQuickSwitches);
 document.addEventListener('pjax:complete', bindQuickSwitches);
 
