@@ -1362,10 +1362,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    const toggleMobileSubMenu = (parentLi) => {
+    //二级菜单（使用事件委托，兼容 PJAX 后替换的菜单节点）
+    document.addEventListener("click", function (event) {
+        const toggle = event.target.closest(".open_submenu");
+        if (!toggle || !moNavMenu.contains(toggle)) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const parentLi = toggle.closest("li");
         const currentSubMenu = parentLi ? parentLi.querySelector(".sub-menu") : null;
-        const currentToggle = parentLi ? parentLi.querySelector(".open_submenu") : null;
-        if (!currentSubMenu || !currentToggle) return;
+
+        if (!currentSubMenu) return;
 
         // 互斥展开
         moNavMenu.querySelectorAll(".sub-menu.open").forEach(otherSubMenu => {
@@ -1379,43 +1387,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         currentSubMenu.classList.toggle("open");
-        currentToggle.classList.toggle("open");
-    };
-
-    //二级菜单（事件委托，兼容 PJAX 后替换的菜单节点）
-    // 1) 点小箭头可展开
-    document.addEventListener("click", function (event) {
-        const toggle = event.target.closest(".open_submenu");
-        if (!toggle || !moNavMenu.contains(toggle)) return;
-
-        event.preventDefault();
-        event.stopPropagation();
-        toggleMobileSubMenu(toggle.closest("li"));
-    });
-
-    // 2) 点父级整行控件（标题区域）也可展开/收起
-    document.addEventListener("click", function (event) {
-        const parentLink = event.target.closest(".mobile-nav .menu > li.menu-item-has-children > a");
-        if (!parentLink || !moNavMenu.contains(parentLink)) return;
-
-        const parentLi = parentLink.closest("li");
-        if (!parentLi || !parentLi.querySelector('.sub-menu')) return;
-
-        event.preventDefault();
-        event.stopPropagation();
-        toggleMobileSubMenu(parentLi);
+        toggle.classList.toggle("open");
     });
 
     // 点击选项关闭（委托，兼容 PJAX）
     document.addEventListener("click", function (event) {
         const link = event.target.closest(".mobile-nav a, .mo_toc_panel a");
         if (!link) return;
-
-        // 带子菜单的父级项用于展开/收起，不应触发菜单关闭
-        if (link.closest(".mobile-nav .menu > li.menu-item-has-children")) {
-            return;
-        }
-
         closeMenu(moNavMenu, moNavButton);
         closeMenu(moTocMenu, moTocButton);
     });
@@ -1471,11 +1449,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // 关闭所有展开的二级菜单
-        // 注意：点击展开控件时（小箭头/父级标题），不能在同一次事件里把刚打开的子菜单立刻关闭
+        // 注意：点击展开箭头(.open_submenu)时，不能在同一次事件里把刚打开的子菜单立刻关闭
         const clickedSubmenuToggle = event.target.closest('.open_submenu');
-        const clickedParentMenuLink = event.target.closest('.mobile-nav .menu > li.menu-item-has-children > a');
         document.querySelectorAll(".sub-menu.open").forEach(function (subMenu) {
-            if (clickedSubmenuToggle || clickedParentMenuLink) return;
+            if (clickedSubmenuToggle) return;
             if (!subMenu.contains(event.target)) {
                 subMenu.classList.remove("open");
                 let submenuToggle = subMenu.closest("li").querySelector(".open_submenu");
