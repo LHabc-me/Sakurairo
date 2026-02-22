@@ -180,6 +180,15 @@ header('X-Frame-Options: SAMEORIGIN');
             'container_class' => 'mo_nav_item',
             'walker' => new Iro_mo_nav(),
             ]); ?>
+
+        <div class="mobile-quick-switches" aria-label="Quick switches">
+            <button class="quick-switch-btn js-theme-toggle" type="button" title="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>">
+                <i class="fa-solid fa-moon" aria-hidden="true"></i>
+            </button>
+            <button class="quick-switch-btn js-lang-toggle" type="button" title="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" data-current-locale="<?php echo esc_attr(get_locale()); ?>">
+                <i class="fa-solid fa-language" aria-hidden="true"></i>
+            </button>
+        </div>
         </div>
         <?php //移动端结构结束 ?>
 
