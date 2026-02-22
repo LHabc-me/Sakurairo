@@ -1449,7 +1449,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // 关闭所有展开的二级菜单
+        // 注意：点击展开箭头(.open_submenu)时，不能在同一次事件里把刚打开的子菜单立刻关闭
+        const clickedSubmenuToggle = event.target.closest('.open_submenu');
         document.querySelectorAll(".sub-menu.open").forEach(function (subMenu) {
+            if (clickedSubmenuToggle) return;
             if (!subMenu.contains(event.target)) {
                 subMenu.classList.remove("open");
                 let submenuToggle = subMenu.closest("li").querySelector(".open_submenu");
