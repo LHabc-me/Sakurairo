@@ -139,6 +139,62 @@ header('X-Frame-Options: SAMEORIGIN');
     });
 	</script>
     <script src="<?= $core_lib_basepath . '/js/nav.js' ?>" defer></script>
+    <script>
+    (function () {
+        if (window.__iroQuickSwitchFallbackBound) return;
+        window.__iroQuickSwitchFallbackBound = true;
+
+        var darkKey = 'iro_manual_darkmode';
+
+        function setDarkMode(enabled) {
+            var html = document.documentElement;
+            var body = document.body;
+            html.classList.toggle('dark', enabled);
+            if (body) body.classList.toggle('dark', enabled);
+            try {
+                localStorage.setItem(darkKey, enabled ? 'dark' : 'light');
+            } catch (e) {}
+        }
+
+        function initSavedDarkMode() {
+            try {
+                var saved = localStorage.getItem(darkKey);
+                if (saved === 'dark') setDarkMode(true);
+                if (saved === 'light') setDarkMode(false);
+            } catch (e) {}
+        }
+
+        document.addEventListener('click', function (event) {
+            var themeBtn = event.target.closest('.js-theme-toggle');
+            if (themeBtn) {
+                event.preventDefault();
+                var html = document.documentElement;
+                var body = document.body;
+                var isDark = html.classList.contains('dark') || (body && body.classList.contains('dark'));
+                setDarkMode(!isDark);
+                return;
+            }
+
+            var langBtn = event.target.closest('.js-lang-toggle');
+            if (langBtn) {
+                event.preventDefault();
+                var url = new URL(window.location.href);
+                var queryLang = (url.searchParams.get('lang') || '').replace('_', '-').toLowerCase();
+                var fallback = (langBtn.dataset.currentLocale || document.documentElement.lang || 'zh-CN').replace('_', '-').toLowerCase();
+                var current = queryLang || fallback;
+                var next = current.indexOf('zh') === 0 ? 'en_US' : 'zh_CN';
+                url.searchParams.set('lang', next);
+                window.location.assign(url.toString());
+            }
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initSavedDarkMode, { once: true });
+        } else {
+            initSavedDarkMode();
+        }
+    })();
+    </script>
 </head>
 
 <body <?php body_class(); ?>>

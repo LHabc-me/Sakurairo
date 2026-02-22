@@ -776,7 +776,7 @@ $sections = [
 			[
 				'type'     => 'checkbox',
 				'settings' => 'nav_quick_theme_toggle',
-				'label'    => esc_html__( 'Show Theme Quick Toggle', 'Shinonomeiro_C' ),
+				'label'    => esc_html__( '显示深色模式快捷按钮', 'Shinonomeiro_C' ),
 				'description' => esc_html__( '控制导航快捷区中“深色模式切换”按钮的显示。', 'Shinonomeiro_C' ),
 				'section'  => 'iro_nav',
 				'iro_key'  => 'nav_quick_theme_toggle',
@@ -784,7 +784,7 @@ $sections = [
 			[
 				'type'     => 'checkbox',
 				'settings' => 'nav_quick_lang_toggle',
-				'label'    => esc_html__( 'Show Language Quick Toggle', 'Shinonomeiro_C' ),
+				'label'    => esc_html__( '显示语言切换快捷按钮', 'Shinonomeiro_C' ),
 				'description' => esc_html__( '控制导航快捷区中“语言切换”按钮的显示。', 'Shinonomeiro_C' ),
 				'section'  => 'iro_nav',
 				'iro_key'  => 'nav_quick_lang_toggle',
