@@ -1138,10 +1138,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let moNavButton = document.querySelector(".mo-nav-button");
     let moTocButton = document.querySelector(".mo-toc-button") || document.createElement("button");
     let moNavMenu   = document.querySelector(".mobile-nav");
-    let moTocMenu   = document.querySelector(".mo_toc_panel");
+    let moTocMenu   = document.querySelector(".mo_toc_panel") || document.createElement("div");
     let moHeader    = document.querySelector(".site-header");
     let navTransitionHandler = null;
     let panelTransitionHandler = null;
+
+    // 某些页面不会渲染移动端导航容器；缺失时直接退出，避免脚本中断导致二级菜单点击失效
+    if (!moNavButton || !moNavMenu || !moHeader) {
+        return;
+    }
 
     let panelOrderAnime = null;
 
