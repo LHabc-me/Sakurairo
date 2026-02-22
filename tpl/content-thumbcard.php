@@ -12,6 +12,11 @@ if (!function_exists('render_article_meta')) {
         $article_meta_display_options = iro_opt("article_meta_displays", array("post_views", "comment_count", "category"));
         if (is_array($article_meta_display_options)) {
             $post_id = get_the_ID();
+            usort($article_meta_display_options, function ($a, $b) {
+                if ($a === 'post_tags') return -1;
+                if ($b === 'post_tags') return 1;
+                return 0;
+            });
             foreach ($article_meta_display_options as $key) {
                 switch ($key) {
                     case "author":

@@ -19,6 +19,11 @@ function get_entry_census_meta_html($has_splitter)
     if (!is_array($meta_display) && !is_object($meta_display)) {
         $meta_display = array("last_edit_time_relative", "post_views");
     }
+    usort($meta_display, function ($a, $b) {
+        if ($a === 'post_tags') return -1;
+        if ($b === 'post_tags') return 1;
+        return 0;
+    });
     foreach ($meta_display as $meta_key) {
         $content = false;
         switch ($meta_key) {
