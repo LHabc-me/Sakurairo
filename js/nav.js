@@ -1400,40 +1400,41 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 点击父级整行（含标题）也可展开/收起二级菜单
-    document.querySelectorAll(".mobile-nav .menu > li.menu-item-has-children > a").forEach(function (parentLink) {
-        parentLink.addEventListener("click", function (event) {
-            if (!isMobileMenuRuntime()) return;
+    // 点击父级整行（含标题）也可展开/收起二级菜单（事件委托，兼容 PJAX/DOM 替换）
+    document.addEventListener("click", function (event) {
+        if (!isMobileMenuRuntime()) return;
 
-            const parentLi = this.closest("li");
-            const currentSubMenu = parentLi ? parentLi.querySelector(".sub-menu") : null;
-            const toggle = parentLi ? parentLi.querySelector(".open_submenu") : null;
-            if (!currentSubMenu || !toggle) return;
+        const parentLink = event.target.closest(".mobile-nav li.menu-item-has-children > a");
+        if (!parentLink) return;
 
-            event.preventDefault();
-            event.stopPropagation();
+        const parentLi = parentLink.closest("li.menu-item-has-children");
+        const currentSubMenu = parentLi ? parentLi.querySelector(":scope > .sub-menu") || parentLi.querySelector(".sub-menu") : null;
+        const toggle = parentLi ? parentLi.querySelector(":scope > .open_submenu") || parentLi.querySelector(".open_submenu") : null;
+        if (!currentSubMenu || !toggle) return;
 
-            // 互斥展开
-            document.querySelectorAll(".sub-menu.open").forEach(otherSubMenu => {
-                if (otherSubMenu !== currentSubMenu) {
-                    otherSubMenu.classList.remove("open");
-                    let otherToggle = otherSubMenu.closest("li")?.querySelector(".open_submenu");
-                    if (otherToggle) {
-                        otherToggle.classList.remove("open");
-                    }
+        event.preventDefault();
+        event.stopPropagation();
+
+        // 互斥展开
+        document.querySelectorAll(".sub-menu.open").forEach(otherSubMenu => {
+            if (otherSubMenu !== currentSubMenu) {
+                otherSubMenu.classList.remove("open");
+                let otherToggle = otherSubMenu.closest("li")?.querySelector(".open_submenu");
+                if (otherToggle) {
+                    otherToggle.classList.remove("open");
                 }
-            });
-
-            currentSubMenu.classList.toggle("open");
-            toggle.classList.toggle("open");
+            }
         });
+
+        currentSubMenu.classList.toggle("open");
+        toggle.classList.toggle("open");
     });
 
     // 点击选项关闭
     document.querySelectorAll(".mobile-nav a, .mo_toc_panel a").forEach(link => {
         link.addEventListener("click", () => {
             // 顶层父级链接用于展开子菜单，不触发关闭
-            if (link.matches(".mobile-nav .menu > li.menu-item-has-children > a")) {
+            if (link.matches(".mobile-nav li.menu-item-has-children > a")) {
                 return;
             }
             closeMenu(moNavMenu, moNavButton);
