@@ -176,33 +176,6 @@ nav .menu>li .sub-menu li {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    outline: none;
-    box-shadow: none;
-}
-
-.quick-switch-btn:focus,
-.quick-switch-btn:focus-visible,
-.quick-switch-btn:active {
-    outline: none;
-    box-shadow: none;
-}
-
-.quick-switch-btn i {
-    margin: 17px 0;
-    border-radius: 10px !important;
-    border: 2px solid transparent;
-    font-size: 18px;
-    font-weight: 900;
-    line-height: 1;
-    min-width: 38px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* 语言图标视觉上比搜索镜头略小，做轻微补偿 */
-.quick-switch-btn.js-lang-toggle i {
-    font-size: 19px;
 }
 
 .bg-switch {
@@ -225,7 +198,8 @@ nav .menu>li .sub-menu li {
 
 .searchbox.js-toggle-search i:hover,
 .bg-switch i:hover,
-.quick-switch-btn i:hover{
+.quick-switch-btn i:hover,
+.quick-switch-btn:focus-visible i{
     color: var(--theme-skin-matching);
     border: 2px solid var(--theme-skin-matching);
     background-color: transparent;
@@ -278,7 +252,7 @@ body.dark .site-header:hover .searchbox.js-toggle-search i, body.dark .site-head
     color: var(--dark-text-primary) !important;
 }
 
-body.dark .searchbox.js-toggle-search i:hover, body.dark .bg-switch i:hover, body.dark .quick-switch-btn i:hover{
+body.dark .searchbox.js-toggle-search i:hover, body.dark .bg-switch i:hover, body.dark .quick-switch-btn i:hover, body.dark .quick-switch-btn:focus-visible i{
     color: var(--theme-skin-dark);
     border: 2px solid var(--theme-skin-dark);
 }
