@@ -57,8 +57,12 @@ function get_meta_category_html($post_id)
 }
 
 // 标签
-function get_meta_tags_html($post_id, $fallback = '暂无标签')
+function get_meta_tags_html($post_id, $fallback = null)
 {
+    if ($fallback === null) {
+        $fallback = __('No tags', 'sakurairo');
+    }
+
     $tags = get_the_tags($post_id);
     if (empty($tags) || is_wp_error($tags)) {
         return "<span><i class=\"fa-solid fa-tag\"></i> " . esc_html($fallback) . "</span>";
