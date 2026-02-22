@@ -238,6 +238,37 @@
   height: 38px;
 }
 
+
+/* 移动端父级菜单命中区域重构：标题与右侧空白都可点 */
+.mobile-nav .menu > li.menu-item-has-children {
+  position: relative;
+  padding-right: 44px; /* 给右侧箭头预留空间 */
+}
+
+.mobile-nav .menu > li.menu-item-has-children > a {
+  display: block;
+  width: 100%;
+  margin-left: 0;
+  padding: 2px 0;
+}
+
+.mobile-nav .menu > li.menu-item-has-children > .open_submenu {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  float: none !important;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-nav .menu > li.menu-item-has-children > .open_submenu.open {
+  transform: translateY(-50%) rotate(90deg);
+}
+
 .mobile-nav .open_submenu.open {
   display: inline-block;
   transform: rotate(90deg);
@@ -977,3 +1008,5 @@
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
+
+.mobile-nav .menu > li > a { cursor: pointer; }
