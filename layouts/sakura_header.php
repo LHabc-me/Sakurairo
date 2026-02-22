@@ -12,6 +12,8 @@ $hide_login_portal_for_guest = (bool)iro_opt('hide_login_portal', false) && !is_
 $show_user_avatar = (bool)iro_opt('nav_user_menu',true) && !$hide_login_portal_for_guest;
 $show_mo_toc_button = !$hide_login_portal_for_guest;
 $current_locale = get_locale();
+$show_quick_theme_toggle = (bool) iro_opt('nav_quick_theme_toggle', true);
+$show_quick_lang_toggle = (bool) iro_opt('nav_quick_lang_toggle', true);
 ?>
 <style>
   <?php if (!empty($nav_text_logo['font_name'])){ ?>
@@ -88,14 +90,20 @@ $current_locale = get_locale();
             'walker' => new Iro_mo_nav(),
             ]); ?>
 
+  <?php if ($show_quick_theme_toggle || $show_quick_lang_toggle): ?>
   <div class="mobile-quick-switches" aria-label="Quick switches">
+    <?php if ($show_quick_theme_toggle): ?>
     <button class="quick-switch-btn js-theme-toggle" type="button" title="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>">
       <i class="fa-solid fa-moon" aria-hidden="true"></i>
     </button>
+    <?php endif; ?>
+    <?php if ($show_quick_lang_toggle): ?>
     <button class="quick-switch-btn js-lang-toggle" type="button" title="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" data-current-locale="<?php echo esc_attr($current_locale); ?>">
       <i class="fa-solid fa-language" aria-hidden="true"></i>
     </button>
+    <?php endif; ?>
   </div>
+  <?php endif; ?>
   </div>
   <?php //移动端结构结束 ?>
 
@@ -163,14 +171,20 @@ $current_locale = get_locale();
     </script>
     <?php endif; //选项全在menu-wrapper中，防止bg-switch隐藏宽度变化导致brand缩放?>
 
+    <?php if ($show_quick_theme_toggle || $show_quick_lang_toggle): ?>
     <div class="quick-switches" aria-label="Quick switches">
+      <?php if ($show_quick_theme_toggle): ?>
       <button class="quick-switch-btn js-theme-toggle" type="button" title="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Toggle dark mode', 'sakurairo'); ?>">
         <i class="fa-solid fa-moon" aria-hidden="true"></i>
       </button>
+      <?php endif; ?>
+      <?php if ($show_quick_lang_toggle): ?>
       <button class="quick-switch-btn js-lang-toggle" type="button" title="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" aria-label="<?php esc_attr_e('Switch language', 'sakurairo'); ?>" data-current-locale="<?php echo esc_attr($current_locale); ?>">
         <i class="fa-solid fa-language" aria-hidden="true"></i>
       </button>
+      <?php endif; ?>
     </div>
+    <?php endif; ?>
   </div>
 
   <?php if ($show_mo_toc_button): ?>
