@@ -604,12 +604,17 @@ animation: slow-rotate 10s linear infinite;
     right: 10px;
     height: fit-content;
     width: fit-content;
-    max-height: 32%;
-    max-width: 32%;
+    max-height: 45%;
+    max-width: 72%;
     top: 10px;
     flex-direction: column;
     transition: all 0.6s ease-in-out;
     -webkit-transition: all 0.6s ease-in-out;
+}
+.post-meta span,
+.post-meta a{
+    white-space: normal;
+    word-break: break-word;
 }
 
 }
@@ -619,12 +624,17 @@ animation: slow-rotate 10s linear infinite;
     right: 21.5%;
     height: fit-content;
     width: fit-content;
-    max-height: 32%;
-    max-width: 32%;
+    max-height: 45%;
+    max-width: 72%;
     top: 10px;
     flex-direction: column;
     transition: all 0.6s ease-in-out;
     -webkit-transition: all 0.6s ease-in-out;
+}
+.post-meta span,
+.post-meta a{
+    white-space: normal;
+    word-break: break-word;
 }
 
 }
