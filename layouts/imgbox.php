@@ -346,7 +346,9 @@ $print_social_zone = function() use ($all_opt): void {
                             poemFontSize: <?php echo wp_json_encode( iro_opt('cover_poetry_font_size', '1.35em') ); ?>,
                             authorFontSize: <?php echo wp_json_encode( iro_opt('cover_poetry_author_font_size', '0.95em') ); ?>,
                             fontFamily: <?php echo wp_json_encode( iro_opt('cover_poetry_font_family', "'STKaiti', 'KaiTi', '楷体', serif") ); ?>,
-                            fallbackText: <?php echo wp_json_encode( iro_opt('signature_text', 'Hi, Mashiro?') ); ?>
+                            fallbackText: <?php echo wp_json_encode( iro_opt('signature_text', 'Hi, Mashiro?') ); ?>,
+                            mobilePoemScale: 0.86,
+                            mobileAuthorScale: 0.84
                         };
                         // ================================================
 
@@ -459,14 +461,14 @@ $print_social_zone = function() use ($all_opt): void {
                                                 letter-spacing: 0.08em !important;
                                             }
                                             .poem-wrapper .poem-content {
-                                                font-size: var(--poem-font-size) !important;
+                                                font-size: calc(var(--poem-font-size) * ${CONFIG.mobilePoemScale}) !important;
                                                 line-height: 1.45 !important;
                                                 margin-bottom: 0.35em !important;
                                                 white-space: normal !important;
                                                 overflow-wrap: anywhere;
                                             }
                                             .poem-wrapper .poem-author {
-                                                font-size: var(--author-font-size) !important;
+                                                font-size: calc(var(--author-font-size) * ${CONFIG.mobileAuthorScale}) !important;
                                                 transform: none !important;
                                                 text-align: center !important;
                                                 opacity: 0.8;
