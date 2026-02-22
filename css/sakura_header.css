@@ -182,7 +182,6 @@ nav .menu>li .sub-menu li {
     -webkit-appearance: none;
     -moz-appearance: none;
     -webkit-tap-highlight-color: transparent;
-    background-image: none;
 }
 
 .quick-switch-btn:focus,
@@ -190,11 +189,6 @@ nav .menu>li .sub-menu li {
 .quick-switch-btn:active {
     outline: none;
     box-shadow: none;
-    background: transparent;
-}
-
-.quick-switch-btn * {
-    -webkit-tap-highlight-color: transparent;
 }
 
 
@@ -213,24 +207,16 @@ nav .menu>li .sub-menu li {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    transform-origin: center center;
 }
 
-/* 使用明确字号补偿，避免 transform 在部分设备上视觉不生效 */
+/* 保留原图标的同时做视觉放大，尽量接近搜索图标的 16x16 观感 */
 .quick-switch-btn.js-theme-toggle i {
-    font-size: 22px !important;
+    transform: scale(1.22);
 }
 
 .quick-switch-btn.js-lang-toggle i {
-    font-size: 20px !important;
-}
-
-.quick-switch-btn i:active,
-.quick-switch-btn:active i,
-.quick-switch-btn:focus i,
-.quick-switch-btn:focus-visible i {
-    box-shadow: none !important;
-    outline: none !important;
-    background: transparent !important;
+    transform: scale(1.12);
 }
 
 
