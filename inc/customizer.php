@@ -2910,6 +2910,11 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 
 		$legacy_force_checkbox_keys = [
 			'theme_darkmode_auto', 'theme_commemorate_mode', 'cover_video_loop', 'cover_video_live',
+			'reference_exter_font', 'search_filter', 'random_graphs_mts', 'cache_cover', 'cover_video',
+			'social_area', 'bangumi_cache', 'friend_link_form', 'steam_cache', 'comment_useragent',
+			'comment_location', 'admin_notify', 'login_language_opt', 'chatgpt_auto_article_summarize',
+			'ghcard_proxy', 'core_library_basepath', 'shared_library_basepath', 'external_vendor_lib',
+			'send_theme_version',
 			'wechat_qrcode_switch', 'wechat_copy_switch', 'qq_qrcode_switch', 'qq_copy_switch',
 			'search_for_shuoshuo', 'search_for_pages', 'only_admin_can_search_pages', 'sticky_pinned_content',
 			'live_search', 'live_search_comment', 'preload_animation', 'poi_pjax', 'pjax_keep_loading',
@@ -2949,6 +2954,45 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'beta' => esc_html__( 'Beta 测试通道', 'Shinonomeiro_C' ),
 				'preview' => esc_html__( '预览通道', 'Shinonomeiro_C' ),
 			],
+			'post_cover_options' => [
+				'type_1' => esc_html__( '默认封面策略', 'Shinonomeiro_C' ),
+				'type_2' => esc_html__( '优先特色图', 'Shinonomeiro_C' ),
+			],
+			'my_anime_list_sort' => [
+				'favorites' => esc_html__( '按评分排序', 'Shinonomeiro_C' ),
+				'title' => esc_html__( '按标题排序', 'Shinonomeiro_C' ),
+				'start_date' => esc_html__( '按首播时间排序', 'Shinonomeiro_C' ),
+			],
+			'statistics_api' => [
+				'netdata' => esc_html__( 'NetData API', 'Shinonomeiro_C' ),
+				'busuanzi' => esc_html__( '不蒜子统计', 'Shinonomeiro_C' ),
+			],
+			'social_display_icon' => [
+				'triangle' => esc_html__( '三角图标样式', 'Shinonomeiro_C' ),
+				'square' => esc_html__( '方形图标样式', 'Shinonomeiro_C' ),
+			],
+			'bangumi_source' => [
+				'mal' => esc_html__( 'MyAnimeList', 'Shinonomeiro_C' ),
+				'bilibili' => esc_html__( 'Bilibili', 'Shinonomeiro_C' ),
+				'bgm' => esc_html__( 'Bangumi', 'Shinonomeiro_C' ),
+			],
+			'friend_link_align' => [
+				'left_and_right' => esc_html__( '两端对齐', 'Shinonomeiro_C' ),
+				'left' => esc_html__( '左对齐', 'Shinonomeiro_C' ),
+			],
+			'admin_left_style' => [
+				'business_card' => esc_html__( '名片风格', 'Shinonomeiro_C' ),
+				'frosted' => esc_html__( '磨砂风格', 'Shinonomeiro_C' ),
+			],
+			'iro_update_source' => [
+				'github' => esc_html__( 'GitHub 源', 'Shinonomeiro_C' ),
+				'upyun' => esc_html__( '又拍云源', 'Shinonomeiro_C' ),
+				'official_building' => esc_html__( '官方源', 'Shinonomeiro_C' ),
+			],
+			'lib_cdn_path' => [
+				'jsd' => esc_html__( 'jsDelivr', 'Shinonomeiro_C' ),
+				'custom' => esc_html__( '自定义地址', 'Shinonomeiro_C' ),
+			],
 		];
 		$legacy_force_slider_choices = [
 			'iro_captcha_level' => [
@@ -2956,6 +3000,14 @@ if ( $enable_legacy_migrated_section && file_exists( $legacy_migrated_keys_file 
 				'max' => 100,
 				'step' => 1,
 			],
+			'theme_darkmode_background_transparency' => ['min'=>0.0,'max'=>1.0,'step'=>0.01],
+			'aplayer_volume' => ['min'=>0,'max'=>1,'step'=>0.01],
+			'social_area_radius' => ['min'=>0,'max'=>50,'step'=>1],
+			'page_temp_title_font_size' => ['min'=>20,'max'=>120,'step'=>1],
+			'img_upload_max_size' => ['min'=>0,'max'=>10,'step'=>0.1],
+			'chatgpt_max_tokens' => ['min'=>1,'max'=>4000,'step'=>1],
+			'chatgpt_api_request_timeout' => ['min'=>1,'max'=>120,'step'=>1],
+			'time_zone_fix' => ['min'=>-24,'max'=>24,'step'=>1],
 		];
 
 		foreach ( $legacy_migrated_keys as $legacy_key ) {
