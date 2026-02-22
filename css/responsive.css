@@ -621,6 +621,10 @@
     background-attachment: scroll;
   }
 
+  #centerbg.poem-loading {
+    height: 300px;
+  }
+
   #video-container,
   .loadvideo {
     display: none;

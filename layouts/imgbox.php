@@ -355,6 +355,19 @@ $print_social_zone = function() use ($all_opt): void {
                         var poemData = null;
                         var hasRendered = false;
 
+                        function setHeaderInfoLoading(isLoading) {
+                            var headerInfo = document.querySelector('.header-info');
+                            var centerBg = document.getElementById('centerbg');
+                            if (!headerInfo) return;
+                            if (isLoading) {
+                                headerInfo.classList.add('poem-loading');
+                                if (centerBg) centerBg.classList.add('poem-loading');
+                            } else {
+                                headerInfo.classList.remove('poem-loading');
+                                if (centerBg) centerBg.classList.remove('poem-loading');
+                            }
+                        }
+
                         function withFallbackFontStack(fontFamily) {
                             var fallback = "'Noto Serif SC','Source Han Serif SC','Songti SC','STSong','SimSun','Noto Serif CJK SC',serif";
                             if (!fontFamily || typeof fontFamily !== 'string') return fallback;
@@ -382,6 +395,7 @@ $print_social_zone = function() use ($all_opt): void {
 
                         function renderPoem() {
                             if (hasRendered || !poemData) return;
+                            setHeaderInfoLoading(false);
 
                             var target = document.querySelector('.header-info > p#cover-signature-text');
                             if (!target) return;
@@ -496,7 +510,10 @@ $print_social_zone = function() use ($all_opt): void {
                             if (!target) return;
                             target.textContent = CONFIG.fallbackText;
                             hasRendered = true;
+                            setHeaderInfoLoading(false);
                         }
+
+                        setHeaderInfoLoading(true);
 
                         var script = document.createElement('script');
                         script.src = 'https://sdk.jinrishici.com/v2/browser/jinrishici.js';

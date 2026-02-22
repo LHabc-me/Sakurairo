@@ -6,7 +6,7 @@ Theme URI: https://github.com/LHabc-me/Shinonomeiro
 Author: LHabc
 Author URI: https://lhabc.me/
 Description: A WordPress theme that is built with AI-assisted reading features, colorful, user-friendly, well-rounded, and rich in functionalities. (Based on Theme Sakura)
-Version: 1.2.70
+Version: 1.2.71
 Tested up to: 6.8
 Requires at least: 6.0
 Requires PHP: 8.0
@@ -2349,6 +2349,10 @@ h1.main-title {
   -webkit-backdrop-filter: saturate(180%) blur(10px);
   backdrop-filter: saturate(180%) blur(10px);
   will-change: backdrop-filter;
+}
+
+.header-info.poem-loading {
+  visibility: hidden;
 }
 
 .header-info p {
