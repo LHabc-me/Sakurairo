@@ -366,12 +366,17 @@ $print_social_zone = function() use ($all_opt): void {
                             var firstFamily = (fontFamily || '').split(',')[0].replace(/["']/g, '').trim();
                             if (!firstFamily) return;
                             if (document.fonts.check('16px "' + firstFamily + '"')) return;
-                            if (document.querySelector('link[data-poem-font="noto-serif-sc"]')) return;
+
+                            var isKaiStyle = /kaiti|楷/i.test(firstFamily);
+                            var id = isKaiStyle ? 'lxgw-wenkai' : 'noto-serif-sc';
+                            if (document.querySelector('link[data-poem-font="' + id + '"]')) return;
 
                             var link = document.createElement('link');
                             link.rel = 'stylesheet';
-                            link.href = 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap';
-                            link.setAttribute('data-poem-font', 'noto-serif-sc');
+                            link.href = isKaiStyle
+                                ? 'https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css'
+                                : 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap';
+                            link.setAttribute('data-poem-font', id);
                             document.head.appendChild(link);
                         }
 
