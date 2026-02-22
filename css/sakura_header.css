@@ -149,7 +149,7 @@ nav .menu>li .sub-menu li {
     padding: 10px 0;
 }
 
-.searchbox.js-toggle-search i, .bg-switch i, .quick-switch-btn i{
+.searchbox.js-toggle-search i, .searchbox.js-toggle-search svg, .bg-switch i, .bg-switch svg, .quick-switch-btn i, .quick-switch-btn svg{
     padding: 11px 10px;
 }
 
@@ -202,7 +202,8 @@ nav .menu>li .sub-menu li {
     border: 0;
 }
 
-.quick-switch-btn i {
+.quick-switch-btn i,
+.quick-switch-btn svg {
     margin: 17px 0;
     border-radius: 10px !important;
     border: 2px solid transparent;
@@ -216,18 +217,24 @@ nav .menu>li .sub-menu li {
 }
 
 /* 使用明确字号补偿，避免 transform 在部分设备上视觉不生效 */
-.quick-switch-btn.js-theme-toggle i {
+.quick-switch-btn.js-theme-toggle i,
+.quick-switch-btn.js-theme-toggle svg {
     font-size: 22px !important;
 }
 
-.quick-switch-btn.js-lang-toggle i {
+.quick-switch-btn.js-lang-toggle i,
+.quick-switch-btn.js-lang-toggle svg {
     font-size: 20px !important;
 }
 
 .quick-switch-btn i:active,
+.quick-switch-btn svg:active,
 .quick-switch-btn:active i,
+.quick-switch-btn:active svg,
 .quick-switch-btn:focus i,
-.quick-switch-btn:focus-visible i {
+.quick-switch-btn:focus svg,
+.quick-switch-btn:focus-visible i,
+.quick-switch-btn:focus-visible svg {
     box-shadow: none !important;
     outline: none !important;
     background: transparent !important;
@@ -260,7 +267,8 @@ nav .menu>li .sub-menu li {
 }
 
 @media (hover: hover) and (pointer: fine) {
-    .quick-switch-btn i:hover {
+    .quick-switch-btn i:hover,
+    .quick-switch-btn svg:hover {
         color: var(--theme-skin-matching);
         border: 2px solid var(--theme-skin-matching);
         background-color: transparent;
@@ -320,7 +328,8 @@ body.dark .searchbox.js-toggle-search i:hover, body.dark .bg-switch i:hover{
 }
 
 @media (hover: hover) and (pointer: fine) {
-    body.dark .quick-switch-btn i:hover {
+    body.dark .quick-switch-btn i:hover,
+    .quick-switch-btn svg:hover {
         color: var(--theme-skin-dark);
         border: 2px solid var(--theme-skin-dark);
     }
