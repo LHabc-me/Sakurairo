@@ -1493,7 +1493,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // 关闭所有展开的二级菜单
+        const clickedSubmenuToggle = event.target.closest('.open_submenu');
+        const clickedParentMenuLink = event.target.closest('.mobile-nav li.menu-item-has-children > a');
         document.querySelectorAll(".sub-menu.open").forEach(function (subMenu) {
+            // 点击展开控件（箭头/父级标题）时，不要在同一次事件里把刚打开的子菜单立刻关闭
+            if (clickedSubmenuToggle || clickedParentMenuLink) return;
+
             if (!subMenu.contains(event.target)) {
                 subMenu.classList.remove("open");
                 let submenuToggle = subMenu.closest("li").querySelector(".open_submenu");
