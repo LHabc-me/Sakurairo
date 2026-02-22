@@ -404,6 +404,10 @@ $print_social_zone = function() use ($all_opt): void {
                             var origin = data.origin;
 
                             var fontStack = withFallbackFontStack(CONFIG.fontFamily);
+                            var prefersKai = /kaiti|楷/i.test(CONFIG.fontFamily || '');
+                            if (prefersKai) {
+                                fontStack = "'LXGW WenKai'," + fontStack;
+                            }
                             ensurePoetryFont(fontStack);
 
                             var html = `
@@ -438,6 +442,12 @@ $print_social_zone = function() use ($all_opt): void {
                                             transition: color 0.3s ease !important;
                                         }
 
+                                        #cover-signature-text.poem-rendered {
+                                            white-space: normal !important;
+                                            overflow: visible !important;
+                                            text-overflow: clip !important;
+                                        }
+
                                         @media (max-width: 860px) {
                                             .poem-wrapper {
                                                 overflow-x: hidden !important;
@@ -467,7 +477,11 @@ $print_social_zone = function() use ($all_opt): void {
                                                 opacity: 0.8;
                                                 overflow: hidden;
                                                 text-overflow: ellipsis;
-                                                white-space: nowrap;
+                                                white-space: normal;
+                                                line-height: 1.4;
+                                                display: -webkit-box;
+                                                -webkit-line-clamp: 2;
+                                                -webkit-box-orient: vertical;
                                             }
                                         }
                                     </style>
@@ -501,6 +515,7 @@ $print_social_zone = function() use ($all_opt): void {
                             `;
 
                             target.innerHTML = html;
+                            target.classList.add('poem-rendered');
                             hasRendered = true;
                         }
 
@@ -508,6 +523,7 @@ $print_social_zone = function() use ($all_opt): void {
                             if (hasRendered) return;
                             var target = document.querySelector('.header-info > p#cover-signature-text');
                             if (!target) return;
+                            target.classList.remove('poem-rendered');
                             target.textContent = CONFIG.fallbackText;
                             hasRendered = true;
                             setHeaderInfoLoading(false);
