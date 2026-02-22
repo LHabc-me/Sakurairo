@@ -178,10 +178,6 @@ nav .menu>li .sub-menu li {
     justify-content: center;
     outline: none;
     box-shadow: none;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -webkit-tap-highlight-color: transparent;
 }
 
 .quick-switch-btn:focus,
@@ -189,11 +185,6 @@ nav .menu>li .sub-menu li {
 .quick-switch-btn:active {
     outline: none;
     box-shadow: none;
-}
-
-
-.quick-switch-btn::-moz-focus-inner {
-    border: 0;
 }
 
 .quick-switch-btn i {
@@ -209,6 +200,10 @@ nav .menu>li .sub-menu li {
     justify-content: center;
 }
 
+/* 语言图标视觉上比搜索镜头略小，做轻微补偿 */
+.quick-switch-btn.js-lang-toggle i {
+    font-size: 19px;
+}
 
 .bg-switch {
     font-size: 16px;
@@ -229,18 +224,11 @@ nav .menu>li .sub-menu li {
 }
 
 .searchbox.js-toggle-search i:hover,
-.bg-switch i:hover {
+.bg-switch i:hover,
+.quick-switch-btn i:hover{
     color: var(--theme-skin-matching);
     border: 2px solid var(--theme-skin-matching);
     background-color: transparent;
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .quick-switch-btn i:hover {
-        color: var(--theme-skin-matching);
-        border: 2px solid var(--theme-skin-matching);
-        background-color: transparent;
-    }
 }
 
 .bg-switch.hide-state {
@@ -290,16 +278,9 @@ body.dark .site-header:hover .searchbox.js-toggle-search i, body.dark .site-head
     color: var(--dark-text-primary) !important;
 }
 
-body.dark .searchbox.js-toggle-search i:hover, body.dark .bg-switch i:hover{
+body.dark .searchbox.js-toggle-search i:hover, body.dark .bg-switch i:hover, body.dark .quick-switch-btn i:hover{
     color: var(--theme-skin-dark);
     border: 2px solid var(--theme-skin-dark);
-}
-
-@media (hover: hover) and (pointer: fine) {
-    body.dark .quick-switch-btn i:hover {
-        color: var(--theme-skin-dark);
-        border: 2px solid var(--theme-skin-dark);
-    }
 }
 
 @keyframes fadeInLeft {
