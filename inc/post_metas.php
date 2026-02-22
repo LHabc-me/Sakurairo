@@ -56,6 +56,25 @@ function get_meta_category_html($post_id)
 		. "</span>";
 }
 
+// 标签
+function get_meta_tags_html($post_id, $fallback = null)
+{
+    if ($fallback === null) {
+        $fallback = __('No tags', 'sakurairo');
+    }
+
+    $tags = get_the_tags($post_id);
+    if (empty($tags) || is_wp_error($tags)) {
+        return "<span><i class=\"fa-solid fa-tag\"></i> " . esc_html($fallback) . "</span>";
+    }
+
+    $tag_links = array_map(function ($tag) {
+        return '<a href="' . esc_url(get_tag_link($tag->term_id)) . '">' . esc_html($tag->name) . '</a>';
+    }, $tags);
+
+    return "<span><i class=\"fa-solid fa-tag\"></i> " . implode(' / ', $tag_links) . "</span>";
+}
+
 // 阅读时间
 function get_meta_estimate_reading_time($post_id)
 {
