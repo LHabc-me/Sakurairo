@@ -347,8 +347,8 @@ $print_social_zone = function() use ($all_opt): void {
                             authorFontSize: <?php echo wp_json_encode( iro_opt('cover_poetry_author_font_size', '0.95em') ); ?>,
                             fontFamily: <?php echo wp_json_encode( iro_opt('cover_poetry_font_family', "'STKaiti', 'KaiTi', '楷体', serif") ); ?>,
                             fallbackText: <?php echo wp_json_encode( iro_opt('signature_text', 'Hi, Mashiro?') ); ?>,
-                            mobilePoemScale: 0.86,
-                            mobileAuthorScale: 0.84
+                            mobilePoemScale: 0.80,
+                            mobileAuthorScale: 0.78
                         };
                         // ================================================
 
@@ -378,18 +378,39 @@ $print_social_zone = function() use ($all_opt): void {
                             if (!('fonts' in document)) return;
                             var firstFamily = (fontFamily || '').split(',')[0].replace(/["']/g, '').trim();
                             if (!firstFamily) return;
-                            if (document.fonts.check('16px "' + firstFamily + '"')) return;
 
                             var isKaiStyle = !!preferKaiStyle || /kaiti|楷|wenkai|lxgw/i.test(firstFamily);
                             var id = isKaiStyle ? 'lxgw-wenkai' : 'noto-serif-sc';
                             if (document.querySelector('link[data-poem-font="' + id + '"]')) return;
 
+                            if (isKaiStyle) {
+                                var hasLocalKai = document.fonts.check('16px "STKaiti"')
+                                    || document.fonts.check('16px "KaiTi"')
+                                    || document.fonts.check('16px "Kaiti SC"')
+                                    || document.fonts.check('16px "BiauKai"')
+                                    || document.fonts.check('16px "楷体"');
+                                if (hasLocalKai) return;
+
+                                var kaiLink = document.createElement('link');
+                                kaiLink.rel = 'stylesheet';
+                                kaiLink.href = 'https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css';
+                                kaiLink.setAttribute('data-poem-font', 'lxgw-wenkai');
+                                kaiLink.onerror = function () {
+                                    var backup = document.createElement('link');
+                                    backup.rel = 'stylesheet';
+                                    backup.href = 'https://unpkg.com/lxgw-wenkai-webfont@1.7.0/style.css';
+                                    backup.setAttribute('data-poem-font', 'lxgw-wenkai');
+                                    document.head.appendChild(backup);
+                                };
+                                document.head.appendChild(kaiLink);
+                                return;
+                            }
+
+                            if (document.fonts.check('16px "' + firstFamily + '"')) return;
                             var link = document.createElement('link');
                             link.rel = 'stylesheet';
-                            link.href = isKaiStyle
-                                ? 'https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css'
-                                : 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap';
-                            link.setAttribute('data-poem-font', id);
+                            link.href = 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap';
+                            link.setAttribute('data-poem-font', 'noto-serif-sc');
                             document.head.appendChild(link);
                         }
 
