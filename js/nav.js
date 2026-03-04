@@ -1405,11 +1405,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("click", function (event) {
         let navButton = document.querySelector(".mo-nav-button");
         let tocButton = document.querySelector(".mo-toc-button");
+        const clickedNavButton = navButton ? navButton.contains(event.target) : false;
+        const clickedTocButton = tocButton ? tocButton.contains(event.target) : false;
 
         if (
             moNavMenu.classList.contains("open") &&
             !moNavMenu.contains(event.target) &&
-            !navButton.contains(event.target)
+            !clickedNavButton
         ) {
             closeMenu(moNavMenu, navButton,false);
 
@@ -1421,7 +1423,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (
             moTocMenu.classList.contains("open") &&
             !moTocMenu.contains(event.target) &&
-            !tocButton.contains(event.target)
+            !clickedTocButton
         ) {
             closeMenu(moTocMenu, tocButton,false);
 
@@ -1433,13 +1435,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (
             !moNavMenu.contains(event.target) &&
             !moTocMenu.contains(event.target) &&
-            !navButton.contains(event.target) &&
-            !tocButton.contains(event.target)
+            !clickedNavButton &&
+            !clickedTocButton
         ) {
             moNavMenu.classList.remove("open");
             moTocMenu.classList.remove("open");
-            navButton.classList.remove("open");
-            tocButton.classList.remove("open");
+            if (navButton) navButton.classList.remove("open");
+            if (tocButton) tocButton.classList.remove("open");
             moHeader.removeEventListener("transitionend", navTransitionHandler);
             moNavMenu.removeEventListener("transitionend", panelTransitionHandler);
             moTocMenu.removeEventListener("transitionend", panelTransitionHandler);
