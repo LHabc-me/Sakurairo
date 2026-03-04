@@ -314,11 +314,14 @@ function get_qq_avatar()
     $encrypted = $_GET["qq"];
     $imgurl = QQ::get_qq_avatar($encrypted);
     if (iro_opt('qq_avatar_link') == 'type_2') {
-        $remote_response = wp_remote_get(
+        $remote_response = sakurairo_http_get(
             $imgurl,
             array(
                 'timeout' => 5,
                 'redirection' => 2,
+            ),
+            array(
+                'context' => 'qq_avatar_proxy',
             )
         );
 

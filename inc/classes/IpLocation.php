@@ -57,7 +57,13 @@ class IpLocation
         // 定义需要获取哪些信息，用法见接口文档
         $fields = '49177';
         $url = "http://ip-api.com/json/$this->ip?fields=$fields&lang=$lang";
-        $response = wp_remote_get($url);
+        $response = \sakurairo_http_get(
+            $url,
+            array(),
+            array(
+                'context' => 'ip_location_lookup',
+            )
+        );
         // 检查响应
         if (is_wp_error($response)) {
             $errorMessage = $response->get_error_message();

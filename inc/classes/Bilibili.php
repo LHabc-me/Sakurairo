@@ -31,7 +31,13 @@ class Bilibili
                 'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97'
             )
         );
-        $response = wp_remote_get($url, $args);
+        $response = \sakurairo_http_get(
+            $url,
+            $args,
+            array(
+                'context' => 'bilibili_follow_list',
+            )
+        );
         if(is_array($response)){
             $response_body = json_decode($response["body"], true);
             return $response_body;

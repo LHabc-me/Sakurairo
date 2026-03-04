@@ -77,10 +77,17 @@ class Vaptcha
 
   public function post($url, $param = [])
   {
-    $response = wp_safe_remote_post($url, [
-      'timeout' => 15,
-      'body' => $param,
-    ]);
+    $response = \sakurairo_http_post(
+      $url,
+      [
+        'timeout' => 15,
+        'body' => $param,
+      ],
+      [
+        'context' => 'vaptcha_verify',
+        'enforce_allowlist' => false,
+      ]
+    );
     if (is_wp_error($response)) {
       $errorMessage = $response->get_error_message();
       return $errorMessage;

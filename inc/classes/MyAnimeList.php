@@ -53,7 +53,13 @@ class MyAnimeList
 			]
 		];
 		
-		$response = wp_remote_get($url, $args);
+		$response = \sakurairo_http_get(
+			$url,
+			$args,
+			array(
+				'context' => 'myanimelist_animelist',
+			)
+		);
 		
 		if (is_array($response) && isset($response["body"])) {
 			$body = $response["body"];

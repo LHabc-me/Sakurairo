@@ -37,14 +37,20 @@ class Turnstile
   public function verify($token, $ip)
   {
     $secret_key = iro_opt('turnstile_secret_key');
-    $response = wp_safe_remote_post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
-      'timeout' => 15,
-      'body' => [
-        'secret' => $secret_key,
-        'response' => $token,
-        'remoteip' => $ip,
+    $response = \sakurairo_http_post(
+      'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+      [
+        'timeout' => 15,
+        'body' => [
+          'secret' => $secret_key,
+          'response' => $token,
+          'remoteip' => $ip,
+        ],
       ],
-    ]);
+      [
+        'context' => 'turnstile_verify',
+      ]
+    );
     
     if (is_wp_error($response)) {
       return [
