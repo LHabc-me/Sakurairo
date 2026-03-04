@@ -36,8 +36,33 @@ get_header(); ?>
         $show_pages_filter = false;
     }
 
-    // 获取当前查询参数中的content_type内容
-    $content_types = isset($_GET['content_type']) ? explode(',', $_GET['content_type']) : $default_checked;
+    // 获取当前查询参数中的content_type内容，并做白名单过滤
+    $allowed_content_types = array_values(array_unique($default_checked));
+    if (empty($allowed_content_types)) {
+        $allowed_content_types = array('post');
+    }
+
+    $fallback_content_types = $allowed_content_types;
+    if (iro_opt('only_admin_can_search_pages') && !current_user_can('manage_options')) {
+        $fallback_content_types = array_values(array_diff($fallback_content_types, array('page')));
+        if (empty($fallback_content_types)) {
+            $fallback_content_types = array('post');
+        }
+    }
+
+    $content_types = $allowed_content_types;
+    if (isset($_GET['content_type'])) {
+        $raw_content_types = wp_unslash($_GET['content_type']);
+        if (is_array($raw_content_types)) {
+            $raw_content_types = implode(',', $raw_content_types);
+        }
+
+        $requested_content_types = array_filter(array_map('sanitize_key', explode(',', sanitize_text_field($raw_content_types))));
+        $filtered_content_types = array_values(array_intersect($requested_content_types, $allowed_content_types));
+        if (!empty($filtered_content_types)) {
+            $content_types = $filtered_content_types;
+        }
+    }
 
     // 搜索页标题
     if (!iro_opt('patternimg') || !get_random_bg_url()) : ?>
@@ -62,6 +87,11 @@ get_header(); ?>
             // 不是管理员就移除page
             $all_results_args['post_type'] = array_diff($content_types, array('page'));
         }
+    }
+
+    $all_results_args['post_type'] = array_values(array_intersect((array) $all_results_args['post_type'], $fallback_content_types));
+    if (empty($all_results_args['post_type'])) {
+        $all_results_args['post_type'] = $fallback_content_types;
     }
 
     $all_results_args['post__not_in'] = array_map('intval', explode(',', iro_opt('custom_exclude_search_results')));

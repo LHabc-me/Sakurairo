@@ -208,7 +208,23 @@ add_action('pre_comment_on_post', 'comment_captcha');
 
 // 评论提交
 if(!function_exists('siren_ajax_comment_callback')) {
+    function sakurairo_ajax_comment_guard_error($message, $status = 403) {
+      siren_ajax_comment_err($message);
+    }
+
     function siren_ajax_comment_callback(){
+      if (!sakurairo_ajax_guard(array(
+        'action' => 'ajax_comment',
+        'nonce_action' => 'wp_rest',
+        'nonce_field' => '_wpnonce',
+        'capability_callback' => '__return_true',
+        'rate_limit' => 30,
+        'rate_window' => 120,
+        'error_callback' => 'sakurairo_ajax_comment_guard_error',
+      ))) {
+        return;
+      }
+
       $comment = wp_handle_comment_submission( wp_unslash( $_POST ) );
       if( is_wp_error( $comment ) ) {
         $data = $comment->get_error_data();

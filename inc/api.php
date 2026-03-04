@@ -314,15 +314,35 @@ function get_qq_avatar()
     $encrypted = $_GET["qq"];
     $imgurl = QQ::get_qq_avatar($encrypted);
     if (iro_opt('qq_avatar_link') == 'type_2') {
-        $imgdata = file_get_contents($imgurl);
-        $response = new WP_REST_Response();
+        $remote_response = wp_remote_get(
+            $imgurl,
+            array(
+                'timeout' => 5,
+                'redirection' => 2,
+            )
+        );
+
+        if (is_wp_error($remote_response) || 200 !== (int) wp_remote_retrieve_response_code($remote_response)) {
+            $message = is_wp_error($remote_response) ? $remote_response->get_error_message() : 'non-200 response';
+            error_log('Shinonomeiro QQ avatar proxy failed: ' . $message);
+            return new WP_REST_Response(
+                array(
+                    'status' => 502,
+                    'success' => false,
+                    'message' => 'QQ avatar fetch failed.'
+                ),
+                502
+            );
+        }
+
+        $imgdata = wp_remote_retrieve_body($remote_response);
+        $response = new WP_REST_Response($imgdata, 200);
         $response->set_headers(
             array(
                 'Content-Type' => 'image/jpeg',
                 'Cache-Control' => 'max-age=86400'
             )
         );
-        echo $imgdata;
     } else {
         $response = new WP_REST_Response();
         $response->set_status(301);

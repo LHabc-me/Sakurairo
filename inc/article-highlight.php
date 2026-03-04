@@ -234,7 +234,19 @@ function get_image_theme_color($input) {
         if (function_exists('wp_get_remote_content')) {
             $image_data = wp_get_remote_content($input);
         } else {
-            $image_data = file_get_contents($input);
+            $response = wp_remote_get(
+                $input,
+                array(
+                    'timeout' => 5,
+                    'redirection' => 2,
+                )
+            );
+            if (is_wp_error($response) || 200 !== (int) wp_remote_retrieve_response_code($response)) {
+                $message = is_wp_error($response) ? $response->get_error_message() : 'non-200 response';
+                error_log('Shinonomeiro article highlight image fetch failed: ' . $message);
+                return false;
+            }
+            $image_data = wp_remote_retrieve_body($response);
         }
     } else {
         if (file_exists($input)) {
