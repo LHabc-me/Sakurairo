@@ -645,6 +645,20 @@ const initArticleTitleBehavior = () => {
     DOM.navSearchWrapper.style.overflow = "unset";
 
     if (window._searchWrapperState) {
+        const prevState = window._searchWrapperState;
+        if (prevState.hideTimeout) {
+            clearTimeout(prevState.hideTimeout);
+        }
+        if (prevState.scrollRAF) {
+            cancelAnimationFrame(prevState.scrollRAF);
+        }
+        if (prevState.scrollListener) {
+            window.removeEventListener("scroll", prevState.scrollListener);
+        }
+        if (prevState.resizeListener) {
+            window.removeEventListener("resize", prevState.resizeListener);
+        }
+
         const navTitle = DOM.navSearchWrapper.querySelector(".nav-article-title");
         if (navTitle) {
             navTitle.remove();
@@ -826,8 +840,12 @@ const initArticleTitleBehavior = () => {
         searchWrapperState.init();
 
         const scrollHandler = () => searchWrapperState.handleScroll();
+        const resizeHandler = () => searchWrapperState.show();
+        searchWrapperState.scrollListener = scrollHandler;
+        searchWrapperState.resizeListener = resizeHandler;
+
         window.addEventListener("scroll", scrollHandler, { passive: true });
-        window.addEventListener("resize", () => searchWrapperState.show(), {
+        window.addEventListener("resize", resizeHandler, {
             passive: true,
         });
 
