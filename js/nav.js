@@ -790,8 +790,6 @@ const initArticleTitleBehavior = () => {
     setTimeout(() => {
         if(window._searchWrapperState){
             window._searchWrapperState.handleScroll();
-            // 强制重算宽度
-            window._searchWrapperState.show(); 
         }
     }, 300); // 等待浏览器滚动恢复
 };
@@ -1439,7 +1437,6 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 if (window._searchWrapperState) {
                     window._searchWrapperState.handleScroll();
-                    window._searchWrapperState.show(); // 强制重算宽度
                 }
             }, 100);
             window.removeEventListener('scroll', restoreScrollCheck);
