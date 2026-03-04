@@ -298,7 +298,7 @@ function render_annotations_admin_page() {
                     e.preventDefault();
                     const postId = this.dataset.postId;
                     const xhr = new XMLHttpRequest();
-                    xhr.open('GET', ajaxurl + '?action=get_post_annotations&post_id=' + postId);
+                    xhr.open('GET', ajaxurl + '?action=get_post_annotations&post_id=' + postId + '&_wpnonce=<?php echo wp_create_nonce('get_post_annotations_nonce'); ?>');
                     xhr.onload = function() {
                         if (xhr.status === 200) {
                             try {
@@ -474,6 +474,17 @@ function generate_annotations_for_post($post_id) {
  * AJAX处理函数：获取文章注释
  */
 function ajax_get_post_annotations() {
+    if (!\sakurairo_ajax_guard(array(
+        'action' => 'get_post_annotations',
+        'nonce_action' => 'get_post_annotations_nonce',
+        'nonce_field' => '_wpnonce',
+        'capability' => 'manage_options',
+        'rate_limit' => 120,
+        'rate_window' => 60,
+    ))) {
+        return;
+    }
+
     $post_id = isset($_GET['post_id']) ? intval($_GET['post_id']) : 0;
     
     if (!$post_id) {
@@ -503,12 +514,15 @@ add_action('wp_ajax_get_post_annotations', __NAMESPACE__ . '\ajax_get_post_annot
  * AJAX处理函数：更新文章注释数据
  */
 function ajax_update_post_annotations() {
-    // 权限和 nonce 检查
-    if (!current_user_can('manage_options')) {
-        wp_send_json_error(__('Access denied', 'sakurairo'));
-    }
-    if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'update_post_annotations_nonce')) {
-        wp_send_json_error(__('Access denied', 'sakurairo'));
+    if (!\sakurairo_ajax_guard(array(
+        'action' => 'update_post_annotations',
+        'nonce_action' => 'update_post_annotations_nonce',
+        'nonce_field' => '_wpnonce',
+        'capability' => 'manage_options',
+        'rate_limit' => 120,
+        'rate_window' => 60,
+    ))) {
+        return;
     }
 
     $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
@@ -768,7 +782,7 @@ function render_summary_admin_page() {
                     e.preventDefault();
                     const postId = this.dataset.postId;
                     const xhr = new XMLHttpRequest();
-                    xhr.open('GET', ajaxurl + '?action=get_post_summary&post_id=' + postId);
+                    xhr.open('GET', ajaxurl + '?action=get_post_summary&post_id=' + postId + '&_wpnonce=<?php echo wp_create_nonce('get_post_summary_nonce'); ?>');
                     xhr.onload = function() {
                         if (xhr.status === 200) {
                             try {
@@ -872,6 +886,17 @@ function get_posts_with_summary() {
  * AJAX处理函数：获取文章总结
  */
 function ajax_get_post_summary() {
+    if (!\sakurairo_ajax_guard(array(
+        'action' => 'get_post_summary',
+        'nonce_action' => 'get_post_summary_nonce',
+        'nonce_field' => '_wpnonce',
+        'capability' => 'manage_options',
+        'rate_limit' => 120,
+        'rate_window' => 60,
+    ))) {
+        return;
+    }
+
     $post_id = isset($_GET['post_id']) ? intval($_GET['post_id']) : 0;
     
     if (!$post_id) {
@@ -900,12 +925,15 @@ add_action('wp_ajax_get_post_summary', __NAMESPACE__ . '\ajax_get_post_summary')
  * AJAX处理函数：更新文章总结
  */
 function ajax_update_post_summary() {
-    // 权限和 nonce 检查
-    if (!current_user_can('manage_options')) {
-        wp_send_json_error(__('Access denied', 'sakurairo'));
-    }
-    if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'update_post_summary_nonce')) {
-        wp_send_json_error(__('Access denied', 'sakurairo'));
+    if (!\sakurairo_ajax_guard(array(
+        'action' => 'update_post_summary',
+        'nonce_action' => 'update_post_summary_nonce',
+        'nonce_field' => '_wpnonce',
+        'capability' => 'manage_options',
+        'rate_limit' => 120,
+        'rate_window' => 60,
+    ))) {
+        return;
     }
 
     $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;

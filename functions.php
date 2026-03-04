@@ -1769,13 +1769,117 @@ function check_title_tags($content)
     return false;
 }
 
+/**
+ * AJAX guard utilities.
+ */
+function sakurairo_ajax_guard_fail($message, $status = 403, $error_callback = null)
+{
+    if (is_callable($error_callback)) {
+        call_user_func($error_callback, $message, $status);
+        return false;
+    }
+
+    if (wp_doing_ajax()) {
+        wp_send_json_error(array('message' => $message), $status);
+    }
+
+    wp_die(esc_html($message), esc_html__('Error', 'sakurairo'), array('response' => $status));
+}
+
+function sakurairo_ajax_rate_limited($action, $rate_limit, $rate_window)
+{
+    if ($rate_limit <= 0 || $rate_window <= 0) {
+        return false;
+    }
+
+    $identity = 'ip:' . sanitize_text_field($_SERVER['REMOTE_ADDR'] ?? 'unknown');
+    if (is_user_logged_in()) {
+        $identity = 'uid:' . get_current_user_id();
+    }
+
+    $rate_key = 'sakurairo_ajax_rate_' . md5($action . '|' . $identity);
+    $rate_data = get_transient($rate_key);
+    $count = is_array($rate_data) && isset($rate_data['count']) ? (int)$rate_data['count'] : 0;
+
+    if ($count >= $rate_limit) {
+        return true;
+    }
+
+    set_transient(
+        $rate_key,
+        array('count' => $count + 1),
+        $rate_window
+    );
+
+    return false;
+}
+
+function sakurairo_ajax_guard($args = array())
+{
+    $defaults = array(
+        'action' => '',
+        'nonce_action' => '',
+        'nonce_field' => '_wpnonce',
+        'capability' => '',
+        'capability_callback' => null,
+        'rate_limit' => 60,
+        'rate_window' => 60,
+        'error_callback' => null,
+    );
+    $args = wp_parse_args($args, $defaults);
+
+    if (!empty($args['nonce_action'])) {
+        $nonce = '';
+        if (isset($_REQUEST[$args['nonce_field']])) {
+            $nonce = sanitize_text_field(wp_unslash($_REQUEST[$args['nonce_field']]));
+        }
+
+        if (empty($nonce) || !wp_verify_nonce($nonce, $args['nonce_action'])) {
+            return sakurairo_ajax_guard_fail(__('Security verification failed.', 'sakurairo'), 403, $args['error_callback']);
+        }
+    }
+
+    $capability_ok = true;
+    if (is_callable($args['capability_callback'])) {
+        $capability_ok = (bool) call_user_func($args['capability_callback']);
+    } elseif (!empty($args['capability'])) {
+        $capability_ok = current_user_can($args['capability']);
+    }
+
+    if (!$capability_ok) {
+        return sakurairo_ajax_guard_fail(__('Access denied.', 'sakurairo'), 403, $args['error_callback']);
+    }
+
+    if (sakurairo_ajax_rate_limited($args['action'], (int)$args['rate_limit'], (int)$args['rate_window'])) {
+        return sakurairo_ajax_guard_fail(__('You are submitting too frequently. Please try again later.', 'sakurairo'), 429, $args['error_callback']);
+    }
+
+    return true;
+}
+
 /*私密评论*/
 add_action('wp_ajax_nopriv_siren_private', 'siren_private');
 add_action('wp_ajax_siren_private', 'siren_private');
 function siren_private()
 {
-    $comment_id = $_POST["p_id"];
-    $action = $_POST["p_action"];
+    if (!sakurairo_ajax_guard(array(
+        'action' => 'siren_private',
+        'nonce_action' => 'wp_rest',
+        'nonce_field' => '_wpnonce',
+        'capability_callback' => '__return_true',
+        'rate_limit' => 30,
+        'rate_window' => 300,
+    ))) {
+        return;
+    }
+
+    $comment_id = isset($_POST['p_id']) ? absint($_POST['p_id']) : 0;
+    $action = isset($_POST['p_action']) ? sanitize_key(wp_unslash($_POST['p_action'])) : '';
+
+    if (!$comment_id || $action !== 'set_private') {
+        wp_die('0');
+    }
+
     if ($action == 'set_private') {
         update_comment_meta($comment_id, '_private', 'true');
         $i_private = get_comment_meta($comment_id, '_private', true);
@@ -1954,6 +2058,9 @@ function theme_admin_notice_callback()
                                     <button class="button" onclick="update_option()"><?php echo $allow_send; ?></button>
                                 </div>
                                 <script>
+                                    const updateThemeOptionNonce = '<?php echo esc_js(wp_create_nonce('update_theme_option_nonce')); ?>';
+                                    const updateThemeNoticeMetaNonce = '<?php echo esc_js(wp_create_nonce('update_theme_admin_notice_meta_nonce')); ?>';
+
                                     function dismiss_notice() {
                                         // 隐藏通知
                                         document.getElementById( "send-ver-tip" ).style.display = "none";
@@ -1963,6 +2070,7 @@ function theme_admin_notice_callback()
                                         data.append( 'user_id', '<?php echo get_current_user_id(); ?>' );
                                         data.append( 'meta_key', 'theme_admin_notice' );
                                         data.append( 'meta_value', '1' );
+                                        data.append( '_wpnonce', updateThemeNoticeMetaNonce );
                                         fetch( '<?php echo admin_url('admin-ajax.php'); ?>', {
                                             method: 'POST',
                                             body: data
@@ -1976,7 +2084,7 @@ function theme_admin_notice_callback()
                                         var xhr = new XMLHttpRequest();
                                         xhr.open( "POST", "<?php echo admin_url('admin-ajax.php'); ?>", true );
                                         xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
-                                        xhr.send( "action=update_theme_option&option=send_theme_version&value=true" );
+                                        xhr.send( "action=update_theme_option&option=send_theme_version&value=true&_wpnonce=" + encodeURIComponent(updateThemeOptionNonce) );
 
                                         // 写入 1 到 meta
                                         var data = new FormData();
@@ -1984,6 +2092,7 @@ function theme_admin_notice_callback()
                                         data.append( 'user_id', '<?php echo get_current_user_id(); ?>' );
                                         data.append( 'meta_key', 'theme_admin_notice' );
                                         data.append( 'meta_value', '1' );
+                                        data.append( '_wpnonce', updateThemeNoticeMetaNonce );
                                         fetch( '<?php echo admin_url('admin-ajax.php'); ?>', {
                                             method: 'POST',
                                             body: data
@@ -2148,12 +2257,27 @@ add_action('admin_init', 'theme_folder_check_on_admin_init');
 add_action('wp_ajax_update_theme_option', 'update_theme_option');
 function update_theme_option()
 {
+    if (!sakurairo_ajax_guard(array(
+        'action' => 'update_theme_option',
+        'nonce_action' => 'update_theme_option_nonce',
+        'nonce_field' => '_wpnonce',
+        'capability' => 'manage_options',
+        'rate_limit' => 60,
+        'rate_window' => 60,
+    ))) {
+        return;
+    }
+
     if (!isset($_POST['option']) || !isset($_POST['value'])) {
         wp_die('Missing required parameters');
     }
 
-    $option = $_POST['option'];
-    $value = sanitize_text_field($_POST['value']);
+    $option = sanitize_key(wp_unslash($_POST['option']));
+    $value = sanitize_text_field(wp_unslash($_POST['value']));
+    if (empty($option)) {
+        wp_die('Invalid option');
+    }
+
     iro_opt_update($option, $value);
     wp_die();
 }
@@ -2162,13 +2286,28 @@ function update_theme_option()
 add_action('wp_ajax_update_theme_admin_notice_meta', 'update_theme_admin_notice_meta');
 function update_theme_admin_notice_meta()
 {
+    if (!sakurairo_ajax_guard(array(
+        'action' => 'update_theme_admin_notice_meta',
+        'nonce_action' => 'update_theme_admin_notice_meta_nonce',
+        'nonce_field' => '_wpnonce',
+        'capability' => 'manage_options',
+        'rate_limit' => 60,
+        'rate_window' => 60,
+    ))) {
+        return;
+    }
+
     if (!isset($_POST['user_id']) || !isset($_POST['meta_key']) || !isset($_POST['meta_value'])) {
         wp_die('Missing required parameters');
     }
 
-    $user_id = $_POST['user_id'];
-    $meta_key = $_POST['meta_key'];
-    $meta_value = sanitize_text_field($_POST['meta_value']);
+    $user_id = absint($_POST['user_id']);
+    $meta_key = sanitize_key(wp_unslash($_POST['meta_key']));
+    $meta_value = sanitize_text_field(wp_unslash($_POST['meta_value']));
+    if ($user_id !== get_current_user_id() || $meta_key !== 'theme_admin_notice') {
+        wp_die('Invalid parameters');
+    }
+
     update_user_meta($user_id, $meta_key, $meta_value);
     wp_die();
 }
@@ -2486,9 +2625,34 @@ function change_avatar($avatar)
             return '<img src="https://q2.qlogo.cn/headimg_dl?dst_uin=' . $qq_number . '&spec=100" class="lazyload avatar avatar-24 photo" alt="😀" width="24" height="24" onerror="imgError(this,1)">';
         }
         if (iro_opt('qq_avatar_link') == 'type_3') {
-            $qqavatar = file_get_contents('http://ptlogin2.qq.com/getface?appid=1006102&imgtype=3&uin=' . $qq_number);
-            preg_match('/:\"([^\"]*)\"/i', $qqavatar, $matches);
-            return '<img src="' . $matches[1] . '" class="lazyload avatar avatar-24 photo" alt="😀" width="24" height="24" onerror="imgError(this,1)">';
+            $avatar_url = 'https://q2.qlogo.cn/headimg_dl?dst_uin=' . $qq_number . '&spec=100';
+            $qqavatar_response = wp_remote_get(
+                'http://ptlogin2.qq.com/getface?appid=1006102&imgtype=3&uin=' . $qq_number,
+                array(
+                    'timeout' => 3,
+                    'redirection' => 2,
+                )
+            );
+
+            if (is_wp_error($qqavatar_response)) {
+                error_log('Shinonomeiro QQ avatar fetch failed: ' . $qqavatar_response->get_error_message());
+                return '<img src="' . esc_url($avatar_url) . '" class="lazyload avatar avatar-24 photo" alt="😀" width="24" height="24" onerror="imgError(this,1)">';
+            }
+
+            if (200 !== (int) wp_remote_retrieve_response_code($qqavatar_response)) {
+                error_log('Shinonomeiro QQ avatar fetch returned non-200 status.');
+                return '<img src="' . esc_url($avatar_url) . '" class="lazyload avatar avatar-24 photo" alt="😀" width="24" height="24" onerror="imgError(this,1)">';
+            }
+
+            $qqavatar_body = wp_remote_retrieve_body($qqavatar_response);
+            preg_match('/:\"([^\"]*)\"/i', $qqavatar_body, $matches);
+            if (!empty($matches[1])) {
+                $avatar_url = $matches[1];
+            } else {
+                error_log('Shinonomeiro QQ avatar response parse failed.');
+            }
+
+            return '<img src="' . esc_url($avatar_url) . '" class="lazyload avatar avatar-24 photo" alt="😀" width="24" height="24" onerror="imgError(this,1)">';
         }
         
         // Ensure $sakura_privkey is defined and not null
@@ -3799,6 +3963,17 @@ add_action('save_post', function(){
 function sakurairo_link_submission_handler() {
     // 确保所有错误和输出都不会干扰JSON响应
     try {
+        if (!sakurairo_ajax_guard(array(
+            'action' => 'link_submission',
+            'nonce_action' => 'link_submission_nonce',
+            'nonce_field' => 'link_submission_nonce',
+            'capability_callback' => '__return_true',
+            'rate_limit' => 20,
+            'rate_window' => 300,
+        ))) {
+            return;
+        }
+
         // 验证请求方法，只允许POST请求
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             wp_send_json_error(array('message' => __('Invalid request method.', 'sakurairo')));

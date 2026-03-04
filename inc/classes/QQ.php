@@ -5,26 +5,49 @@ namespace Sakura\API;
 class QQ
 {
     public static function get_qq_info($qq) {
-        $get_info = file_get_contents('https://api.qjqq.cn/api/qqinfo?qq=' . $qq);
-        $name = json_decode($get_info, true);
-        if ($name) {
-            if ($name['code'] == 200){
-                $output = array(
-                    'status' => 200,
-                    'success' => true,
-                    'message' => 'success',
-                    'avatar' => 'https://q2.qlogo.cn/headimg_dl?dst_uin=' . $qq . '&spec=100',
-                    'name' => $name['name'],
-                );
-            }
-        } else {
-            $output = array(
-                'status' => 404,
+        $request_url = 'https://api.qjqq.cn/api/qqinfo?qq=' . rawurlencode($qq);
+        $response = wp_remote_get(
+            $request_url,
+            array(
+                'timeout' => 5,
+                'redirection' => 2,
+            )
+        );
+
+        if (is_wp_error($response)) {
+            error_log('Shinonomeiro QQ info request failed: ' . $response->get_error_message());
+            return array(
+                'status' => 502,
                 'success' => false,
-                'message' => 'QQ number not exist.'
+                'message' => 'QQ info service unavailable.'
             );
         }
-        return $output;
+
+        if (200 !== (int) wp_remote_retrieve_response_code($response)) {
+            error_log('Shinonomeiro QQ info request returned non-200 status.');
+            return array(
+                'status' => 502,
+                'success' => false,
+                'message' => 'QQ info service unavailable.'
+            );
+        }
+
+        $name = json_decode(wp_remote_retrieve_body($response), true);
+        if (is_array($name) && isset($name['code']) && (int) $name['code'] === 200 && !empty($name['name'])) {
+            return array(
+                'status' => 200,
+                'success' => true,
+                'message' => 'success',
+                'avatar' => 'https://q2.qlogo.cn/headimg_dl?dst_uin=' . $qq . '&spec=100',
+                'name' => $name['name'],
+            );
+        }
+
+        return array(
+            'status' => 404,
+            'success' => false,
+            'message' => 'QQ number not exist.'
+        );
     }
 
     public static function get_qq_avatar($encrypted) {
