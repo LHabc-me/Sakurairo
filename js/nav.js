@@ -1,26 +1,151 @@
-const nav = document.querySelector('nav');
-if (!nav.classList.contains('sakura_nav')) {
-    init_iro_nav();
+const IRO_NAV_LIFECYCLE_KEY = "__iroNavLifecycle";
+if (window[IRO_NAV_LIFECYCLE_KEY] && typeof window[IRO_NAV_LIFECYCLE_KEY].destroy === "function") {
+    window[IRO_NAV_LIFECYCLE_KEY].destroy();
+}
+
+function createIroNavLifecycle() {
+    return {
+        initialized: false,
+        destroyHandler: null,
+
+        init() {
+            if (this.initialized) return;
+            this.destroyHandler = init_iro_nav();
+            this.initialized = typeof this.destroyHandler === "function";
+        },
+
+        destroy() {
+            if (typeof this.destroyHandler === "function") {
+                this.destroyHandler();
+            }
+            this.destroyHandler = null;
+            this.initialized = false;
+        },
+
+        rebind() {
+            this.destroy();
+            this.init();
+        },
+    };
+}
+
+const iroNavLifecycle = createIroNavLifecycle();
+window[IRO_NAV_LIFECYCLE_KEY] = iroNavLifecycle;
+
+const nav = document.querySelector("nav");
+if (nav && !nav.classList.contains("sakura_nav")) {
+    iroNavLifecycle.rebind();
 }
 function init_iro_nav() {
+    const cleanupTasks = [];
+    const runCleanup = (cleanup) => {
+        if (typeof cleanup === "function") {
+            cleanupTasks.push(cleanup);
+        }
+    };
+    const registerEventListener = (target, event, handler, options) => {
+        if (!target || typeof target.addEventListener !== "function") {
+            return;
+        }
+        target.addEventListener(event, handler, options);
+        runCleanup(() => {
+            target.removeEventListener(event, handler, options);
+        });
+    };
+    const registerTimeout = (callback, delay) => {
+        const timeoutId = setTimeout(() => {
+            const idx = timeoutIds.indexOf(timeoutId);
+            if (idx > -1) timeoutIds.splice(idx, 1);
+            callback();
+        }, delay);
+        timeoutIds.push(timeoutId);
+        return timeoutId;
+    };
+    const timeoutIds = [];
+    const rafIds = [];
+    const registerRaf = (callback) => {
+        const rafId = requestAnimationFrame(() => {
+            const idx = rafIds.indexOf(rafId);
+            if (idx > -1) rafIds.splice(idx, 1);
+            callback();
+        });
+        rafIds.push(rafId);
+        return rafId;
+    };
+
+    const RestorePhase = {
+        active: false,
+        rafId: null,
+
+        begin() {
+            this.active = true;
+            if (this.rafId) {
+                cancelAnimationFrame(this.rafId);
+                this.rafId = null;
+            }
+            this.rafId = registerRaf(() => {
+                this.rafId = registerRaf(() => {
+                    this.active = false;
+                    this.rafId = null;
+                });
+            });
+        },
+
+        destroy() {
+            this.active = false;
+            if (this.rafId) {
+                cancelAnimationFrame(this.rafId);
+                this.rafId = null;
+            }
+        },
+    };
+
+    const setDisplaySafely = (element, displayValue, options = {}) => {
+        if (!element) return;
+        const { allowRestoreShow = false } = options;
+        if (displayValue === "block" && RestorePhase.active && !allowRestoreShow) {
+            return;
+        }
+        element.style.display = displayValue;
+    };
+
 // 导航栏长度限制
+    let navWidthResizeHandler = null;
     function initNavWidth() {
-        const nav = document.querySelector('nav');
+        const nav = document.querySelector("nav");
+        if (!nav) return;
+
         const checkWidth = () => {
             if (nav.offsetWidth > 1200) {
-                nav.style.overflowX = 'hidden';
-                nav.style.maxWidth = '1200px';
+                nav.style.overflowX = "hidden";
+                nav.style.maxWidth = "1200px";
             } else {
-                nav.style.overflowX = '';
-                nav.style.maxWidth = '';
+                nav.style.overflowX = "";
+                nav.style.maxWidth = "";
             }
         };
+
         checkWidth();
-        window.addEventListener('resize', checkWidth);
+        if (navWidthResizeHandler) {
+            window.removeEventListener("resize", navWidthResizeHandler);
+        }
+        navWidthResizeHandler = checkWidth;
+        registerEventListener(window, "resize", navWidthResizeHandler, { passive: true });
     }
 
-    document.addEventListener('DOMContentLoaded', initNavWidth);
-    document.addEventListener('pjax:complete', initNavWidth);
+    runCleanup(() => {
+        if (navWidthResizeHandler) {
+            window.removeEventListener("resize", navWidthResizeHandler);
+            navWidthResizeHandler = null;
+        }
+    });
+
+    if (document.readyState === "loading") {
+        registerEventListener(document, "DOMContentLoaded", initNavWidth);
+    } else {
+        initNavWidth();
+    }
+    registerEventListener(document, "pjax:complete", initNavWidth);
 
 // 定义DOM元素
 const DOM = {
@@ -136,7 +261,7 @@ const initElementStates = (isEntering, bgNextWidth, initialWidth, isFirstLoad = 
     `);
     // 初始化 bg-next 元素
     resetElement(DOM.bgNext, `
-        display: block;
+        ${RestorePhase.active ? "" : "display: block;"}
         opacity: ${isEntering ? "0" : "1"};
         transform: translateX(${isEntering ? "20px" : "0"});
         pointer-events: auto;
@@ -148,7 +273,7 @@ const initElementStates = (isEntering, bgNextWidth, initialWidth, isFirstLoad = 
     if (!DOM.searchbox && DOM.divider) {
         if (isEntering && !isFirstLoad) {
             resetElement(DOM.divider, `
-                display: block;
+                ${RestorePhase.active ? "" : "display: block;"}
                 opacity: 0;
                 transform: translateX(${isEntering ? "20px" : "0"});
                 transition: none;
@@ -179,7 +304,7 @@ const setInitialPositions = (bgNextWidth) => {
     if (DOM.divider) {
         if (!DOM.searchbox) {
             DOM.divider.style.cssText = `
-                display: block;
+                ${RestorePhase.active ? "" : "display: block;"}
                 opacity: 0;
                 transform: translateX(${bgNextWidth}px);
                 transition: none;
@@ -307,7 +432,7 @@ const handlePageTransition = (isHomePage, state) => {
 
     if (isHomePage === state.lastPageWasHome) {
         cleanupAnimations();
-        DOM.bgNext.style.display = isHomePage ? "block" : "none";
+        setDisplaySafely(DOM.bgNext, isHomePage ? "block" : "none");
         DOM.bgNext.style.transform = isHomePage ? "none" : "translateX(20px)";
         DOM.bgNext.style.opacity = isHomePage ? "1" : "0";
         return;
@@ -513,7 +638,7 @@ const showBgNext = async () => {
             requestAnimationFrame(() => {
                 DOM.bgNext.style.opacity = '0';
                 DOM.bgNext.style.transform = 'translateX(20px)';
-                DOM.bgNext.style.display = 'block';
+                setDisplaySafely(DOM.bgNext, "block");
                 requestAnimationFrame(() => {
                     setTransitions();
                     animateElements(true, widths.bgNextWidth, widths.wrapperWidth);
@@ -574,6 +699,9 @@ const initArticleTitleBehavior = () => {
 
     if (window._searchWrapperState) {
         const prevState = window._searchWrapperState;
+        if (typeof prevState.destroy === "function") {
+            prevState.destroy();
+        }
         if (prevState.hideTimeout) {
             clearTimeout(prevState.hideTimeout);
         }
@@ -606,12 +734,17 @@ const initArticleTitleBehavior = () => {
             scrollTimeout: null,
             hideTimeout: null,
             headerElement: null,
+            mouseEnterHandler: null,
+            mouseLeaveHandler: null,
+            transitionEndHandler: null,
+            transitionStartHandler: null,
 
             init() {
                 this.navTitle = DOM.navSearchWrapper.querySelector(".nav-article-title");
                 this.entryTitle = document.querySelector(".entry-title");
                 this.navElement = DOM.navSearchWrapper.querySelector("nav");
                 this.header = document.querySelector("header");
+                if (!this.navElement || !this.header) return;
 
                 if (!this.navTitle) {
                     this.navTitle = document.createElement("div");
@@ -621,45 +754,60 @@ const initArticleTitleBehavior = () => {
                         "afterend",
                         this.navTitle
                     );
-
-                    this.header.addEventListener("mouseenter", () => {
-                        if (this.hideTimeout) {
-                            clearTimeout(this.hideTimeout);
-                            this.hideTimeout = null;
-                        }
-                        if (this.entryTitle && this.entryTitle.getBoundingClientRect().top < 0) {
-                            this.hide();
-                        }
-                    });
-
-                    this.header.addEventListener("mouseleave", () => {
-                        if (this.hideTimeout) {
-                            clearTimeout(this.hideTimeout);
-                        }
-                        if (this.entryTitle && this.entryTitle.getBoundingClientRect().top < 0) {
-                            this.hideTimeout = setTimeout(() => {
-                                this.show();
-                                this.hideTimeout = null;
-                            }, 3000);
-                        }
-                    });
-
-                    this.navElement.addEventListener("transitionend", (event) => {
-                        if (event.target !== this.navElement && event.target !== this.header) return;
-                        this.navTitle.style.opacity = window.getComputedStyle(this.navElement).transform == "none" ? "0" : "1";
-                        if (document.querySelector(".entry-title")) {
-                            DOM.navSearchWrapper.style.overflow = window.getComputedStyle(this.navElement).transform === "none" ? "unset" : "hidden";
-                        }
-                    });
-
-                    this.navElement.addEventListener("transitionstart", (event) => {
-                        if (event.target !== this.navElement && event.target !== this.header) return;
-                        if (document.querySelector(".entry-title")) {
-                            DOM.navSearchWrapper.style.overflow = "hidden";
-                        }
-                        this.navTitle.style.opacity = "1";
-                    });
                 }
+
+                if (this.mouseEnterHandler) {
+                    this.header.removeEventListener("mouseenter", this.mouseEnterHandler);
+                }
+                if (this.mouseLeaveHandler) {
+                    this.header.removeEventListener("mouseleave", this.mouseLeaveHandler);
+                }
+                if (this.transitionEndHandler) {
+                    this.navElement.removeEventListener("transitionend", this.transitionEndHandler);
+                }
+                if (this.transitionStartHandler) {
+                    this.navElement.removeEventListener("transitionstart", this.transitionStartHandler);
+                }
+
+                this.mouseEnterHandler = () => {
+                    if (this.hideTimeout) {
+                        clearTimeout(this.hideTimeout);
+                        this.hideTimeout = null;
+                    }
+                    if (this.entryTitle && this.entryTitle.getBoundingClientRect().top < 0) {
+                        this.hide();
+                    }
+                };
+                this.mouseLeaveHandler = () => {
+                    if (this.hideTimeout) {
+                        clearTimeout(this.hideTimeout);
+                    }
+                    if (this.entryTitle && this.entryTitle.getBoundingClientRect().top < 0) {
+                        this.hideTimeout = registerTimeout(() => {
+                            this.show();
+                            this.hideTimeout = null;
+                        }, 3000);
+                    }
+                };
+                this.transitionEndHandler = (event) => {
+                    if (event.target !== this.navElement && event.target !== this.header) return;
+                    this.navTitle.style.opacity = window.getComputedStyle(this.navElement).transform === "none" ? "0" : "1";
+                    if (document.querySelector(".entry-title")) {
+                        DOM.navSearchWrapper.style.overflow = window.getComputedStyle(this.navElement).transform === "none" ? "unset" : "hidden";
+                    }
+                };
+                this.transitionStartHandler = (event) => {
+                    if (event.target !== this.navElement && event.target !== this.header) return;
+                    if (document.querySelector(".entry-title")) {
+                        DOM.navSearchWrapper.style.overflow = "hidden";
+                    }
+                    this.navTitle.style.opacity = "1";
+                };
+
+                this.header.addEventListener("mouseenter", this.mouseEnterHandler);
+                this.header.addEventListener("mouseleave", this.mouseLeaveHandler);
+                this.navElement.addEventListener("transitionend", this.transitionEndHandler);
+                this.navElement.addEventListener("transitionstart", this.transitionStartHandler);
                 this.updateTitle();
             },
 
@@ -677,7 +825,7 @@ const initArticleTitleBehavior = () => {
                 const navSearchWrapper = DOM.navSearchWrapper;
                 navSearchWrapper.dataset.scrollswap = "true";
 
-                requestAnimationFrame(() => {
+                registerRaf(() => {
                     // 创建临时导航容器
                     const tempNav = document.createElement('div');
                     tempNav.style.cssText = `
@@ -747,6 +895,37 @@ const initArticleTitleBehavior = () => {
                 this.state = false;
             },
 
+            destroy() {
+                if (this.hideTimeout) {
+                    clearTimeout(this.hideTimeout);
+                    this.hideTimeout = null;
+                }
+                if (this.scrollRAF) {
+                    cancelAnimationFrame(this.scrollRAF);
+                    this.scrollRAF = null;
+                }
+                if (this.scrollListener) {
+                    window.removeEventListener("scroll", this.scrollListener);
+                    this.scrollListener = null;
+                }
+                if (this.resizeListener) {
+                    window.removeEventListener("resize", this.resizeListener);
+                    this.resizeListener = null;
+                }
+                if (this.header && this.mouseEnterHandler) {
+                    this.header.removeEventListener("mouseenter", this.mouseEnterHandler);
+                }
+                if (this.header && this.mouseLeaveHandler) {
+                    this.header.removeEventListener("mouseleave", this.mouseLeaveHandler);
+                }
+                if (this.navElement && this.transitionEndHandler) {
+                    this.navElement.removeEventListener("transitionend", this.transitionEndHandler);
+                }
+                if (this.navElement && this.transitionStartHandler) {
+                    this.navElement.removeEventListener("transitionstart", this.transitionStartHandler);
+                }
+            },
+
             handleScroll() {
                 // 使用 RAF 优化滚动性能
                 if (!this.scrollRAF) {
@@ -787,7 +966,7 @@ const initArticleTitleBehavior = () => {
     }
 
     // 增加延迟检测
-    setTimeout(() => {
+    registerTimeout(() => {
         if(window._searchWrapperState){
             window._searchWrapperState.handleScroll();
         }
@@ -803,55 +982,58 @@ const initAnimations = () => {
 
 // 优化的事件监听器
 const addEventListeners = () => {
-    const events = [
-        ["pjax:send", () => {
-            WidthCalculator.clearCache();
-            // 清理之前的动画状态
-            if (window._searchWrapperState) {
-                if (window._searchWrapperState.hideTimeout) {
-                    clearTimeout(window._searchWrapperState.hideTimeout);
-                }
-                if (window._searchWrapperState.scrollRAF) {
-                    cancelAnimationFrame(window._searchWrapperState.scrollRAF);
-                }
-                window._searchWrapperState.state = false;
+    registerEventListener(document, "pjax:send", () => {
+        WidthCalculator.clearCache();
+        // 清理之前的动画状态
+        if (window._searchWrapperState) {
+            if (window._searchWrapperState.hideTimeout) {
+                clearTimeout(window._searchWrapperState.hideTimeout);
             }
-            
-            StateManager.update({
-                lastPageWasHome: location.pathname === "/" || location.pathname === "/index.php",
-                isTransitioning: false // 强制重置过渡状态
-            });
-        }],
-        ["pjax:complete", () => {
-            requestAnimationFrame(() => {
-                // 确保所有状态重置
-                DOM.navSearchWrapper.style.overflow = "unset";
-                DOM.navSearchWrapper.style.width = "auto";
-                delete DOM.navSearchWrapper.dataset.scrollswap;
-                DOM.navSearchWrapper.style.setProperty("--dw", "0");
-                
-                showBgNext();
-                if (window._searchWrapperState) {
-                    window._searchWrapperState.init();
-                    window._searchWrapperState.handleScroll();
-                } else {
-                    initArticleTitleBehavior();
-                }
-            });
-        }],
-        ["DOMContentLoaded", initAnimations],
-        ['popstate', () => {
-            const isHomePage = location.pathname === "/" || location.pathname === "/index.php";
-            if (isHomePage) {
-                StateManager.clear();
-                StateManager.init();
-                showBgNext();
+            if (window._searchWrapperState.scrollRAF) {
+                cancelAnimationFrame(window._searchWrapperState.scrollRAF);
             }
-        }]
-    ];
+            window._searchWrapperState.state = false;
+        }
+        
+        StateManager.update({
+            lastPageWasHome: location.pathname === "/" || location.pathname === "/index.php",
+            isTransitioning: false // 强制重置过渡状态
+        });
+    });
 
-    events.forEach(([event, handler]) => {
-        document.addEventListener(event, handler);
+    registerEventListener(document, "pjax:complete", () => {
+        RestorePhase.begin();
+        registerRaf(() => {
+            // 确保所有状态重置
+            DOM.navSearchWrapper.style.overflow = "unset";
+            DOM.navSearchWrapper.style.width = "auto";
+            delete DOM.navSearchWrapper.dataset.scrollswap;
+            DOM.navSearchWrapper.style.setProperty("--dw", "0");
+            
+            showBgNext();
+            if (window._searchWrapperState) {
+                window._searchWrapperState.init();
+                window._searchWrapperState.handleScroll();
+            } else {
+                initArticleTitleBehavior();
+            }
+        });
+    });
+
+    if (document.readyState === "loading") {
+        registerEventListener(document, "DOMContentLoaded", initAnimations);
+    } else {
+        initAnimations();
+    }
+
+    registerEventListener(window, "popstate", () => {
+        const isHomePage = location.pathname === "/" || location.pathname === "/index.php";
+        if (isHomePage) {
+            RestorePhase.begin();
+            StateManager.clear();
+            StateManager.init();
+            showBgNext();
+        }
     });
 };
 
@@ -1020,7 +1202,44 @@ const BrowserDetect = {
     isWebKit: () => {
         return 'WebkitAppearance' in document.documentElement.style;
     }
-}
+};
+
+return () => {
+    RestorePhase.destroy();
+
+    while (timeoutIds.length > 0) {
+        clearTimeout(timeoutIds.pop());
+    }
+    while (rafIds.length > 0) {
+        cancelAnimationFrame(rafIds.pop());
+    }
+
+    if (window._searchWrapperState) {
+        const prevState = window._searchWrapperState;
+        if (typeof prevState.destroy === "function") {
+            prevState.destroy();
+        } else {
+            if (prevState.scrollListener) {
+                window.removeEventListener("scroll", prevState.scrollListener);
+            }
+            if (prevState.resizeListener) {
+                window.removeEventListener("resize", prevState.resizeListener);
+            }
+        }
+        window._searchWrapperState = null;
+    }
+
+    while (cleanupTasks.length > 0) {
+        const cleanup = cleanupTasks.pop();
+        try {
+            cleanup();
+        } catch (error) {
+            console.warn("nav lifecycle cleanup failed:", error);
+        }
+    }
+
+    WidthCalculator.clearCache();
+};
 };//iro_nav function
 
 //以上仅新版导航栏，以下是通用部分
@@ -1094,27 +1313,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let panelOrderAnime = null;
 
-    moUserMenu = document.querySelector(".mo-user-menu");
+    let moUserMenu = document.querySelector(".mo-user-menu");
+    let tocEventHandler = null;
     if (!moUserMenu) {
-        TocButtonStat ();
-
-        function TocButtonStat () {
-            document.addEventListener("tocEvent",function(event){ // page/index.js 目录生成事件
-                
+        function TocButtonStat() {
+            if (tocEventHandler) {
+                document.removeEventListener("tocEvent", tocEventHandler);
+            }
+            tocEventHandler = function (event) { // page/index.js 目录生成事件
                 let haveToc = document.querySelector("#main-container .toc-container .toc");
                 let haveContent = event.detail;
 
                 if (haveToc && haveContent) { // 下方用户栏和目录二选一，此处是没有用户栏还没有目录的情况
-                    moTocButton.style.transform = 'translateY(0)';
+                    moTocButton.style.transform = "translateY(0)";
                 } else {
-                    moTocButton.style.transform = 'translateY(-100%)';
+                    moTocButton.style.transform = "translateY(-100%)";
                 }
-
-            })
+            };
+            document.addEventListener("tocEvent", tocEventHandler);
         }
 
-        document.addEventListener('pjax:complete', function() {
-            TocButtonStat ();
+        TocButtonStat();
+
+        document.addEventListener("pjax:complete", function () {
+            TocButtonStat();
         });
     }
 
