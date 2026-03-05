@@ -27,13 +27,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: PHP lint
-        run: bash tools/ci/php-lint.sh
-
-      - name: ESLint
+      - name: Run CI checks
         env:
           CI: 'true'
-        run: bash tools/ci/eslint.sh
-
-      - name: Smoke
-        run: bash tools/ci/smoke.sh
+          CI_ENABLE_SECURITY_SMOKE: ${{ vars.CI_ENABLE_SECURITY_SMOKE || 'false' }}
+        run: bash tools/ci/run.sh
