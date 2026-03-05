@@ -3,8 +3,10 @@
 ## Run Script
 
 ```bash
-./tools/check-pr2-frontend-stability.sh
+./tools/ci/smoke.sh
 ```
+
+兼容入口仍可用：`./tools/check-pr2-frontend-stability.sh`（内部已转发到 `tools/ci/smoke.sh`）。
 
 ## Coverage
 
