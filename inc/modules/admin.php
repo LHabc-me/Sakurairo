@@ -143,6 +143,33 @@ function theme_admin_notice_callback()
 }
 add_action('admin_notices', 'theme_admin_notice_callback');
 
+/*
+ * 删除重复主题目录（替代 iro_act=del_exist_theme）
+ */
+function iro_handle_delete_duplicate_theme()
+{
+    if (!current_user_can('manage_options')) {
+        wp_die(esc_html__('Access denied.', 'sakurairo'));
+    }
+
+    check_admin_referer('iro_delete_duplicate_theme');
+
+    if (basename(get_template_directory()) !== 'Shinonomeiro') {
+        if (!function_exists('WP_Filesystem')) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+        }
+        WP_Filesystem();
+        global $wp_filesystem;
+        if ($wp_filesystem) {
+            $wp_filesystem->delete(get_theme_root() . '/Shinonomeiro', true);
+        }
+    }
+
+    wp_safe_redirect(admin_url());
+    exit;
+}
+add_action('admin_post_iro_delete_duplicate_theme', 'iro_handle_delete_duplicate_theme');
+
 /**
  * 检查父主题文件夹名称是否正确
  * 如果名称不正确，尝试重命名或显示管理员警告信息
@@ -163,6 +190,10 @@ function theme_folder_check_on_admin_init()
     // 当主题文件夹名称不正确时
     if ($theme_folder_name !== $correct_theme_folder) {
         $correct_theme_path = trailingslashit(dirname($current_theme_path)) . $correct_theme_folder;
+        $delete_duplicate_theme_url = wp_nonce_url(
+            admin_url('admin-post.php?action=iro_delete_duplicate_theme'),
+            'iro_delete_duplicate_theme'
+        );
 
         // 如果目标路径已存在
         if (file_exists($correct_theme_path)) {
@@ -171,13 +202,13 @@ function theme_folder_check_on_admin_init()
             } else {
                 $is_writable = false;
             }
-            add_action('admin_notices', function () use ($theme_folder_name, $correct_theme_folder, $user_locale, $is_writable) {
+            add_action('admin_notices', function () use ($theme_folder_name, $correct_theme_folder, $user_locale, $is_writable, $delete_duplicate_theme_url) {
                 switch ($user_locale) {
                     case 'zh_CN':
                         ?>
                         <div class="notice notice-error is-dismissible">
                             <p><strong>警告：</strong> 当前父主题文件夹名称为 <code><?php echo esc_html($theme_folder_name); ?></code>，但目标名称 <code><?php echo esc_html($correct_theme_folder); ?></code> 已存在。请手动检查主题文件夹。</p>
-                            <?php if ($is_writable) { ?> <br><a href="/wp-admin/admin.php?iro_act=del_exist_theme" class="page-title-action">点击此处立即删除重名主题</a> <?php } ?>
+                            <?php if ($is_writable) { ?> <br><a href="<?php echo esc_url($delete_duplicate_theme_url); ?>" class="page-title-action">点击此处立即删除重名主题</a> <?php } ?>
                         </div>
                         <?php
                         break;
@@ -185,7 +216,7 @@ function theme_folder_check_on_admin_init()
                         ?>
                         <div class="notice notice-error is-dismissible">
                             <p><strong>警告：</strong> 目前父主題資料夾名稱為 <code><?php echo esc_html($theme_folder_name); ?></code>，但目標名稱 <code><?php echo esc_html($correct_theme_folder); ?></code> 已存在。請手動檢查主題資料夾。</p>
-                            <?php if ($is_writable) { ?> <br><a href="/wp-admin/admin.php?iro_act=del_exist_theme" class="page-title-action">點擊此處立即刪除重名的主題</a> <?php } ?>
+                            <?php if ($is_writable) { ?> <br><a href="<?php echo esc_url($delete_duplicate_theme_url); ?>" class="page-title-action">點擊此處立即刪除重名的主題</a> <?php } ?>
                         </div>
                         <?php
                         break;
@@ -194,7 +225,7 @@ function theme_folder_check_on_admin_init()
                         ?>
                         <div class="notice notice-error is-dismissible">
                             <p><strong>警告：</strong> 現在の親テーマフォルダ名は <code><?php echo esc_html($theme_folder_name); ?></code> ですが、対象の名前 <code><?php echo esc_html($correct_theme_folder); ?></code> は既に存在します。テーマフォルダを手動で確認してください。</p>
-                            <?php if ($is_writable) { ?> <br><a href="/wp-admin/admin.php?iro_act=del_exist_theme" class="page-title-action">ここをクリックして、重複するテーマをすぐに削除します</a> <?php } ?>
+                            <?php if ($is_writable) { ?> <br><a href="<?php echo esc_url($delete_duplicate_theme_url); ?>" class="page-title-action">ここをクリックして、重複するテーマをすぐに削除します</a> <?php } ?>
                         </div>
                         <?php
                         break;
@@ -202,7 +233,7 @@ function theme_folder_check_on_admin_init()
                         ?>
                         <div class="notice notice-error is-dismissible">
                             <p><strong>Warning:</strong> The current parent theme folder name is <code><?php echo esc_html($theme_folder_name); ?></code>, but the target name <code><?php echo esc_html($correct_theme_folder); ?></code> already exists. Please manually check the theme folder.</p>
-                            <?php if ($is_writable) { ?> <br><a href="/wp-admin/admin.php?iro_act=del_exist_theme" class="page-title-action">Click here to immediately delete the duplicate theme</a> <?php } ?>
+                            <?php if ($is_writable) { ?> <br><a href="<?php echo esc_url($delete_duplicate_theme_url); ?>" class="page-title-action">Click here to immediately delete the duplicate theme</a> <?php } ?>
                         </div>
                         <?php
                         break;
