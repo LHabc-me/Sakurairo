@@ -321,7 +321,7 @@ header('X-Frame-Options: SAMEORIGIN');
             <?php endif; ?>
 
             <?php if ($enable_random_graphs): ?>
-                <div class="bg-switch" id="bg-next" style="display:none">
+                <div class="bg-switch" id="bg-next" aria-hidden="true">
                     <i class="fa-solid fa-dice" aria-hidden="true"></i>
                     <span class="screen-reader-text">
                         <?php esc_html_e('Random Background', 'sakurairo'); ?>

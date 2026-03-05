@@ -106,7 +106,11 @@ function init_iro_nav() {
         if (displayValue === "block" && RestorePhase.active && !allowRestoreShow) {
             return;
         }
-        element.style.display = displayValue;
+        const isVisible = displayValue !== "none";
+        element.style.display = "";
+        element.style.visibility = isVisible ? "visible" : "hidden";
+        element.style.pointerEvents = isVisible ? "auto" : "none";
+        element.setAttribute("aria-hidden", isVisible ? "false" : "true");
     };
 
 // 导航栏长度限制
@@ -238,7 +242,7 @@ const setTransitions = () => {
 };
 
 // 初始化元素状态 - 优化后的版本
-const initElementStates = (isEntering, initialWidth, isFirstLoad = false) => {
+const initElementStates = (isEntering, _initialWidth, isFirstLoad = false) => {
     // 确保元素可见性和位置重置
     const resetElement = (element, styles) => {
         if (element) {
@@ -253,16 +257,13 @@ const initElementStates = (isEntering, initialWidth, isFirstLoad = false) => {
         if (el) el.style.transition = 'none';
     });
 
-    // 初始化导航容器宽度 - 移除overflow设置
-    resetElement(DOM.navSearchWrapper, `
-        width: ${initialWidth}px;
-    `);
     // 初始化 bg-next 元素
     resetElement(DOM.bgNext, `
-        ${RestorePhase.active ? "" : "display: block;"}
+        display: block;
+        visibility: ${isEntering ? "hidden" : "visible"};
         opacity: ${isEntering ? "0" : "1"};
         transform: translateX(${isEntering ? "20px" : "0"});
-        pointer-events: auto;
+        pointer-events: ${isEntering ? "none" : "auto"};
         position: relative;
         z-index: 1;
         transition: none;
@@ -304,15 +305,16 @@ const setInitialPositions = () => {
 };
 
 // 优化的动画执行函数
-const animateElements = (isEntering, bgNextWidth, initialWidth) => {
+const animateElements = (isEntering) => {
     // 使用 transform 代替 width 动画以提高性能
     const animate = () => {
         setTransitions();
         
         // 优化动画性能
-        DOM.navSearchWrapper.style.willChange = 'transform, width';
+        DOM.navSearchWrapper.style.willChange = 'transform';
         DOM.bgNext.style.willChange = 'transform, opacity';
-        DOM.bgNext.style.pointerEvents = 'auto';
+        DOM.bgNext.style.visibility = 'visible';
+        DOM.bgNext.style.pointerEvents = isEntering ? 'auto' : 'none';
         DOM.bgNext.style.zIndex = '1';
 
         if (DOM.searchbox) DOM.searchbox.style.willChange = 'opacity';
@@ -327,11 +329,8 @@ const animateElements = (isEntering, bgNextWidth, initialWidth) => {
             [DOM.bgNext, {
                 opacity: isEntering ? "1" : "0",
                 transform: `translateX(${isEntering ? "0" : "20px"})`,
-                width: `${DOM.bgNext.offsetWidth}px`,
-                height: `${DOM.bgNext.offsetWidth}px`,
-            }],
-            [DOM.navSearchWrapper, {
-                width: `${initialWidth + (isEntering ? bgNextWidth : -bgNextWidth)}px`
+                pointerEvents: isEntering ? "auto" : "none",
+                visibility: "visible",
             }]
         ];
 
@@ -344,6 +343,7 @@ const animateElements = (isEntering, bgNextWidth, initialWidth) => {
             if (DOM.divider) {
                 elements.push([DOM.divider, {
                     opacity: DOM.searchbox ? "1" : "0",
+                    visibility: DOM.searchbox ? "visible" : "hidden",
                 }]);
             }
         } else {
@@ -355,6 +355,7 @@ const animateElements = (isEntering, bgNextWidth, initialWidth) => {
             if (DOM.divider) {
                 elements.push([DOM.divider, {
                     opacity: "1",
+                    visibility: "visible",
                 }]);
             }
         }
@@ -363,7 +364,9 @@ const animateElements = (isEntering, bgNextWidth, initialWidth) => {
         setTimeout(() => {
             DOM.navSearchWrapper.style.willChange = '';
             DOM.bgNext.style.willChange = '';
-            DOM.bgNext.style.pointerEvents = 'auto'; // 确保动画结束后仍可点击
+            DOM.bgNext.style.pointerEvents = isEntering ? 'auto' : 'none';
+            DOM.bgNext.style.visibility = isEntering ? 'visible' : 'hidden';
+            DOM.bgNext.setAttribute("aria-hidden", isEntering ? "false" : "true");
             if (DOM.searchbox) DOM.searchbox.style.willChange = '';
             if (DOM.divider) DOM.divider.style.willChange = '';
             
@@ -402,7 +405,6 @@ const handlePageTransition = (isHomePage, state) => {
         
         // 重置导航样式
         DOM.navSearchWrapper.style.overflow = "unset";
-        DOM.navSearchWrapper.style.width = "auto";
         delete DOM.navSearchWrapper.dataset.scrollswap;
         DOM.navSearchWrapper.style.setProperty("--dw", "0");
 
@@ -423,8 +425,6 @@ const handlePageTransition = (isHomePage, state) => {
 
     // 使用 Performance API 优化动画时机
     if (window.performance && window.performance.now) {
-        const startTime = performance.now();
-        
         // 添加防抖，避免快速切换导致的动画问题
         if (state.transitionTimer) {
             cancelAnimationFrame(state.transitionTimer);
@@ -439,64 +439,9 @@ const handlePageTransition = (isHomePage, state) => {
             if (!InitController.initialized) {
                 await InitController.init();
             }
-            
-            const getMeasuredWidth = (element) => {
-                return new Promise(resolve => {
-                    const clone = element.cloneNode(true);
-                    clone.style.cssText = `
-                        all: initial !important;
-                        position: fixed !important;
-                        visibility: hidden !important;
-                        display: block !important;
-                        max-width: none !important;
-                        width: auto !important;
-                        height: auto !important;
-                        margin: 0 !important;
-                        padding: ${getComputedStyle(element).padding} !important;
-                        font: ${getComputedStyle(element).font} !important;
-                    `;
-                    
-                    requestAnimationFrame(() => {
-                        document.body.appendChild(clone);
-                        requestAnimationFrame(() => {
-                            const width = clone.getBoundingClientRect().width;
-                            document.body.removeChild(clone);
-                            resolve(Math.ceil(width));
-                        });
-                    });
-                });
-            };
 
             try {
-                const isWebKit = BrowserDetect.isWebKit();
-                const originalDisplay = DOM.bgNext.style.display;
-                
-                // 临时隐藏所有可能影响宽度的元素
-                DOM.bgNext.style.display = 'none';
-                if (DOM.searchbox) DOM.searchbox.style.visibility = 'hidden';
-                if (DOM.divider) DOM.divider.style.visibility = 'hidden';
-                
-                let wrapperWidth = Math.ceil(DOM.navSearchWrapper.getBoundingClientRect().width);
-                
-                // 恢复元素显示
-                DOM.bgNext.style.display = originalDisplay;
-                if (DOM.searchbox) DOM.searchbox.style.visibility = '';
-                if (DOM.divider) DOM.divider.style.visibility = '';
-                
-                const bgWidth = await WidthCalculator.measure(DOM.bgNext, {
-                    useCache: true,
-                    additionalStyles: 'margin: 0 !important; padding: inherit !important;'
-                });
-                
-                const gap = parseFloat(getComputedStyle(DOM.navSearchWrapper).gap) || 0;
-                const finalBgWidth = Math.ceil(bgWidth + gap);
-                
-                // 只在非主页的WebKit环境下补充宽度
-                if (isWebKit && !isHomePage) {
-                    wrapperWidth = Math.ceil(wrapperWidth + finalBgWidth);
-                }
-                
-                animateTransition(isHomePage, state, finalBgWidth, wrapperWidth);
+                animateTransition(isHomePage, state);
             } catch (error) {
                 console.error('过渡失败:', error);
                 cleanupAnimations();
@@ -506,38 +451,14 @@ const handlePageTransition = (isHomePage, state) => {
 };
 
 // 执行过渡动画
-const animateTransition = (isEntering, state, bgNextWidth, initialWidth) => {
-
-    // 增加容错检测
-    const currentWidth = DOM.navSearchWrapper.offsetWidth;
-    if(Math.abs(initialWidth - currentWidth) > 50){
-        console.warn('Width deviation detected, recalculating...');
-        initialWidth = currentWidth;
-    }
-
+const animateTransition = (isEntering, state) => {
     if (state.isTransitioning) return;
 
     StateManager.update({
         isTransitioning: true,
     });
 
-    // 使用存储的测量宽度进行验证和修正
-    if (state.measuredWidths) {
-        const currentInitialWidth = Math.ceil(DOM.navSearchWrapper.getBoundingClientRect().width);
-        // 修复：如果是第一次执行退出动画且当前是主页，初始宽度需要减去一个 bgNextWidth
-        if (!state.firstExitDone && !isEntering && location.pathname === "/") {
-            initialWidth -= bgNextWidth;
-            state.firstExitDone = true;
-            StateManager.setState(state);
-        }
-        // 检查宽度差异
-        if (Math.abs(currentInitialWidth - state.measuredWidths.initial) > 5) {
-            console.debug('Width mismatch detected, recalculating...');
-            initialWidth = currentInitialWidth;
-        }
-    }
-
-    initElementStates(isEntering, initialWidth);
+    initElementStates(isEntering, 0);
 
     [DOM.bgNext, DOM.navSearchWrapper, DOM.searchbox, DOM.divider].forEach((el) => {
         if (el) void el.offsetWidth;
@@ -545,19 +466,19 @@ const animateTransition = (isEntering, state, bgNextWidth, initialWidth) => {
 
     requestAnimationFrame(() => {
         setTransitions();
-        animateElements(isEntering, bgNextWidth, initialWidth);
+        animateElements(isEntering);
 
         // 修改动画完成后的处理
         setTimeout(() => {
             if (!isEntering) {
-                DOM.bgNext.style.display = "none";
-                DOM.navSearchWrapper.style.width = "auto";
+                setDisplaySafely(DOM.bgNext, "none");
                 // 确保在non-home页面时正确设置overflow
                 if (!window._searchWrapperState || !window._searchWrapperState.state) {
                     DOM.navSearchWrapper.style.overflow = "unset";
                 }
                 if (!DOM.searchbox && DOM.divider) {
-                    DOM.divider.style.display = "none";
+                    DOM.divider.style.visibility = "hidden";
+                    DOM.divider.style.opacity = "0";
                 }
                 [DOM.searchbox, DOM.divider].forEach((el) => {
                     if (el) {
@@ -600,7 +521,7 @@ const showBgNext = async () => {
         state.initializedOutsideHome = true;
         state.initialized = true;
         StateManager.setState(state);
-        DOM.bgNext.style.display = 'none';
+        setDisplaySafely(DOM.bgNext, "none");
         return;
     }
 
@@ -624,7 +545,7 @@ const showBgNext = async () => {
                 setDisplaySafely(DOM.bgNext, "block");
                 requestAnimationFrame(() => {
                     setTransitions();
-                    animateElements(true, widths.bgNextWidth, widths.wrapperWidth);
+                    animateElements(true);
                 });
             });
             return;
@@ -662,7 +583,7 @@ const showBgNext = async () => {
                 StateManager.setState(state);
                 
                 requestAnimationFrame(() => {
-                    animateElements(true, widths.bgNextWidth, widths.wrapperWidth);
+                    animateElements(true);
                 });
             });
         } catch (error) {
@@ -989,7 +910,6 @@ const addEventListeners = () => {
         registerRaf(() => {
             // 确保所有状态重置
             DOM.navSearchWrapper.style.overflow = "unset";
-            DOM.navSearchWrapper.style.width = "auto";
             delete DOM.navSearchWrapper.dataset.scrollswap;
             DOM.navSearchWrapper.style.setProperty("--dw", "0");
             
@@ -1023,167 +943,31 @@ const addEventListeners = () => {
 // 初始化时调用事件监听器设置
 addEventListeners();
 
-// 新增宽度测量工具
+// 保留接口以兼容现有生命周期调用。
 const WidthCalculator = {
-    cache: new Map(),
-    
-    async measure(element, options = {}) {
-        if (!element) return 0;
-        
-        const cacheKey = element.id || element.className;
-        if (options.useCache && this.cache.has(cacheKey)) {
-            return this.cache.get(cacheKey);
-        }
-
-        const clone = element.cloneNode(true);
-        clone.style.cssText = `
-            position: fixed !important;
-            visibility: hidden !important;
-            display: block !important;
-            transform: none !important;
-            transition: none !important;
-            animation: none !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-            z-index: -9999 !important;
-            ${options.additionalStyles || ''}
-        `;
-        
-        document.body.appendChild(clone);
-        
-        // 等待几帧以确保样式应用完成
-        await new Promise(resolve => {
-            let frames = 3;
-            function waitFrames() {
-                if (--frames <= 0) {
-                    resolve();
-                } else {
-                    requestAnimationFrame(waitFrames);
-                }
-            }
-            requestAnimationFrame(waitFrames);
-        });
-
-        const rect = clone.getBoundingClientRect();
-        const width = Math.ceil(rect.width);
-        
-        document.body.removeChild(clone);
-        
-        if (options.useCache) {
-            this.cache.set(cacheKey, width);
-        }
-        
-        return width;
-    },
-
-    clearCache() {
-        this.cache.clear();
-    }
+    clearCache() {}
 };
 
-// 新增初始化控制器
+// 仅等待布局稳定，不再以测量值驱动外层宽度动画。
 const InitController = {
     initialized: false,
     initializing: false,
-    queue: [],
     
     async init() {
-        if (this.initialized || this.initializing) return;
+        if (this.initialized || this.initializing) {
+            return { bgNextWidth: 0, wrapperWidth: 0 };
+        }
         this.initializing = true;
-        
-        // 确保字体加载完成
-        await document.fonts.ready;
-        // 增加延迟确保布局稳定
-        await new Promise(resolve => setTimeout(resolve, 200));
-        
-        // 强制重新布局并测量
-        const measure = async () => {
-            // 保存原始状态
-            const originalStyles = {
-                wrapper: DOM.navSearchWrapper.style.cssText,
-                bgNext: DOM.bgNext.style.cssText,
-                searchbox: DOM.searchbox ? DOM.searchbox.style.cssText : '',
-                divider: DOM.divider ? DOM.divider.style.cssText : ''
-            };
-            
-            // 重置所有样式以获取准确测量
-            DOM.navSearchWrapper.style.cssText = `
-                overflow: hidden !important;
-                width: auto !important;
-                transition: none !important;
-                transform: none !important;
-            `;
-            
-            DOM.bgNext.style.cssText = `
-                display: none !important;
-                transition: none !important;
-                transform: none !important;
-            `;
-            
-            if (DOM.searchbox) DOM.searchbox.style.visibility = 'hidden';
-            if (DOM.divider) DOM.divider.style.visibility = 'hidden';
-            
-            // 强制重排
-            void DOM.navSearchWrapper.offsetWidth;
-            
-            // 获取基础宽度
-            let wrapperWidth = Math.ceil(DOM.navSearchWrapper.getBoundingClientRect().width);
-            
-            // 测量 bg-next
-            DOM.bgNext.style.cssText = `
-                position: relative !important;
-                visibility: visible !important;
-                display: block !important;
-                opacity: 0 !important;
-                transform: none !important;
-                transition: none !important;
-            `;
-            
-            void DOM.bgNext.offsetWidth;
-            
-            const bgWidth = Math.ceil(DOM.bgNext.getBoundingClientRect().width);
-            const gap = parseFloat(getComputedStyle(DOM.navSearchWrapper).gap) || 0;
-            const finalBgWidth = Math.ceil(bgWidth + gap);
-            
-            // 恢复原始样式
-            DOM.navSearchWrapper.style.cssText = originalStyles.wrapper;
-            DOM.bgNext.style.cssText = originalStyles.bgNext;
-            if (DOM.searchbox) DOM.searchbox.style.cssText = originalStyles.searchbox;
-            if (DOM.divider) DOM.divider.style.cssText = originalStyles.divider;
-            
-            return {
-                bgNextWidth: finalBgWidth,
-                wrapperWidth: wrapperWidth
-            };
-        };
-        
-        const measurements = await measure();
-        
-        // 二次确认测量
-        await new Promise(resolve => requestAnimationFrame(resolve));
-        const secondMeasure = await measure();
-        
-        // 如果两次测量差异过大，使用第二次的结果
-        const finalMeasurements = {
-            bgNextWidth: Math.abs(measurements.bgNextWidth - secondMeasure.bgNextWidth) > 2 
-                ? secondMeasure.bgNextWidth 
-                : measurements.bgNextWidth,
-            wrapperWidth: Math.abs(measurements.wrapperWidth - secondMeasure.wrapperWidth) > 2
-                ? secondMeasure.wrapperWidth
-                : measurements.wrapperWidth
-        };
-        
-        this.initialized = true;
-        this.initializing = false;
-        
-        return finalMeasurements;
-    }
-};
-
-// 添加浏览器检测工具
-const BrowserDetect = {
-    isWebKit: () => {
-        return 'WebkitAppearance' in document.documentElement.style;
+        try {
+            if (document.fonts && document.fonts.ready) {
+                await document.fonts.ready;
+            }
+            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+            this.initialized = true;
+            return { bgNextWidth: 0, wrapperWidth: 0 };
+        } finally {
+            this.initializing = false;
+        }
     }
 };
 
