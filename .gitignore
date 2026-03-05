@@ -4,3 +4,8 @@ inc/blocks/node_modules
 
 # Build artifacts
 /dist/
+
+# Maintainer temporary artifacts (repo root only)
+/.tmp_pr_*.md
+/.tmp_release_*.md
+/.tmp_*.md

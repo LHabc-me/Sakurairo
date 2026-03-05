@@ -37,3 +37,7 @@ Shinonomeiro 是一个基于 Sakura V3 系列重构开发的 WordPress 主题，
 ## 贡献
 
 欢迎通过 Issue / PR 提交问题与改进建议。
+
+维护者可参考工作区卫生规范文档：
+
+- `docs/maintainer-workspace-hygiene.md`
