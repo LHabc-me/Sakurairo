@@ -29,7 +29,13 @@ class BilibiliFavList
 			'timeout' => 15 // 增加超时时间
 		);
 		
-		$response = wp_remote_get($url, $args);
+		$response = \sakurairo_http_get(
+			$url,
+			$args,
+			array(
+				'context' => 'bilibili_fav_folders',
+			)
+		);
 		
 		// 检查请求是否成功
 		if (is_wp_error($response)) {
@@ -79,7 +85,13 @@ class BilibiliFavList
 			'timeout' => 15 // 增加超时时间
 		);
 		
-		$response = wp_remote_get($url, $args);
+		$response = \sakurairo_http_get(
+			$url,
+			$args,
+			array(
+				'context' => 'bilibili_fav_items',
+			)
+		);
 		
 		// 检查请求是否成功
 		if (is_wp_error($response)) {

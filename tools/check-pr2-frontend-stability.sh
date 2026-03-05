@@ -9,19 +9,29 @@ node --check js/nav.js
 node --check js/page.js
 
 echo "[PR2] Lifecycle marker check"
-if ! rg -q "__iroNavLifecycle|createIroNavLifecycle" js/nav.js; then
+search_file() {
+  local pattern="$1"
+  local file="$2"
+  if command -v rg >/dev/null 2>&1; then
+    rg -q "$pattern" "$file"
+  else
+    grep -Eq "$pattern" "$file"
+  fi
+}
+
+if ! search_file "__iroNavLifecycle|createIroNavLifecycle" js/nav.js; then
   echo "nav lifecycle markers not found in js/nav.js" >&2
   exit 1
 fi
-if ! rg -q "init\(\) \{" js/nav.js; then
+if ! search_file "init\(\) \{" js/nav.js; then
   echo "lifecycle init() marker not found in js/nav.js" >&2
   exit 1
 fi
-if ! rg -q "destroy\(\) \{" js/nav.js; then
+if ! search_file "destroy\(\) \{" js/nav.js; then
   echo "lifecycle destroy() marker not found in js/nav.js" >&2
   exit 1
 fi
-if ! rg -q "rebind\(\) \{" js/nav.js; then
+if ! search_file "rebind\(\) \{" js/nav.js; then
   echo "init/destroy/rebind contract markers not found in js/nav.js" >&2
   exit 1
 fi

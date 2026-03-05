@@ -234,11 +234,15 @@ function get_image_theme_color($input) {
         if (function_exists('wp_get_remote_content')) {
             $image_data = wp_get_remote_content($input);
         } else {
-            $response = wp_remote_get(
+            $response = sakurairo_http_get(
                 $input,
                 array(
                     'timeout' => 5,
                     'redirection' => 2,
+                ),
+                array(
+                    'context' => 'article_highlight_image_fetch',
+                    'enforce_allowlist' => false,
                 )
             );
             if (is_wp_error($response) || 200 !== (int) wp_remote_retrieve_response_code($response)) {

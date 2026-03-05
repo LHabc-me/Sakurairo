@@ -87,7 +87,15 @@ class BangumiAPI
 
     private function http_get_contents($url)
     {
-        $response = wp_remote_get($url, ['user-agent' => 'LHabc-me/Shinonomeiro(https://github.com/LHabc-me/Shinonomeiro):WordPressTheme']);
+        $response = \sakurairo_http_get(
+            $url,
+            array(
+                'user-agent' => 'LHabc-me/Shinonomeiro(https://github.com/LHabc-me/Shinonomeiro):WordPressTheme',
+            ),
+            array(
+                'context' => 'bangumi_collections',
+            )
+        );
         if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
             return wp_remote_retrieve_body($response);
         }

@@ -1769,6 +1769,7 @@ function check_title_tags($content)
     return false;
 }
 
+require_once __DIR__ . '/inc/modules/http.php';
 require_once __DIR__ . '/inc/modules/ajax.php';
 
 require_once __DIR__ . '/inc/word-stat.php';
@@ -2079,11 +2080,14 @@ function change_avatar($avatar)
         }
         if (iro_opt('qq_avatar_link') == 'type_3') {
             $avatar_url = 'https://q2.qlogo.cn/headimg_dl?dst_uin=' . $qq_number . '&spec=100';
-            $qqavatar_response = wp_remote_get(
+            $qqavatar_response = sakurairo_http_get(
                 'http://ptlogin2.qq.com/getface?appid=1006102&imgtype=3&uin=' . $qq_number,
                 array(
                     'timeout' => 3,
                     'redirection' => 2,
+                ),
+                array(
+                    'context' => 'qq_avatar_lookup',
                 )
             );
 
@@ -2372,7 +2376,13 @@ function send_theme_version()
         'headers' => array(),
         'cookies' => array()
     );
-    wp_remote_post('https://api.fuukei.org/version-stat/index.php', $args);
+    sakurairo_http_post(
+        'https://api.fuukei.org/version-stat/index.php',
+        $args,
+        array(
+            'context' => 'theme_version_report',
+        )
+    );
 }
 
 if (iro_opt('send_theme_version') == '1') {
@@ -2452,10 +2462,12 @@ function register_shortcodes() {
         return $ghcard;
         */
         $api_url = sprintf('https://api.github.com/repos/%s/%s', $username, $repo);
-        $response = wp_remote_get($api_url, array(
+        $response = sakurairo_http_get($api_url, array(
             'headers' => array(
                 'User-Agent' => 'WordPress-GitHubCard-Shortcode'
             )
+        ), array(
+            'context' => 'shortcode_ghcard',
         ));
 
         if (is_wp_error($response)) {
@@ -2613,7 +2625,9 @@ function register_shortcodes() {
             $url = 'https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' . $key . '&steamids=' . $steamid;
             $response = get_transient('steam_stat_'.$steamid);
             if (!$response) {
-                $response = wp_remote_get($url);
+                $response = sakurairo_http_get($url, array(), array(
+                    'context' => 'shortcode_steamuser',
+                ));
                 set_transient('steam_stat_'.$steamid, $response, 180);
             }
             
@@ -3421,8 +3435,8 @@ function sakurairo_link_submission_handler() {
             'nonce_action' => 'link_submission_nonce',
             'nonce_field' => 'link_submission_nonce',
             'capability_callback' => '__return_true',
-            'rate_limit' => 20,
-            'rate_window' => 300,
+            'rate_limit' => 1,
+            'rate_window' => 600,
         ))) {
             return;
         }
@@ -3431,23 +3445,6 @@ function sakurairo_link_submission_handler() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             wp_send_json_error(array('message' => __('Invalid request method.', 'sakurairo')));
             return;
-        }
-
-        // 验证Referer，防止跨站请求
-        check_ajax_referer('link_submission_nonce', 'link_submission_nonce');
-
-        // 限制提交频率，防止滥用
-        $ip = get_the_user_ip();
-        $transient_key = 'link_submit_' . md5($ip);
-        if (false !== get_transient($transient_key)) {
-            wp_send_json_error(array('message' => __('You are submitting too frequently. Please try again later.', 'sakurairo')));
-            return;
-        }
-
-        // 验证nonce
-        if (!isset($_POST['link_submission_nonce']) || !wp_verify_nonce($_POST['link_submission_nonce'], 'link_submission_nonce')) {
-            wp_send_json_error(array('message' => __('Security verification failed.', 'sakurairo')));
-            return; 
         }
 
         // 验证必填字段
@@ -3473,9 +3470,6 @@ function sakurairo_link_submission_handler() {
             return;
         }
         
-        // 设置提交频率限制（10分钟）
-        set_transient($transient_key, 1, 600);
-
         // 检查是否达到草稿链接上限 (20个)
         // 首先确保分类存在
         $pending_cat_id = 0;

@@ -6,11 +6,14 @@ class QQ
 {
     public static function get_qq_info($qq) {
         $request_url = 'https://api.qjqq.cn/api/qqinfo?qq=' . rawurlencode($qq);
-        $response = wp_remote_get(
+        $response = \sakurairo_http_get(
             $request_url,
             array(
                 'timeout' => 5,
                 'redirection' => 2,
+            ),
+            array(
+                'context' => 'qq_info_lookup',
             )
         );
 

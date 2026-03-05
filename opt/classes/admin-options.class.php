@@ -162,6 +162,18 @@ if ( ! class_exists( 'CSF_Options' ) ) {
     }
 
     public function ajax_save() {
+      if ( function_exists( 'sakurairo_ajax_guard' ) ) {
+        if ( ! sakurairo_ajax_guard( array(
+          'action' => 'csf_'. $this->unique .'_ajax_save',
+          'nonce_action' => 'csf_options_nonce',
+          'nonce_field' => 'csf_options_nonce'. $this->unique,
+          'capability' => $this->args['menu_capability'],
+          'rate_limit' => 60,
+          'rate_window' => 60,
+        ) ) ) {
+          return;
+        }
+      }
 
       $result = $this->set_options( true );
 
