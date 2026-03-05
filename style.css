@@ -806,6 +806,15 @@ nav .menu > li .sub-menu a {
   justify-content: center;
 }
 
+/* Keep the search icon geometry fixed during nav/search view switching. */
+.site-header .nav-search-wrapper > .searchbox.js-toggle-search > i {
+  width: 33px;
+  min-width: 33px;
+  flex: 0 0 33px;
+  line-height: 1;
+  transition-property: color, background-color;
+}
+
 .searchbox.js-toggle-search i:hover,.bg-switch i:hover {
   color: rgba(255, 255, 255, 0.8);
   transition: all .4s ease-in-out;
