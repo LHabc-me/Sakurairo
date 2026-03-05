@@ -229,18 +229,16 @@ const setTransitions = () => {
     DOM.navSearchWrapper.style.transition = `all ${ANIMATION.duration} ${ANIMATION.easing}`;
 
     if (DOM.searchbox) {
-        DOM.searchbox.style.transition = `transform ${ANIMATION.duration} ${ANIMATION.easing}`;
+        DOM.searchbox.style.transition = `opacity ${ANIMATION.duration} ease`;
     }
 
     if (DOM.divider) {
-        DOM.divider.style.transition = !DOM.searchbox
-            ? `all ${ANIMATION.duration} ${ANIMATION.easing}`
-            : `transform ${ANIMATION.duration} ${ANIMATION.easing}`;
+        DOM.divider.style.transition = `opacity ${ANIMATION.duration} ease`;
     }
 };
 
 // 初始化元素状态 - 优化后的版本
-const initElementStates = (isEntering, bgNextWidth, initialWidth, isFirstLoad = false) => {
+const initElementStates = (isEntering, initialWidth, isFirstLoad = false) => {
     // 确保元素可见性和位置重置
     const resetElement = (element, styles) => {
         if (element) {
@@ -275,14 +273,13 @@ const initElementStates = (isEntering, bgNextWidth, initialWidth, isFirstLoad = 
             resetElement(DOM.divider, `
                 ${RestorePhase.active ? "" : "display: block;"}
                 opacity: 0;
-                transform: translateX(${isEntering ? "20px" : "0"});
                 transition: none;
             `);
         }
     }
 
     if (isEntering && !isFirstLoad) {
-        setInitialPositions(bgNextWidth);
+        setInitialPositions();
     }
 
     // 强制重绘所有元素
@@ -294,24 +291,12 @@ const initElementStates = (isEntering, bgNextWidth, initialWidth, isFirstLoad = 
 };
 
 // 设置初始位置
-const setInitialPositions = (bgNextWidth) => {
-    if (DOM.searchbox) {
-        DOM.searchbox.style.cssText = `
-            transform: translateX(${bgNextWidth}px);
-            transition: none;
-        `;
-    }
+const setInitialPositions = () => {
     if (DOM.divider) {
         if (!DOM.searchbox) {
             DOM.divider.style.cssText = `
                 ${RestorePhase.active ? "" : "display: block;"}
                 opacity: 0;
-                transform: translateX(${bgNextWidth}px);
-                transition: none;
-            `;
-        } else {
-            DOM.divider.style.cssText = `
-                transform: translateX(${bgNextWidth}px);
                 transition: none;
             `;
         }
@@ -330,8 +315,8 @@ const animateElements = (isEntering, bgNextWidth, initialWidth) => {
         DOM.bgNext.style.pointerEvents = 'auto';
         DOM.bgNext.style.zIndex = '1';
 
-        if (DOM.searchbox) DOM.searchbox.style.willChange = 'transform';
-        if (DOM.divider) DOM.divider.style.willChange = 'transform, opacity';
+        if (DOM.searchbox) DOM.searchbox.style.willChange = 'opacity';
+        if (DOM.divider) DOM.divider.style.willChange = 'opacity';
 
         // 确保在动画开始前overflow为hidden
         if (!window._searchWrapperState || !window._searchWrapperState.state) {
@@ -353,25 +338,23 @@ const animateElements = (isEntering, bgNextWidth, initialWidth) => {
         if (!isEntering) {
             if (DOM.searchbox) {
                 elements.push([DOM.searchbox, {
-                    transform: `translateX(${bgNextWidth}px)` // 直接使用bgNextWidth
+                    opacity: "1"
                 }]);
             }
             if (DOM.divider) {
                 elements.push([DOM.divider, {
                     opacity: DOM.searchbox ? "1" : "0",
-                    transform: `translateX(${bgNextWidth}px)` // 直接使用bgNextWidth
                 }]);
             }
         } else {
             if (DOM.searchbox) {
                 elements.push([DOM.searchbox, {
-                    transform: "translateX(0)"
+                    opacity: "1"
                 }]);
             }
             if (DOM.divider) {
                 elements.push([DOM.divider, {
                     opacity: "1",
-                    transform: "translateX(0)"
                 }]);
             }
         }
@@ -554,7 +537,7 @@ const animateTransition = (isEntering, state, bgNextWidth, initialWidth) => {
         }
     }
 
-    initElementStates(isEntering, bgNextWidth, initialWidth);
+    initElementStates(isEntering, initialWidth);
 
     [DOM.bgNext, DOM.navSearchWrapper, DOM.searchbox, DOM.divider].forEach((el) => {
         if (el) void el.offsetWidth;
@@ -632,7 +615,7 @@ const showBgNext = async () => {
             StateManager.setState(state);
 
             // 设置初始状态
-            initElementStates(true, widths.bgNextWidth, widths.wrapperWidth, false);
+            initElementStates(true, widths.wrapperWidth, false);
             
             // 使用 RAF 链确保动画正确执行
             requestAnimationFrame(() => {
@@ -674,7 +657,7 @@ const showBgNext = async () => {
             
             // 使用RAF链执行初始动画
             requestAnimationFrame(() => {
-                initElementStates(true, widths.bgNextWidth, widths.wrapperWidth, true);
+                initElementStates(true, widths.wrapperWidth, true);
                 state.firstLoad = false;
                 StateManager.setState(state);
                 
