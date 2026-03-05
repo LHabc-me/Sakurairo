@@ -46,12 +46,30 @@ bash tools/release/release-checklist.sh tag --version X.Y.Z --execute
 
 ```bash
 bash tools/release/release-checklist.sh postcheck
+bash tools/release/post-release-verification.sh --version X.Y.Z
 ```
 
 `postcheck` 会执行：
 
 - `tools/ci/smoke.sh` 关键 smoke
 - 发版入口文档/README 的关键链接与命令检查
+
+`post-release-verification.sh` 会执行：
+
+- release/tag/README 关键链接可达校验
+- 关键 CI 最近一次运行状态校验（默认 `Theme CI (PR3)`）
+- 主题关键文件存在性与版本一致性校验（`style.css` / `functions.php` / `README.md` / `docs/release-playbook.md`）
+
+### 1.4 发布后 30 分钟检查项
+
+- `T+5m`：确认 Release 页面与 tag 页面已可访问，README 在 tag 版本下可访问。
+- `T+10m`：确认关键 CI 最新状态为 `completed + success`。
+- `T+15m`：确认主题关键文件仍完整，`style.css` 版本与目标版本一致。
+- `T+30m`：执行一次自动化复检并存档输出：
+
+```bash
+bash tools/release/post-release-verification.sh --version X.Y.Z
+```
 
 ## 2. Hotfix / Rollback
 
@@ -109,6 +127,32 @@ git rebase origin/main
 
 hotfix 合并后再按第 1 节流程发补丁版（`X.Y.Z+1`）。
 
+### 2.3 回滚演练步骤（默认 dry-run）
+
+1) 演练“回滚 PR 合并提交”模板：
+
+```bash
+bash tools/release/rollback-drill.sh revert-pr \
+  --incident <incident_id> \
+  --bad-sha <merge_commit_sha>
+```
+
+2) 演练“回滚 tag”模板：
+
+```bash
+bash tools/release/rollback-drill.sh revert-tag --tag vX.Y.Z
+```
+
+3) 演练“创建 hotfix 分支”模板：
+
+```bash
+bash tools/release/rollback-drill.sh hotfix-branch \
+  --issue <issue_slug> \
+  --version X.Y.Z
+```
+
+如需真实执行，将上述命令追加 `--execute`；演练默认仅打印将执行的命令。
+
 ## 3. 常用无副作用命令
 
 ```bash
@@ -122,4 +166,12 @@ bash tools/release/release-checklist.sh precheck \
   --allow-dirty \
   --allow-manual-ci \
   --allow-manual-tag-check
+
+# dry-run 演练回滚模板（不会执行任何变更）
+bash tools/release/rollback-drill.sh revert-pr \
+  --incident test-drill \
+  --bad-sha deadbeef
+
+# dry-run 发布后验证（不进行网络校验）
+bash tools/release/post-release-verification.sh --version X.Y.Z --dry-run
 ```
