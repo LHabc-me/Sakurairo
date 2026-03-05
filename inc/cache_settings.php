@@ -33,6 +33,18 @@ function sakurairo_cache_page() {
     // 剩余时间
     $bangumi_remaining = ($bangumi_expire_time > time()) ? $bangumi_expire_time - time() : 0;
     $steam_remaining = ($steam_expire_time > time()) ? $steam_expire_time - time() : 0;
+    $bangumi_link = wp_nonce_url(
+        admin_url('admin-post.php?action=iro_legacy_action&iro_action=bangumi'),
+        'iro_legacy_action_bangumi'
+    );
+    $mal_link = wp_nonce_url(
+        admin_url('admin-post.php?action=iro_legacy_action&iro_action=mal'),
+        'iro_legacy_action_mal'
+    );
+    $steam_link = wp_nonce_url(
+        admin_url('admin-post.php?action=iro_legacy_action&iro_action=steam_library'),
+        'iro_legacy_action_steam_library'
+    );
 
     ?>
     <?php if (isset($_GET['updated'])) : ?>
@@ -45,7 +57,7 @@ function sakurairo_cache_page() {
     <p><?php echo __('If the content is empty or incorrect, the server will try to automatically pull it','sakurairo') ?></p>
     <p><?php echo __('The link target will be automatically updated after the relevant settings are saved','sakurairo') ?></p>
     <p><?php echo __('The unit is seconds. And it will take effect permanently when it was set to 0.','sakurairo') ?></p>
-    <p><a href="./admin.php?iro_act=bangumi" target="_blank">Bangumi</a> | <a href="./admin.php?iro_act=mal" target="_blank">MAL</a> | <a href="./admin.php?iro_act=steam_library" target="_blank">SteamLibrary</a> </p>
+    <p><a href="<?php echo esc_url($bangumi_link); ?>" target="_blank">Bangumi</a> | <a href="<?php echo esc_url($mal_link); ?>" target="_blank">MAL</a> | <a href="<?php echo esc_url($steam_link); ?>" target="_blank">SteamLibrary</a> </p>
     <div class="wrap">
         <form method="post" action="<?php echo admin_url('admin-post.php'); ?>">
             <?php wp_nonce_field('sakurairo_cache_update', 'sakurairo_cache_update'); ?>

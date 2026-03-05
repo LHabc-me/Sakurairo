@@ -9,6 +9,104 @@ if (!function_exists('iro_legacy_gallery_action')) {
     }
 }
 
+if (!function_exists('iro_resolve_legacy_action_redirect_url')) {
+    function iro_resolve_legacy_action_redirect_url($legacy_action)
+    {
+        switch ($legacy_action) {
+            case 'bangumi':
+                return 'https://api.bgm.tv/v0/users/' . (iro_opt('bangumi_id') ?: '944883') . '/collections';
+
+            case 'mal':
+                $sort = 'status=7';
+                switch ((int) iro_opt('my_anime_list_sort')) {
+                    case 1: // Status and Last Updated
+                        $sort = 'order=16&order2=5&status=7';
+                        break;
+                    case 2: // Last Updated
+                        $sort = 'order=5&status=7';
+                        break;
+                    case 3: // Status
+                        $sort = 'order=16&status=7';
+                        break;
+                }
+                return 'https://myanimelist.net/animelist/' . (iro_opt('my_anime_list_username') ?: 'username') . '/load.json?' . $sort;
+
+            case 'steam_library':
+                return 'https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=' . iro_opt('steam_key') . '&steamid=' . iro_opt('steam_id') . '&include_appinfo=1&include_played_free_games=1&include_free_games=1';
+
+            case 'playlist':
+                return rest_url('sakura/v1/meting/aplayer') . '?_wpnonce=' . wp_create_nonce('wp_rest') . '&server=' . (iro_opt('aplayer_server') ?: 'netease') . '&type=playlist&id=' . (iro_opt('aplayer_playlistid') ?: '5380675133');
+
+            case 'del_exist_theme':
+                return wp_nonce_url(
+                    admin_url('admin-post.php?action=iro_delete_duplicate_theme'),
+                    'iro_delete_duplicate_theme'
+                );
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('iro_execute_legacy_action')) {
+    function iro_execute_legacy_action($legacy_action)
+    {
+        $legacy_action = sanitize_key((string) $legacy_action);
+
+        switch ($legacy_action) {
+            case 'gallery_init':
+                iro_legacy_gallery_action('init');
+                return true;
+
+            case 'gallery_webp':
+                iro_legacy_gallery_action('webp');
+                return true;
+
+            case 'bangumi':
+            case 'mal':
+            case 'steam_library':
+            case 'playlist':
+            case 'del_exist_theme':
+                $direct_url = iro_resolve_legacy_action_redirect_url($legacy_action);
+                if ('' === $direct_url) {
+                    return false;
+                }
+                wp_redirect($direct_url, 302);
+                exit;
+        }
+
+        return false;
+    }
+}
+
+if (!function_exists('iro_handle_legacy_action_admin_post')) {
+    function iro_handle_legacy_action_admin_post()
+    {
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__('Access denied.', 'sakurairo'));
+        }
+
+        $legacy_action = '';
+        if (isset($_REQUEST['iro_action'])) {
+            $legacy_action = sanitize_key(wp_unslash($_REQUEST['iro_action']));
+        }
+        if ('' === $legacy_action) {
+            wp_safe_redirect(admin_url());
+            exit;
+        }
+
+        check_admin_referer('iro_legacy_action_' . $legacy_action);
+
+        if (!iro_execute_legacy_action($legacy_action)) {
+            wp_safe_redirect(admin_url());
+            exit;
+        }
+
+        exit;
+    }
+    add_action('admin_post_iro_legacy_action', 'iro_handle_legacy_action_admin_post');
+}
+
 if (!function_exists('iro_action_operator')) {
     function iro_action_operator()
     {
@@ -21,63 +119,8 @@ if (!function_exists('iro_action_operator')) {
             return;
         }
 
-        $direct_info = sanitize_key($_GET['iro_act']);
-
-        switch ($direct_info) {
-            case 'bangumi':
-                $direct_url = 'https://api.bgm.tv/v0/users/' . (iro_opt('bangumi_id') ?: '944883') . '/collections';
-                header("Location: $direct_url", true, 302);
-                break;
-
-            case 'mal':
-                switch (iro_opt('my_anime_list_sort')) {
-                    case 1: // Status and Last Updated
-                        $sort = 'order=16&order2=5&status=7';
-                        break;
-                    case 2: // Last Updated
-                        $sort = 'order=5&status=7';
-                        break;
-                    case 3: // Status
-                        $sort = 'order=16&status=7';
-                        break;
-                }
-                $direct_url = 'https://myanimelist.net/animelist/' . (iro_opt('my_anime_list_username') ?: 'username') . '/load.json?' . $sort;
-                header("Location: $direct_url", true, 302);
-                break;
-
-            case 'steam_library':
-                $direct_url = 'https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=' . iro_opt('steam_key') . '&steamid=' . iro_opt('steam_id') . '&include_appinfo=1&include_played_free_games=1&include_free_games=1';
-                header("Location: $direct_url", true, 302);
-                break;
-
-            case 'playlist':
-                $direct_url = rest_url('sakura/v1/meting/aplayer') . '?_wpnonce=' . wp_create_nonce('wp_rest') . '&server=' . (iro_opt('aplayer_server') ?: 'netease') . '&type=playlist&id=' . (iro_opt('aplayer_playlistid') ?: '5380675133');
-                header("Location: $direct_url", true, 302);
-                break;
-
-            case 'gallery_init':
-                iro_legacy_gallery_action('init');
-                break;
-
-            case 'gallery_webp':
-                iro_legacy_gallery_action('webp');
-                break;
-
-            case 'del_exist_theme':
-                $current_theme_folder = basename(get_template_directory());
-                if ($current_theme_folder != 'Shinonomeiro') {
-                    if (!function_exists('WP_Filesystem')) {
-                        require_once ABSPATH . 'wp-admin/includes/file.php';
-                    }
-                    WP_Filesystem();
-                    global $wp_filesystem;
-                    $wp_filesystem->delete(get_theme_root() . '/Shinonomeiro', true);
-                    wp_redirect(admin_url(), 302); //重载theme_folder_check_on_admin_init流程
-                } else {
-                    wp_redirect(admin_url(), 302);
-                    return;
-                }
-        }
+        $direct_info = sanitize_key(wp_unslash($_GET['iro_act']));
+        iro_execute_legacy_action($direct_info);
     }
 }
 
