@@ -41,55 +41,7 @@ if (!function_exists('iro_get_options_store')) {
         return is_array($options) ? $options : array();
     }
 }
-
-if (!function_exists('iro_run_one_time_legacy_import')) {
-    function iro_run_one_time_legacy_import() {
-        $legacy = get_option(IRO_LEGACY_OPTIONS_KEY);
-        if (!is_array($legacy) || empty($legacy)) {
-            return false;
-        }
-
-        $current = get_option(IRO_OPTIONS_KEY);
-        $current = is_array($current) ? $current : array();
-        $merged = array_replace($legacy, $current);
-
-        update_option(IRO_OPTIONS_KEY, $merged);
-        $GLOBALS['iro_options'] = $merged;
-
-        if (defined('IRO_OPTIONS_THEME_MOD_KEY') && IRO_OPTIONS_THEME_MOD_KEY) {
-            set_theme_mod(IRO_OPTIONS_THEME_MOD_KEY, $merged);
-        }
-
-        update_option('iro_legacy_import_done', current_time('mysql'));
-        return true;
-    }
-}
-
-if (!function_exists('iro_maybe_run_legacy_import_via_flag')) {
-    function iro_maybe_run_legacy_import_via_flag() {
-        if (!defined('IRO_ENABLE_LEGACY_IMPORT') || true !== IRO_ENABLE_LEGACY_IMPORT) {
-            return;
-        }
-        iro_run_one_time_legacy_import();
-    }
-    add_action('after_setup_theme', 'iro_maybe_run_legacy_import_via_flag', 5);
-}
-
-if (!function_exists('iro_maybe_run_legacy_import_via_admin_action')) {
-    function iro_maybe_run_legacy_import_via_admin_action() {
-        if (!is_admin() || !current_user_can('manage_options')) {
-            return;
-        }
-        if (!isset($_GET['iro_migrate_legacy_options']) || '1' !== $_GET['iro_migrate_legacy_options']) {
-            return;
-        }
-        check_admin_referer('iro_migrate_legacy_options');
-        $ok = iro_run_one_time_legacy_import();
-        wp_safe_redirect(admin_url('customize.php?iro_legacy_import=' . ($ok ? 'done' : 'skipped')));
-        exit;
-    }
-    add_action('admin_init', 'iro_maybe_run_legacy_import_via_admin_action');
-}
+require_once __DIR__ . '/inc/modules/legacy-options-import.php';
 
 if (!function_exists('iro_opt')) {
     $GLOBALS['iro_options'] = iro_get_options_store();
@@ -4137,79 +4089,5 @@ function iterator_to_string(Iterator $iterator): string
 }
 
 /*GET参数操作*/
-function iro_action_operator()
-{
-    if (!isset($_GET['iro_act']) || empty($_GET['iro_act'])) {
-        return;
-    }
-
-    if (!is_admin() || !current_user_can('manage_options')) {
-        echo __("Access denied.", "sakurairo");
-        return;
-    }
-
-    $direct_info = sanitize_key($_GET['iro_act']);
-
-    switch($direct_info){
-        case 'bangumi' :
-            $direct_url = 'https://api.bgm.tv/v0/users/' . (iro_opt('bangumi_id') ?: '944883') . '/collections';
-            header("Location: $direct_url", true, 302);
-            break;
-
-        case 'mal' :
-            switch (iro_opt('my_anime_list_sort')) {
-                case 1: // Status and Last Updated
-                    $sort = 'order=16&order2=5&status=7';
-                    break;
-                case 2: // Last Updated
-                    $sort = 'order=5&status=7';
-                    break;
-                case 3: // Status
-                    $sort = 'order=16&status=7';
-                    break;
-            }
-            $direct_url = 'https://myanimelist.net/animelist/' . (iro_opt('my_anime_list_username') ?: 'username') . '/load.json?' . $sort;
-            header("Location: $direct_url", true, 302);
-            break;
-        
-        case 'steam_library' :
-            $direct_url = 'https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=' . iro_opt('steam_key') .'&steamid=' . iro_opt('steam_id') .'&include_appinfo=1&include_played_free_games=1&include_free_games=1';
-            header("Location: $direct_url", true, 302);
-            break;
-
-        case 'playlist' :
-            $direct_url = rest_url('sakura/v1/meting/aplayer') . '?_wpnonce=' . wp_create_nonce('wp_rest') . '&server=' . (iro_opt('aplayer_server') ?: 'netease') . '&type=playlist&id=' . (iro_opt('aplayer_playlistid') ?: '5380675133');
-            header("Location: $direct_url", true, 302);
-            break;
-
-        case 'gallery_init':
-            include_once('inc/classes/gallery.php');
-            $gallery = new Sakura\API\gallery();
-            echo $gallery->init();
-            echo 'Done!';
-            break;
-
-        case 'gallery_webp':
-            include_once('inc/classes/gallery.php');
-            $gallery = new Sakura\API\gallery();
-            echo $gallery->webp();
-            echo 'Done!';
-            break;
-        case 'del_exist_theme':
-            $current_theme_folder = basename(get_template_directory());
-            if ($current_theme_folder != 'Shinonomeiro') {
-                if (!function_exists('WP_Filesystem')) {
-                    require_once ABSPATH . 'wp-admin/includes/file.php';
-                }
-                WP_Filesystem();
-                global $wp_filesystem;
-                $wp_filesystem->delete(get_theme_root() . '/Shinonomeiro', true);
-                wp_redirect(admin_url(), 302); //重载theme_folder_check_on_admin_init流程
-            } else {
-                wp_redirect(admin_url(), 302);
-                return;
-            }
-    }
-}
-iro_action_operator();
+require_once __DIR__ . '/inc/modules/legacy-actions.php';
 
