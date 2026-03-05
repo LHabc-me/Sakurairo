@@ -797,6 +797,25 @@ nav .menu > li .sub-menu a {
   transition: opacity 0.3s ease;
 }
 
+/* Keep background switch slot width stable across page/state transitions. */
+.site-header .nav-search-wrapper > .bg-switch {
+  display: inline-flex;
+  width: 33px;
+  min-width: 33px;
+  flex: 0 0 33px;
+  height: 33px;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.site-header .nav-search-wrapper > .bg-switch[aria-hidden="true"] {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(20px);
+  pointer-events: none;
+}
+
 .searchbox.js-toggle-search i,.bg-switch i{
   color: var(--theme-skin, #505050);
   cursor: pointer;
