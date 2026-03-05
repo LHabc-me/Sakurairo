@@ -18,7 +18,6 @@ if (!function_exists('iro_run_one_time_legacy_import')) {
             set_theme_mod(IRO_OPTIONS_THEME_MOD_KEY, $merged);
         }
 
-        update_option('iro_legacy_import_done', current_time('mysql'));
         return true;
     }
 }

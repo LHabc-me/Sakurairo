@@ -930,8 +930,16 @@ $vision_resource_basepath = get_option($prefix)['vision_resource_basepath'] ?? g
 
       array(
         'type'    => 'content',
-        'content' => __('Click <a href="./admin.php?iro_act=playlist" target="_blank">here</a> to use the built-in meting-API to get the playlist info file template.Its content will be refreshed after the relevant settings are saved.',
-        'sakurairo_csf'),
+        'content' => sprintf(
+          __('Click <a href="%s" target="_blank">here</a> to use the built-in meting-API to get the playlist info file template.Its content will be refreshed after the relevant settings are saved.',
+          'sakurairo_csf'),
+          esc_url(
+            wp_nonce_url(
+              admin_url('admin-post.php?action=iro_legacy_action&iro_action=playlist'),
+              'iro_legacy_action_playlist'
+            )
+          )
+        ),
     ),
 
       array(
@@ -1725,11 +1733,25 @@ $vision_resource_basepath = get_option($prefix)['vision_resource_basepath'] ?? g
       array(
         'type'    => 'content',
         'title' => __('Built-in Gallery controllers','sakurairo_csf'),
-        'content' => __('<a href="./admin.php?iro_act=gallery_init" target="_blank">Initlize/Rebuild index</a> | <a href="./admin.php?iro_act=gallery_webp" target="_blank">Refomart images to webp</a>'
-        . '<br>After initlized,put images in `wp-content/uploads/iro_gallery/img` and then click to rebuild the index.'
-        . '<br>You can use folders to categorize content, but please rebuild the index after the location of the relevant content changes.'
-        . '<br>Please make sure that the working directory is readable and writable when using relevant functions.',
-        'sakurairo_csf'),
+        'content' => sprintf(
+          __('<a href="%1$s" target="_blank">Initlize/Rebuild index</a> | <a href="%2$s" target="_blank">Refomart images to webp</a>'
+          . '<br>After initlized,put images in `wp-content/uploads/iro_gallery/img` and then click to rebuild the index.'
+          . '<br>You can use folders to categorize content, but please rebuild the index after the location of the relevant content changes.'
+          . '<br>Please make sure that the working directory is readable and writable when using relevant functions.',
+          'sakurairo_csf'),
+          esc_url(
+            wp_nonce_url(
+              admin_url('admin-post.php?action=iro_legacy_action&iro_action=gallery_init'),
+              'iro_legacy_action_gallery_init'
+            )
+          ),
+          esc_url(
+            wp_nonce_url(
+              admin_url('admin-post.php?action=iro_legacy_action&iro_action=gallery_webp'),
+              'iro_legacy_action_gallery_webp'
+            )
+          )
+        ),
         'dependency' => array( 'random_graphs_options', '==', 'gallery', '', 'true' ),
       ),
 
