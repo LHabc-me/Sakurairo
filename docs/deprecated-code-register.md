@@ -8,9 +8,9 @@
 | ID | 废弃项 | 位置 | 当前状态 | 兼容策略 | 标记废弃版本 | 计划移除版本 |
 | --- | --- | --- | --- | --- | --- | --- |
 | DEP-001 | 旧配置键 `IRO_LEGACY_OPTIONS_KEY` 单次导入链路（含 `iro_migrate_legacy_options` 管理入口） | `inc/modules/legacy-options-import.php`（由 `functions.php` 加载） | Phase2 已完成子项：复核并移除无引用 `iro_legacy_import_done` 写入（20.0.10-dev / 2026-03-05）；迁移链路继续保留兼容，默认不主动触发 | 保留一次性迁移能力，新增文档提醒用户迁移后清理旧键 | v1.2.78 | v1.4.0 |
-| DEP-002 | `iro_act` GET 路由式后台动作（如 `del_exist_theme`） | `inc/modules/legacy-actions.php::iro_action_operator` | Phase2 已完成子项：`bangumi/mal/steam_library/playlist/gallery_init/gallery_webp` 已新增 `admin-post + nonce` 入口，后台入口链接已切换；`del_exist_theme` GET 删除逻辑改为兼容重定向到 `admin-post` 实现 | 保留 `iro_act` 兼容回退入口，待观察后整体下线 | v1.2.78 | v1.3.0 |
-| DEP-003 | `GBsubstr`（`mbstring` 缺失时的摘要降级路径） | `functions.php::GBsubstr` | 兼容保留 | 下个小版本起在后台提示 `mbstring` 依赖，先告警再移除降级 | v1.2.78 | v1.5.0 |
-| DEP-004 | 友情链接提交中“无法 `wp_insert_link` 时退化为发待审文章”分支 | `functions.php::sakurairo_link_submission_handler` | 兼容保留 | 统计线上命中率；若接近 0 则在大版本移除降级分支 | v1.2.78 | v1.4.0 |
+| DEP-002 | `iro_act` GET 路由式后台动作（如 `del_exist_theme`） | `inc/modules/legacy-actions.php::iro_action_operator` | Phase2 已完成主入口切换；Phase3 已完成子项：兼容入口补充 `@deprecated` 注释与运行期一次性告警（20.0.10-dev / 2026-03-05） | 保留 `iro_act` 兼容回退入口，继续采样命中后整体下线 | v1.2.78 | v1.3.0 |
+| DEP-003 | `GBsubstr`（`mbstring` 缺失时的摘要降级路径） | `functions.php::GBsubstr` | Phase3 已完成子项：`GBsubstr` 标注 `@deprecated`，且在缺失 `mbstring` 时新增一次性告警（20.0.10-dev / 2026-03-05） | 保留降级分支保障老环境可用，待最低环境要求提升后移除 | v1.2.78 | v1.5.0 |
+| DEP-004 | 友情链接提交中“无法 `wp_insert_link` 时退化为发待审文章”分支 | `functions.php::sakurairo_link_submission_handler` | Phase3 已完成子项：fallback 分支增加保留注释与运行期一次性告警（20.0.10-dev / 2026-03-05） | 保留 fallback 兼容极端环境，继续采样命中率 | v1.2.78 | v1.4.0 |
 
 ## Phase1 完成记录（2026-03-05）
 
@@ -27,11 +27,27 @@
 | DEP-002 子项 | 新增 `action=iro_legacy_action`（`admin-post + nonce`）统一入口，`cache_settings` 与 `theme-options` 链接切换到新入口 | 20.0.10-dev | 2026-03-05 |
 | DEP-002 子项 | `legacy-actions` 中 `iro_act=del_exist_theme` 删除实现改为兼容重定向到 `admin_post_iro_delete_duplicate_theme` | 20.0.10-dev | 2026-03-05 |
 
-## Phase2 遗留候选
+## Phase3 完成记录（2026-03-05）
 
-1. DEP-002：保留 `iro_act` 兼容回退分发（`iro_action_operator`），待统计命中后整体下线。
-2. DEP-003：`GBsubstr` 降级路径仍保留，需先补告警与环境要求提示。
-3. DEP-004：友情链接提交降级分支仍保留，需先采样确认线上命中率。
+| 项目 | 完成内容 | 版本 | 日期 |
+| --- | --- | --- | --- |
+| DEP-002 子项 | 为 `iro_action_operator` 兼容入口补充 `@deprecated` 注释，并在 `iro_act` 命中时记录一次性运行期告警 | 20.0.10-dev | 2026-03-05 |
+| DEP-003 子项 | 为 `GBsubstr` 标注 `@deprecated`，并在 `excerpt_length` 进入 `mbstring` 缺失降级路径时记录一次性运行期告警 | 20.0.10-dev | 2026-03-05 |
+| DEP-004 子项 | 为友情链接提交 fallback 分支补充保留注释，并在 `wp_insert_link` 不可用时记录一次性运行期告警 | 20.0.10-dev | 2026-03-05 |
+
+## Phase3 后续保留项（理由与触发条件）
+
+1. DEP-002（`iro_act` 兼容入口）
+- 保留理由：需兼容历史外链/脚本直接访问 `wp-admin/?iro_act=*` 的存量调用。
+- 下一触发条件：连续两个小版本采样无命中，且 release note 已提前公告移除窗口后，可在 `v1.3.0` 删除。
+
+2. DEP-003（`GBsubstr` 降级路径）
+- 保留理由：部分低配环境未启用 `mbstring`，立即移除会导致摘要截断能力退化。
+- 下一触发条件：主题最低环境要求正式提升为“必须启用 `mbstring`”并完成公告后，可在 `v1.5.0` 删除。
+
+3. DEP-004（友情链接提交 fallback）
+- 保留理由：用于 `wp_insert_link` 不可用场景的兜底提交流程，避免提交请求直接失败。
+- 下一触发条件：一个稳定发布周期内 fallback 命中接近 0 且已确认无兼容反馈后，可在 `v1.4.0` 删除。
 
 ## 本次拆分加载顺序与回滚
 
@@ -50,7 +66,7 @@
 - 新增 CI 基线，保证后续移除动作有最小化回归检查。
 
 2. v1.2.79 - v1.2.80
-- 为 DEP-002/DEP-003 增加可观测告警（后台 notice 或 error log），采集命中情况。
+- 持续采样 DEP-002/DEP-003/DEP-004 的运行期告警命中数据，作为移除前置依据。
 - 在 release note 明确“将在后续版本移除”的具体项。
 
 3. v1.3.0
