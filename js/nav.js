@@ -170,6 +170,41 @@ const ANIMATION = {
     durationMs: 600,
 };
 
+const NavLayoutWriteGuard = {
+    lockedUntil: 0,
+
+    now() {
+        if (window.performance && typeof window.performance.now === "function") {
+            return window.performance.now();
+        }
+        return Date.now();
+    },
+
+    lock(ms) {
+        const until = this.now() + Math.max(0, Number(ms) || 0);
+        if (until > this.lockedUntil) {
+            this.lockedUntil = until;
+        }
+    },
+
+    isLocked() {
+        return this.now() < this.lockedUntil;
+    },
+
+    remaining() {
+        return Math.max(0, this.lockedUntil - this.now());
+    },
+
+    isAboutView() {
+        const pathname = (location.pathname || "").toLowerCase();
+        const bodyClass = (document.body && document.body.className || "").toLowerCase();
+        if (/\bpage-about\b|\bpage-template-about\b|\bpage-template-page-about\b/.test(bodyClass)) {
+            return true;
+        }
+        return /\/about(?:\/|$|\.php)/.test(pathname);
+    },
+};
+
 // 改进的状态管理器
 const StateManager = {
     init() {
@@ -229,8 +264,8 @@ const StateManager = {
 
 // 设置动画过渡
 const setTransitions = () => {
-    DOM.bgNext.style.transition = `all ${ANIMATION.duration} ${ANIMATION.easing}`;
-    DOM.navSearchWrapper.style.transition = `all ${ANIMATION.duration} ${ANIMATION.easing}`;
+    DOM.bgNext.style.transition = `opacity ${ANIMATION.duration} ${ANIMATION.easing}, transform ${ANIMATION.duration} ${ANIMATION.easing}`;
+    DOM.navSearchWrapper.style.transition = `opacity ${ANIMATION.duration} ${ANIMATION.easing}`;
 
     if (DOM.searchbox) {
         DOM.searchbox.style.transition = `opacity ${ANIMATION.duration} ease`;
@@ -726,6 +761,10 @@ const initArticleTitleBehavior = () => {
 
             show() {
                 if (this.state || !this.entryTitle) return;
+                if (NavLayoutWriteGuard.isLocked()) {
+                    this.hide();
+                    return;
+                }
                 const navSearchWrapper = DOM.navSearchWrapper;
                 navSearchWrapper.dataset.scrollswap = "true";
 
@@ -834,6 +873,11 @@ const initArticleTitleBehavior = () => {
                 // 使用 RAF 优化滚动性能
                 if (!this.scrollRAF) {
                     this.scrollRAF = requestAnimationFrame(() => {
+                        if (NavLayoutWriteGuard.isLocked()) {
+                            this.hide();
+                            this.scrollRAF = null;
+                            return;
+                        }
                         if (this.entryTitle) {
                             const rect = this.entryTitle.getBoundingClientRect();
                             if (rect.top < 0) {
@@ -851,7 +895,7 @@ const initArticleTitleBehavior = () => {
         searchWrapperState.init();
 
         const scrollHandler = () => searchWrapperState.handleScroll();
-        const resizeHandler = () => searchWrapperState.show();
+        const resizeHandler = () => searchWrapperState.handleScroll();
         searchWrapperState.scrollListener = scrollHandler;
         searchWrapperState.resizeListener = resizeHandler;
 
@@ -870,16 +914,20 @@ const initArticleTitleBehavior = () => {
     }
 
     // 增加延迟检测
+    const delayedCheckMs = Math.max(300, Math.ceil(NavLayoutWriteGuard.remaining()) + 50);
     registerTimeout(() => {
         if(window._searchWrapperState){
             window._searchWrapperState.handleScroll();
         }
-    }, 300); // 等待浏览器滚动恢复
+    }, delayedCheckMs); // 等待浏览器滚动恢复
 };
 
 // 初始化所有动画
 const initAnimations = () => {
     StateManager.init();
+    if (NavLayoutWriteGuard.isAboutView()) {
+        NavLayoutWriteGuard.lock(ANIMATION.durationMs);
+    }
     showBgNext();
     initArticleTitleBehavior();
 };
@@ -888,6 +936,7 @@ const initAnimations = () => {
 const addEventListeners = () => {
     registerEventListener(document, "pjax:send", () => {
         WidthCalculator.clearCache();
+        NavLayoutWriteGuard.lock(ANIMATION.durationMs);
         // 清理之前的动画状态
         if (window._searchWrapperState) {
             if (window._searchWrapperState.hideTimeout) {
@@ -906,6 +955,9 @@ const addEventListeners = () => {
     });
 
     registerEventListener(document, "pjax:complete", () => {
+        if (NavLayoutWriteGuard.isAboutView()) {
+            NavLayoutWriteGuard.lock(ANIMATION.durationMs + 240);
+        }
         RestorePhase.begin();
         registerRaf(() => {
             // 确保所有状态重置
