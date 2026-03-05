@@ -1743,6 +1743,43 @@ function count_post_words($post_ID)
 
 add_action('save_post', 'count_post_words');
 
+if (!function_exists('iro_log_deprecated_usage')) {
+    /**
+     * Emit a deprecation signal once per request without changing runtime behavior.
+     *
+     * @param string $dep_id    Deprecated register ID.
+     * @param string $message   Human-readable warning message.
+     * @param string $context   Optional usage context.
+     * @return void
+     */
+    function iro_log_deprecated_usage($dep_id, $message, $context = '')
+    {
+        static $emitted = array();
+        $key = (string) $dep_id . '|' . (string) $context;
+        if (isset($emitted[$key])) {
+            return;
+        }
+        $emitted[$key] = true;
+
+        /**
+         * Hook for runtime observability around deprecated compatibility branches.
+         *
+         * @param string $dep_id  Deprecated register ID.
+         * @param string $message Warning message.
+         * @param string $context Usage context.
+         */
+        do_action('iro_deprecated_usage', $dep_id, $message, $context);
+
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            $line = sprintf('[Shinonomeiro Deprecated][%s] %s', $dep_id, $message);
+            if ('' !== $context) {
+                $line .= ' Context: ' . $context;
+            }
+            error_log($line);
+        }
+    }
+}
+
 /**
  * Filter the except length to 20 words. 限制摘要长度
  *
@@ -1750,6 +1787,9 @@ add_action('save_post', 'count_post_words');
  * @return int (Maybe) modified excerpt length.
  */
 
+/**
+ * @deprecated 1.2.78 Retained as DEP-003 fallback when mbstring is unavailable.
+ */
 function GBsubstr($string, $start, $length)
 {
     if (strlen($string) > $length) {
@@ -1784,6 +1824,11 @@ IROChatGPT\apply_chatgpt_hook();
 function excerpt_length($exp)
 {
     if (!function_exists('mb_substr')) {
+        iro_log_deprecated_usage(
+            'DEP-003',
+            'mbstring extension is missing; using GBsubstr compatibility fallback.',
+            'excerpt_length'
+        );
         $exp = GBsubstr($exp, 0, 110);
     } else {
         /*
@@ -3552,6 +3597,12 @@ function sakurairo_link_submission_handler() {
             ));
             return;
         } else {
+            // DEP-004 compatibility fallback: keep pending-post path until usage is proven near-zero.
+            iro_log_deprecated_usage(
+                'DEP-004',
+                'wp_insert_link is unavailable; using pending-post compatibility fallback.',
+                'link_submission'
+            );
             // 备用方法：创建一个含有链接详情的文章
             $post_content = sprintf(__('Site Name: %s', 'sakurairo'), $site_name) . "\n";
             $post_content .= sprintf(__('Site URL: %s', 'sakurairo'), $site_url) . "\n";

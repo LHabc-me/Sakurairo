@@ -108,6 +108,12 @@ if (!function_exists('iro_handle_legacy_action_admin_post')) {
 }
 
 if (!function_exists('iro_action_operator')) {
+    /**
+     * Deprecated compatibility entry for legacy `iro_act` GET actions (DEP-002).
+     *
+     * @deprecated 1.2.78 Use `admin-post.php?action=iro_legacy_action` instead.
+     * @return void
+     */
     function iro_action_operator()
     {
         if (!isset($_GET['iro_act']) || empty($_GET['iro_act'])) {
@@ -120,6 +126,13 @@ if (!function_exists('iro_action_operator')) {
         }
 
         $direct_info = sanitize_key(wp_unslash($_GET['iro_act']));
+        if (function_exists('iro_log_deprecated_usage')) {
+            iro_log_deprecated_usage(
+                'DEP-002',
+                'Legacy GET route `iro_act` is deprecated; use admin-post `iro_legacy_action`.',
+                $direct_info
+            );
+        }
         iro_execute_legacy_action($direct_info);
     }
 }
