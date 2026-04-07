@@ -55,12 +55,33 @@ class QQ
 
     public static function get_qq_avatar($encrypted) {
         global $sakura_privkey;
-        if (isset($encrypted)) {
-            $iv = str_repeat($sakura_privkey, 2);
-            $encrypted = base64_decode(urldecode($encrypted));
-            $qq_number = openssl_decrypt($encrypted, 'aes-128-cbc', $sakura_privkey, 0, $iv);
-            preg_match('/^\d{3,}$/', $qq_number, $matches);
-            return 'https://q2.qlogo.cn/headimg_dl?dst_uin=' . $matches[0] . '&spec=100';
+
+        $encrypted = is_string($encrypted) ? trim($encrypted) : '';
+        if ($encrypted === '' || !is_string($sakura_privkey) || strlen($sakura_privkey) < 8) {
+            return null;
         }
+
+        $payload = base64_decode(urldecode($encrypted), true);
+        if ($payload === false) {
+            return null;
+        }
+
+        $iv_length = openssl_cipher_iv_length('aes-128-cbc');
+        if (!is_int($iv_length) || $iv_length <= 0 || strlen($payload) <= $iv_length) {
+            return null;
+        }
+
+        $iv = substr($payload, 0, $iv_length);
+        $ciphertext = substr($payload, $iv_length);
+        if ($ciphertext === '') {
+            return null;
+        }
+
+        $qq_number = openssl_decrypt($ciphertext, 'aes-128-cbc', $sakura_privkey, 0, $iv);
+        if (!is_string($qq_number) || preg_match('/^\d{3,}$/', $qq_number) !== 1) {
+            return null;
+        }
+
+        return 'https://q2.qlogo.cn/headimg_dl?dst_uin=' . $qq_number . '&spec=100';
     }
 }

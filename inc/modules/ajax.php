@@ -89,7 +89,6 @@ function sakurairo_ajax_guard($args = array())
 }
 
 /*私密评论*/
-add_action('wp_ajax_nopriv_siren_private', 'siren_private');
 add_action('wp_ajax_siren_private', 'siren_private');
 function siren_private()
 {
@@ -97,7 +96,7 @@ function siren_private()
         'action' => 'siren_private',
         'nonce_action' => 'wp_rest',
         'nonce_field' => '_wpnonce',
-        'capability_callback' => '__return_true',
+        'capability' => 'manage_options',
         'rate_limit' => 30,
         'rate_window' => 300,
     ))) {

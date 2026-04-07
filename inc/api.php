@@ -27,6 +27,31 @@ use Sakura\API\Cache;
 use Sakura\API\Captcha;
 use Sakura\API\BilibiliFavListCron;
 
+function sakurairo_rest_json_response(array $payload, $status)
+{
+    $response = new WP_REST_Response($payload, (int) $status);
+    $response->set_headers(array('Content-Type' => 'application/json'));
+    return $response;
+}
+
+function sakurairo_rest_upload_permission(WP_REST_Request $request)
+{
+    if ('POST' !== $request->get_method()) {
+        return false;
+    }
+
+    if (iro_opt('img_upload_api', 'off') === 'off') {
+        return false;
+    }
+
+    return check_ajax_referer('wp_rest', '_wpnonce', false) !== false;
+}
+
+function sakurairo_rest_has_qq_permission(WP_REST_Request $request)
+{
+    return $request->get_method() === 'GET';
+}
+
 /**
  * Router
  */
@@ -34,7 +59,7 @@ add_action('rest_api_init', function () {
     register_rest_route('sakura/v1', '/image/upload', array(
         'methods' => 'POST',
         'callback' => 'upload_image',
-        'permission_callback' => '__return_true'
+        'permission_callback' => 'sakurairo_rest_upload_permission'
     )
     );
     register_rest_route('sakura/v1', '/cache_search/json', array(
@@ -57,13 +82,13 @@ add_action('rest_api_init', function () {
     register_rest_route('sakura/v1', '/qqinfo/json', array(
         'methods' => 'GET',
         'callback' => 'get_qq_info',
-        'permission_callback' => '__return_true'
+        'permission_callback' => 'sakurairo_rest_has_qq_permission'
     )
     );
     register_rest_route('sakura/v1', '/qqinfo/avatar', array(
         'methods' => 'GET',
         'callback' => 'get_qq_avatar',
-        'permission_callback' => '__return_true'
+        'permission_callback' => 'sakurairo_rest_has_qq_permission'
     )
     );
     register_rest_route('sakura/v1', '/bangumi/bilibili', array(
@@ -191,49 +216,37 @@ function chatgpt_annotate_terms(WP_REST_Request $request)
  */
 function upload_image(WP_REST_Request $request)
 {
-    // see: https://developer.wordpress.org/rest-api/requests/
-
-    // handle file params $file === $_FILES
-    /**
-     * curl \
-     *   -F "filecomment=This is an img file" \
-     *   -F "cmt_img_file=@screenshot.jpg" \
-     *   https://dev.2heng.xin/wp-json/sakura/v1/image/upload
-     */
-    // $file = $request->get_file_params();
-    if (!check_ajax_referer('wp_rest', '_wpnonce', false)) {
-        $output = array(
-            'status' => 403,
-            'success' => false,
-            'message' => 'Unauthorized client.'
-        );
-        $result = new WP_REST_Response($output, 403);
-        $result->set_headers(array('Content-Type' => 'application/json'));
-        return $result;
-    }
+    $files = $request->get_file_params();
     $images = new \Sakura\API\Images();
+    $validation = $images->validate_uploaded_image($files, 'cmt_img_file');
+    if (!$validation['success']) {
+        return sakurairo_rest_json_response($validation, $validation['status']);
+    }
+
+    $image_file = $validation['file'];
+    $api_request = null;
     switch (iro_opt("img_upload_api")) {
         case 'imgur':
-            $image = file_get_contents($_FILES["cmt_img_file"]["tmp_name"]);
-            $API_Request = $images->Imgur_API($image);
+            $api_request = $images->Imgur_API($image_file);
             break;
         case 'smms':
-            $image = $_FILES;
-            $API_Request = $images->SMMS_API($image);
+            $api_request = $images->SMMS_API($image_file);
             break;
         case 'chevereto':
-            $image = file_get_contents($_FILES["cmt_img_file"]["tmp_name"]);
-            $API_Request = $images->Chevereto_API($image);
+            $api_request = $images->Chevereto_API($image_file);
             break;
         case 'lsky':
-            $image = $_FILES;
-            $API_Request = $images->LSKY_API($image);
+            $api_request = $images->LSKY_API($image_file);
             break;
+        default:
+            return sakurairo_rest_json_response(array(
+                'status' => 503,
+                'success' => false,
+                'message' => 'Image upload service is unavailable.'
+            ), 503);
     }
 
-    $result = new WP_REST_Response($API_Request, $API_Request['status']);
-    $result->set_headers(array('Content-Type' => 'application/json'));
-    return $result;
+    return sakurairo_rest_json_response($api_request, $api_request['status']);
 }
 
 /*
@@ -289,30 +302,46 @@ function get_qq_info(WP_REST_Request $request)
             'success' => false,
             'message' => 'Unauthorized client.'
         );
-    } elseif ($_GET['qq']) {
-        $qq = $_GET['qq'];
-        $output = QQ::get_qq_info($qq);
     } else {
-        $output = array(
-            'status' => 400,
-            'success' => false,
-            'message' => 'Bad Request'
-        );
+        $qq = trim((string) $request->get_param('qq'));
+        if ($qq === '') {
+            $output = array(
+                'status' => 400,
+                'success' => false,
+                'message' => 'Bad Request'
+            );
+        } else {
+            $output = QQ::get_qq_info($qq);
+        }
     }
 
-    $result = new WP_REST_Response($output, $output['status']);
-    $result->set_headers(array('Content-Type' => 'application/json'));
-    return $result;
+    return sakurairo_rest_json_response($output, $output['status']);
 }
 
 /**
  * QQ头像链接解密
  * https://sakura.2heng.xin/wp-json/sakura/v1/qqinfo/avatar
  */
-function get_qq_avatar()
+function get_qq_avatar(WP_REST_Request $request)
 {
-    $encrypted = $_GET["qq"];
+    $encrypted = trim((string) $request->get_param('qq'));
+    if ($encrypted === '') {
+        return sakurairo_rest_json_response(array(
+            'status' => 400,
+            'success' => false,
+            'message' => 'Missing qq parameter.'
+        ), 400);
+    }
+
     $imgurl = QQ::get_qq_avatar($encrypted);
+    if (!$imgurl) {
+        return sakurairo_rest_json_response(array(
+            'status' => 400,
+            'success' => false,
+            'message' => 'Invalid qq payload.'
+        ), 400);
+    }
+
     if (iro_opt('qq_avatar_link') == 'type_2') {
         $remote_response = sakurairo_http_get(
             $imgurl,
@@ -454,6 +483,7 @@ function favlist_bilibili(WP_REST_Request $request)
         
         // 从缓存获取数据
         $folder_data = BilibiliFavListCron::get_cache($cache_key);
+        $from_cache = ($folder_data !== false);
         
         // 如果缓存不存在，则从API获取
         if ($folder_data === false) {
@@ -476,7 +506,7 @@ function favlist_bilibili(WP_REST_Request $request)
             'message' => 'success',
             'data' => $folder_data,
             'cache_info' => array(
-                'from_cache' => ($folder_data !== false),
+                'from_cache' => $from_cache,
                 'expires_in' => BilibiliFavListCron::get_cache_expiry($cache_key)
             )
         );
@@ -505,6 +535,7 @@ function favlist_bilibili_folders(WP_REST_Request $request)
     try {
         // 先尝试从缓存获取数据
         $folders_data = BilibiliFavListCron::get_cache('bilibili_favlist_folders');
+        $from_cache = ($folders_data !== false);
         
         // 如果没有缓存或缓存过期，则从API获取并更新缓存
         if ($folders_data === false) {
@@ -531,7 +562,7 @@ function favlist_bilibili_folders(WP_REST_Request $request)
             'message' => 'success',
             'data' => $folders_data,
             'cache_info' => array(
-                'from_cache' => ($folders_data !== false),
+                'from_cache' => $from_cache,
                 'expires_in' => BilibiliFavListCron::get_cache_expiry('bilibili_favlist_folders')
             )
         );

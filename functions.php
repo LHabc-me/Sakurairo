@@ -77,12 +77,11 @@ if (iro_opt('php_notice_filter') != 'inner') {
 
     if (iro_opt('php_notice_filter','normal') == 'normal') { //仅显示严重错误
         error_reporting(E_ALL & ~E_DEPRECATED);
-        ini_set('display_errors', '1');
     }
     if (iro_opt('php_notice_filter') == 'all') { //屏蔽大部分错误
         error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
-        ini_set('display_errors', '0');
     }
+    ini_set('display_errors', '0');
 }
 
 //Update-Checker
@@ -659,6 +658,18 @@ add_action('init', function() {
     if (class_exists('Sakura\API\BilibiliFavListCron')) {
         Sakura\API\BilibiliFavListCron::init();
     }
+});
+add_action('after_switch_theme', function() {
+    if (class_exists('Sakura\API\BilibiliFavListCron')) {
+        Sakura\API\BilibiliFavListCron::schedule_updates();
+    }
+    sakurairo_register_link_check_cron();
+});
+add_action('switch_theme', function() {
+    if (class_exists('Sakura\API\BilibiliFavListCron')) {
+        Sakura\API\BilibiliFavListCron::clear_scheduled_updates();
+    }
+    sakurairo_deactivate_link_check_cron();
 });
 
 // 加载缓存设置页
@@ -3884,7 +3895,6 @@ function sakurairo_deactivate_link_check_cron() {
         wp_unschedule_event($timestamp, 'sakurairo_weekly_link_check');
     }
 }
-register_deactivation_hook(__FILE__, 'sakurairo_deactivate_link_check_cron');
 
 require_once(get_template_directory() . '/inc/link-status.php'); // 友情链接状态检测
 
