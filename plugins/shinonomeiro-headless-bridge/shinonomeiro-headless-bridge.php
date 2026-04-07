@@ -8,7 +8,7 @@
  * Primary Branch: release
  * Release Asset: true
  * Description: 为 Shinonomeiro 的 Headless 前端提供只读 REST 配置与文章扩展数据。
- * Version: 1.2.92
+ * Version: 1.2.93
  * Author: LHabc
  * License: GPL-2.0-or-later
  * Text Domain: shinonomeiro-headless-bridge
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 
 require_once __DIR__ . '/update-checker/update-checker.php';
 
-define('SHINONOMEIRO_HEADLESS_BRIDGE_VERSION', '1.2.92');
+define('SHINONOMEIRO_HEADLESS_BRIDGE_VERSION', '1.2.93');
 define('SHINONOMEIRO_HEADLESS_BRIDGE_NAMESPACE', 'shinonomeiro-headless/v1');
 
 final class Shinonomeiro_Headless_Bridge
