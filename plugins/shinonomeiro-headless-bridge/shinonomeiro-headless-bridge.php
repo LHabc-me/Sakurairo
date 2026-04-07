@@ -2,6 +2,7 @@
 /**
  * Plugin Name: Shinonomeiro Headless Bridge
  * Plugin URI: https://github.com/LHabc-me/Shinonomeiro
+ * GitHub URI: https://github.com/LHabc-me/Shinonomeiro
  * Update URI: https://github.com/LHabc-me/Shinonomeiro
  * GitHub Plugin URI: https://github.com/LHabc-me/Shinonomeiro
  * Primary Branch: release
