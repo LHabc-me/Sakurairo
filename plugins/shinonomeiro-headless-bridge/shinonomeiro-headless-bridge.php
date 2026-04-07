@@ -18,6 +18,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+require_once __DIR__ . '/update-checker/update-checker.php';
+
 define('SHINONOMEIRO_HEADLESS_BRIDGE_VERSION', '1.2.92');
 define('SHINONOMEIRO_HEADLESS_BRIDGE_NAMESPACE', 'shinonomeiro-headless/v1');
 
@@ -25,11 +27,23 @@ final class Shinonomeiro_Headless_Bridge
 {
     private const OPTIONS_KEY = 'shinonomeiro_options';
     private const LEGACY_OPTIONS_KEY = 'iro_options';
+    private const PLUGIN_SLUG = 'shinonomeiro-headless-bridge';
 
     public static function bootstrap(): void
     {
+        self::bootstrap_updater();
         add_action('admin_notices', [self::class, 'render_admin_notices']);
         add_action('rest_api_init', [self::class, 'register_routes']);
+    }
+
+    private static function bootstrap_updater(): void
+    {
+        $checker = YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+            'https://github.com/LHabc-me/Shinonomeiro',
+            __FILE__,
+            self::PLUGIN_SLUG
+        );
+        $checker->setBranch('release');
     }
 
     public static function render_admin_notices(): void
