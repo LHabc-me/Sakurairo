@@ -36,6 +36,11 @@ export type SiteConfig = {
     primary: MenuItem[];
   };
   social_links: SocialLink[];
+  compat: {
+    options_key: string;
+    legacy_options_key: string;
+    theme_version: string;
+  };
 };
 
 export type HomepageConfig = {
@@ -49,6 +54,9 @@ export type HomepageConfig = {
     title: string;
     icon: string;
   };
+  capsule_components: string[];
+  capsules: HomepageCapsule[];
+  exhibition_items: HomepageExhibitionItem[];
   static_page: {
     id: number;
     title: string;
@@ -56,6 +64,28 @@ export type HomepageConfig = {
     excerpt: string;
     uri: string;
   } | null;
+};
+
+export type HomepageCapsule = {
+  id: string;
+  type: "stat" | "announcement" | "link" | string;
+  label: string;
+  icon: string;
+  value: string;
+  link?: {
+    name: string;
+    url: string;
+    image: string;
+    description: string;
+  };
+};
+
+export type HomepageExhibitionItem = {
+  id: string;
+  title: string;
+  description: string;
+  link: string;
+  image: string;
 };
 
 export type MenuItem = {
@@ -122,6 +152,10 @@ export type PostExtras = {
       title: string;
       uri: string;
     } | null;
+  };
+  meta?: {
+    comment_count: number;
+    view_count: number;
   };
 };
 

@@ -36,12 +36,8 @@ export async function getHomepageConfig(): Promise<HomepageConfig> {
   return fetchBridge<HomepageConfig>("/homepage");
 }
 
-export async function getPostExtras(databaseId: number): Promise<PostExtras | null> {
-  try {
-    return await fetchBridge<PostExtras>(`/posts/${databaseId}/extras`);
-  } catch {
-    return null;
-  }
+export async function getPostExtras(databaseId: number): Promise<PostExtras> {
+  return fetchBridge<PostExtras>(`/posts/${databaseId}/extras`);
 }
 
 const postCardFragment = gql`
