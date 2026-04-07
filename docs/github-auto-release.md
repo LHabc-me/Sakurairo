@@ -1,21 +1,14 @@
 # GitHub 自动发版
 
-本文档定义 GitHub 管理下的主题与插件自动发版流程。
+本文档定义 GitHub 管理下的主题自动发版流程。
 
 ## 目标
 
 - 为主题生成独立 Release 包
-- 为 `shinonomeiro-headless-bridge` 插件生成独立 Release 包
 - 在 GitHub Release 保留可下载资产，便于回滚
-- 保证主题版本、插件版本、Git tag 三者一致
+- 保证主题版本与 Git tag 一致
 
-## 现有仓库发布形态
-
-- 当前仓库已经在 GitHub Release 持续发版本
-- 最新可见版本：`v1.2.87`
-- 当前 Release 页面显示每个版本带 2 个资产包
-
-## 发版分支
+## 发布分支
 
 - 正式发版分支固定为 `release`
 - 只有推送或合并到 `release` 才会自动发正式版
@@ -37,7 +30,6 @@
 - 自动将当前版本执行 `patch + 1`
 - 执行 `tools/release/build_release_artifacts.py`
 - 构建主题 ZIP
-- 构建插件 ZIP
 - 生成 `manifest.json`
 - 上传到 GitHub Release
 
@@ -48,13 +40,11 @@
 校验项：
 
 - `style.css` 中主题版本
-- `shinonomeiro-headless-bridge.php` 插件头版本
-- `SHINONOMEIRO_HEADLESS_BRIDGE_VERSION` 常量版本
 - Git tag 去掉前缀 `v` 后的版本号
 
 规则：
 
-- 四者必须一致
+- 二者必须一致
 - 任一不一致，工作流直接失败
 
 ### 3. 自动递增版本
@@ -63,13 +53,10 @@
 
 规则：
 
-- 读取当前版本，例如 `1.2.87`
+- 读取当前主题版本，例如 `1.2.87`
 - 自动执行 `patch + 1`
 - 新版本变为 `1.2.88`
-- 同步更新：
-  - `style.css`
-  - 插件头 `Version`
-  - `SHINONOMEIRO_HEADLESS_BRIDGE_VERSION`
+- 同步更新 `style.css`
 
 ## 推荐发版流程
 
@@ -79,17 +66,14 @@
    - 当前版本执行 `patch + 1`
    - 提交版本变更到 `release`
    - 创建对应 tag，例如 `v1.2.88`
-   - 校验 tag / 主题 / 插件版本一致
+   - 校验 tag / 主题版本一致
    - 构建 Release 资产
-   - 上传主题 ZIP / 插件 ZIP / manifest
+   - 上传主题 ZIP / manifest
 
 ## 版本策略
 
-- 本仓库采用**单一版本源**
-- 主题版本与插件版本保持一致
 - Release tag 采用 `vX.Y.Z`
 - `release` 每次发版自动执行 `patch + 1`
-- 后台自动更新依赖 Release 包时，不再需要单独推断主题与插件版本映射
 
 ## 注意事项
 
@@ -98,7 +82,4 @@
   - `.github`
   - `docs`
   - `tools`
-  - `headless-web`
-  - `plugins`
-- 插件部署包只包含 `plugins/shinonomeiro-headless-bridge`
 - 当前自动化只覆盖 GitHub Release 发版，不包含服务器部署
