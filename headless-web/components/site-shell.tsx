@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 
-import type { SiteConfig } from "@/lib/types";
+import type { MenuItem, SiteConfig } from "@/lib/types";
 
 type SiteShellProps = {
   site: SiteConfig;
@@ -17,8 +17,71 @@ function normalizeMenuUrl(url: string): string {
   }
 }
 
+type MenuNode = MenuItem & {
+  children: MenuNode[];
+};
+
+function buildMenuTree(items: MenuItem[]): MenuNode[] {
+  const nodes = new Map<number, MenuNode>();
+  const roots: MenuNode[] = [];
+
+  for (const item of items) {
+    nodes.set(item.id, { ...item, children: [] });
+  }
+
+  for (const item of items) {
+    const current = nodes.get(item.id);
+    if (!current) {
+      continue;
+    }
+
+    if (item.parent && nodes.has(item.parent)) {
+      nodes.get(item.parent)?.children.push(current);
+    } else {
+      roots.push(current);
+    }
+  }
+
+  return roots.sort((left, right) => left.order - right.order);
+}
+
+function MenuLink({ item }: { item: MenuNode }) {
+  const href = normalizeMenuUrl(item.url);
+
+  if (item.children.length === 0) {
+    return (
+      <Link href={href} className="transition hover:text-[color:var(--accent-strong)]">
+        {item.title}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="group relative">
+      <Link href={href === "#" ? "/" : href} className="flex items-center gap-2 transition hover:text-[color:var(--accent-strong)]">
+        <span>{item.title}</span>
+        <span className="text-[10px]">▼</span>
+      </Link>
+      <div className="invisible absolute left-0 top-full z-20 mt-3 min-w-44 translate-y-2 rounded-2xl border border-stone-200/80 bg-white/95 p-2 opacity-0 shadow-[0_18px_40px_rgba(45,31,24,0.12)] transition duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+        {item.children
+          .sort((left, right) => left.order - right.order)
+          .map((child) => (
+            <Link
+              key={child.id}
+              href={normalizeMenuUrl(child.url)}
+              className="block rounded-xl px-3 py-2 text-sm text-stone-700 transition hover:bg-stone-100 hover:text-[color:var(--accent-strong)]"
+            >
+              {child.title}
+            </Link>
+          ))}
+      </div>
+    </div>
+  );
+}
+
 export function SiteShell({ site, children }: SiteShellProps) {
   const brandText = site.branding.text_logo.text || site.site.name;
+  const menuTree = buildMenuTree(site.menus.primary);
 
   return (
     <div
@@ -39,15 +102,43 @@ export function SiteShell({ site, children }: SiteShellProps) {
               <div className="truncate text-2xl font-semibold text-stone-950">{brandText}</div>
             </Link>
             <nav className="hidden items-center gap-5 text-sm text-stone-700 md:flex">
-              {site.menus.primary.map((item) => (
-                <Link key={item.id} href={normalizeMenuUrl(item.url)} className="transition hover:text-[color:var(--accent-strong)]">
-                  {item.title}
-                </Link>
+              {menuTree.map((item) => (
+                <MenuLink key={item.id} item={item} />
               ))}
               <Link href="/search" className="rounded-full border border-stone-300 px-4 py-2 text-xs uppercase tracking-[0.2em]">
                 Search
               </Link>
             </nav>
+            <details className="md:hidden">
+              <summary className="list-none rounded-full border border-stone-300 px-4 py-2 text-xs uppercase tracking-[0.2em] text-stone-700">
+                Menu
+              </summary>
+              <div className="absolute right-5 top-full mt-3 w-72 rounded-[1.5rem] border border-stone-200/80 bg-white/95 p-4 shadow-[0_18px_40px_rgba(45,31,24,0.12)] sm:right-8">
+                <div className="space-y-2">
+                  {menuTree.map((item) => (
+                    <div key={item.id} className="rounded-2xl border border-stone-100 bg-stone-50/70 p-3">
+                      <Link href={normalizeMenuUrl(item.url === "#" ? "/" : item.url)} className="block text-sm font-medium text-stone-900">
+                        {item.title}
+                      </Link>
+                      {item.children.length > 0 ? (
+                        <div className="mt-2 space-y-1">
+                          {item.children
+                            .sort((left, right) => left.order - right.order)
+                            .map((child) => (
+                              <Link key={child.id} href={normalizeMenuUrl(child.url)} className="block text-sm text-stone-600">
+                                {child.title}
+                              </Link>
+                            ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  ))}
+                  <Link href="/search" className="block rounded-2xl border border-stone-200 px-4 py-3 text-sm text-stone-700">
+                    搜索文章
+                  </Link>
+                </div>
+              </div>
+            </details>
           </div>
         </header>
 

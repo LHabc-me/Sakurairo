@@ -10,6 +10,7 @@ type PostCardProps = {
 export function PostCard({ post }: PostCardProps) {
   const imageUrl = post.featuredImage?.node?.sourceUrl || "";
   const category = post.categories?.nodes?.[0];
+  const excerpt = stripHtml(post.excerpt || "").replace(/\s+/g, " ").trim();
 
   return (
     <article className="group flex h-full flex-col justify-between overflow-hidden rounded-[1.75rem] border border-white/60 bg-white/70 shadow-[0_14px_40px_rgba(92,67,50,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(92,67,50,0.14)]">
@@ -38,7 +39,7 @@ export function PostCard({ post }: PostCardProps) {
         <Link href={post.uri} className="text-xl font-semibold leading-8 tracking-[-0.03em] text-stone-950">
           {post.title}
         </Link>
-        <p className="mt-3 line-clamp-3 text-sm leading-7 text-stone-600">{stripHtml(post.excerpt || "")}</p>
+        <p className="mt-3 line-clamp-3 text-sm leading-7 text-stone-600">{excerpt || "这篇文章暂无摘要，点击进入查看完整内容。"}</p>
       </div>
     </article>
   );

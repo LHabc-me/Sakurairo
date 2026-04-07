@@ -30,6 +30,9 @@ export default async function RootLayout({
 
   return (
     <html lang={site.site.language || "zh-CN"}>
+      <head>
+        {site.theme.custom_css ? <style dangerouslySetInnerHTML={{ __html: site.theme.custom_css }} /> : null}
+      </head>
       <body>
         <SiteShell site={site}>{children}</SiteShell>
       </body>

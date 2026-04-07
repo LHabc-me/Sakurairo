@@ -177,6 +177,7 @@ final class Shinonomeiro_Headless_Bridge
         }
 
         $annotations = get_post_meta($post->ID, 'iro_chatgpt_annotations', true);
+        $rendered = self::render_post_content_bundle($post);
         $response = [
             'id' => $post->ID,
             'type' => $post->post_type,
@@ -187,10 +188,7 @@ final class Shinonomeiro_Headless_Bridge
                 'word_count' => self::count_words($post->post_content),
                 'has_toc' => self::content_has_heading_tags($post->post_content),
             ],
-            'rendered' => [
-                'content' => apply_filters('the_content', $post->post_content),
-                'excerpt' => apply_filters('the_excerpt', $post->post_excerpt),
-            ],
+            'rendered' => $rendered,
             'navigation' => [
                 'previous' => self::get_adjacent_post_payload($post, 'previous'),
                 'next' => self::get_adjacent_post_payload($post, 'next'),
@@ -354,11 +352,45 @@ final class Shinonomeiro_Headless_Bridge
         return (bool) preg_match('/<h[1-6][^>]*>/i', $content);
     }
 
+    private static function render_post_content_bundle(WP_Post $post): array
+    {
+        $previous_post = $GLOBALS['post'] ?? null;
+        $GLOBALS['post'] = $post;
+        setup_postdata($post);
+
+        try {
+            return [
+                'content' => apply_filters('the_content', $post->post_content),
+                'excerpt' => apply_filters('the_excerpt', $post->post_excerpt),
+            ];
+        } finally {
+            wp_reset_postdata();
+            if ($previous_post instanceof WP_Post) {
+                $GLOBALS['post'] = $previous_post;
+                setup_postdata($previous_post);
+            } else {
+                unset($GLOBALS['post']);
+            }
+        }
+    }
+
     private static function get_adjacent_post_payload(WP_Post $post, string $direction): ?array
     {
+        $previous_post = $GLOBALS['post'] ?? null;
+        $GLOBALS['post'] = $post;
+        setup_postdata($post);
+
         $adjacent = $direction === 'previous'
             ? get_adjacent_post(false, '', true)
             : get_adjacent_post(false, '', false);
+
+        wp_reset_postdata();
+        if ($previous_post instanceof WP_Post) {
+            $GLOBALS['post'] = $previous_post;
+            setup_postdata($previous_post);
+        } else {
+            unset($GLOBALS['post']);
+        }
 
         if (!$adjacent instanceof WP_Post) {
             return null;

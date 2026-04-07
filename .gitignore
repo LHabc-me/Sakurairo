@@ -4,6 +4,9 @@ inc/blocks/node_modules
 headless-web/node_modules
 headless-web/.next
 headless-web/tsconfig.tsbuildinfo
+headless-web/.env
+headless-web/.env.local
+headless-web/.env.*.local
 
 # Build artifacts
 /dist/
