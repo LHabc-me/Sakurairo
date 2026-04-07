@@ -589,6 +589,49 @@ $print_social_zone = function() use ($all_opt): void {
                     })();
                     </script>
                     <?php endif; ?>
+                    <?php if (iro_opt('cover_daily_poetry', false)) : ?>
+                    <script>
+                    (function() {
+                        var poemFontStack = <?php echo wp_json_encode( iro_opt('cover_poetry_font_family', "'Kaiti SC', 'STKaiti', 'KaiTi', 'BiauKai', 'Songti SC', 'Noto Serif SC', serif") ); ?>;
+                        var macPoemFontStack = "'Kaiti SC', 'STKaiti', 'KaiTi', 'BiauKai', 'Songti SC', 'Noto Serif SC', serif";
+
+                        function shouldUseMacPoemFont() {
+                            var platform = [navigator.platform || '', navigator.userAgent || ''].join(' ');
+                            return /Mac|iPhone|iPad|iPod/i.test(platform);
+                        }
+
+                        function applyPoemFontFix() {
+                            var poemInner = document.querySelector('#cover-signature-text .poem-inner');
+                            if (!poemInner) {
+                                return;
+                            }
+
+                            poemInner.style.fontFamily = shouldUseMacPoemFont() ? macPoemFontStack : poemFontStack;
+                        }
+
+                        if (document.readyState === 'loading') {
+                            document.addEventListener('DOMContentLoaded', applyPoemFontFix, { once: true });
+                        } else {
+                            applyPoemFontFix();
+                        }
+
+                        document.addEventListener('pjax:complete', function() {
+                            requestAnimationFrame(function() {
+                                applyPoemFontFix();
+                            });
+                        });
+
+                        var observer = new MutationObserver(function() {
+                            applyPoemFontFix();
+                        });
+
+                        observer.observe(document.body, {
+                            childList: true,
+                            subtree: true
+                        });
+                    })();
+                    </script>
+                    <?php endif; ?>
                     <?php if (iro_opt('infor_bar_style') === 'v2') : ?>
                         <div class="top-social_v2">
                             <?php $print_social_zone(); ?>

@@ -167,7 +167,9 @@ $show_quick_lang_toggle = (bool) iro_opt('nav_quick_lang_toggle', true);
     bgImageSwitcher()
     <?php if (iro_opt('poi_pjax')){ //pjax开启时，页面切换后重新加载?>
       document.addEventListener('pjax:complete', () => {
-      bgImageSwitcher();
+      requestAnimationFrame(() => {
+        bgImageSwitcher();
+      });
     });
     <?php } ?>
     </script>
@@ -209,6 +211,9 @@ $show_quick_lang_toggle = (bool) iro_opt('nav_quick_lang_toggle', true);
     document.addEventListener('DOMContentLoaded', function(){
       let header = document.querySelector('.site-header');
       function sakuraScroll() {
+        if (!header) {
+          return;
+        }
         if (window.scrollY > 0) {
           header.classList.add('bg');
         } else {
@@ -222,9 +227,14 @@ $show_quick_lang_toggle = (bool) iro_opt('nav_quick_lang_toggle', true);
       window.addEventListener('scroll', sakuraScroll);
       document.addEventListener('pjax:complete',function(){
         header = document.querySelector('.site-header');
+        requestAnimationFrame(() => {
+          sakuraScroll();
+        });
       })
       if (window.innerWidth < 860) {
         header.classList.add('bg');
+      } else {
+        sakuraScroll();
       }
     })
   </script>

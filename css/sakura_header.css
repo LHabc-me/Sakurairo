@@ -10,8 +10,8 @@
     position: fixed;
     z-index: 99;
     border-bottom: 1.5px solid transparent;
-    -webkit-transition: all .6s ease;
-    transition: all .6s ease;
+    -webkit-transition: background-color .35s ease, border-color .35s ease, backdrop-filter .35s ease, opacity .35s ease;
+    transition: background-color .35s ease, border-color .35s ease, backdrop-filter .35s ease, opacity .35s ease;
 }
 
 .site-header.bg,
@@ -20,8 +20,8 @@
     background: rgba(255, 255, 255, 0.8);
     -webkit-backdrop-filter: saturate(180%) blur(10px);
     backdrop-filter: saturate(180%) blur(10px);
-    -webkit-transition: all .5s ease;
-    transition: border-bottom .5s ease,all .5s ease;
+    -webkit-transition: background-color .35s ease, border-color .35s ease, backdrop-filter .35s ease, opacity .35s ease;
+    transition: background-color .35s ease, border-color .35s ease, backdrop-filter .35s ease, opacity .35s ease;
 }
 
 @media (max-width: 860px) {
@@ -91,7 +91,6 @@
 .menu-wrapper nav.sakura_nav .menu {
     display: flex;
     width: 100%;
-    animation: fadeInLeft 1.5s;
 }
 
 /* keep nav items horizontally aligned */
@@ -206,9 +205,10 @@ nav .menu>li .sub-menu li {
 }
 
 .bg-switch.hide-state {
-    width: 0;
     opacity: 0;
-    overflow: hidden;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(0.92);
 }
 
 .header-user-avatar img {
