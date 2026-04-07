@@ -3,7 +3,7 @@
  * Plugin Name: Shinonomeiro Headless Bridge
  * Plugin URI: https://github.com/LHabc-me/Shinonomeiro
  * Description: 为 Shinonomeiro 的 Headless 前端提供只读 REST 配置与文章扩展数据。
- * Version: 1.2.87
+ * Version: 1.2.88
  * Author: LHabc
  * License: GPL-2.0-or-later
  * Text Domain: shinonomeiro-headless-bridge
@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SHINONOMEIRO_HEADLESS_BRIDGE_VERSION', '1.2.87');
+define('SHINONOMEIRO_HEADLESS_BRIDGE_VERSION', '1.2.88');
 define('SHINONOMEIRO_HEADLESS_BRIDGE_NAMESPACE', 'shinonomeiro-headless/v1');
 
 final class Shinonomeiro_Headless_Bridge
