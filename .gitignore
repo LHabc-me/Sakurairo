@@ -1,6 +1,9 @@
 tempCodeRunnerFile.php
 .vscode
 inc/blocks/node_modules
+headless-web/node_modules
+headless-web/.next
+headless-web/tsconfig.tsbuildinfo
 
 # Build artifacts
 /dist/
