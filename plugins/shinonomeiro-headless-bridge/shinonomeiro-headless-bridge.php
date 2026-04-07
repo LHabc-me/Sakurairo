@@ -2,6 +2,10 @@
 /**
  * Plugin Name: Shinonomeiro Headless Bridge
  * Plugin URI: https://github.com/LHabc-me/Shinonomeiro
+ * Update URI: https://github.com/LHabc-me/Shinonomeiro
+ * GitHub Plugin URI: https://github.com/LHabc-me/Shinonomeiro
+ * Primary Branch: release
+ * Release Asset: true
  * Description: 为 Shinonomeiro 的 Headless 前端提供只读 REST 配置与文章扩展数据。
  * Version: 1.2.89
  * Author: LHabc
